@@ -1,0 +1,927 @@
+<title>AI團隊分工學</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{
+    font-family:"IBM Plex Mono",monospace;
+    letter-spacing:0.06em;
+  }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  /* ---------- PROGRESS + NAV ---------- */
+  .progressbar{
+    position:fixed; top:0; left:0; right:0;
+    height:3px;
+    background:var(--line);
+    z-index:60;
+  }
+  .progressbar-fill{
+    height:100%;
+    width:16.66%;
+    background:var(--accent);
+    transition:width .35s ease;
+  }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{
+    position:sticky;
+    top:3px;
+    z-index:50;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+  }
+  .pagenav-inner{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding-block:10px;
+  }
+  .tabs{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    flex:1;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+    font-weight:700;
+  }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  .pagecount{
+    flex:none;
+    font-size:0.76rem;
+    color:var(--ink-faint);
+  }
+
+  .pagectrl{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:36px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.88rem;
+    font-weight:700;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border:1px solid var(--accent-line);
+    border-radius:10px;
+    padding:9px 16px;
+    cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    border-bottom:1px solid var(--line);
+    padding-block:52px 40px;
+    background:var(--surface);
+  }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{
+    font-size:clamp(1.9rem, 5vw, 2.7rem);
+    line-height:1.3;
+  }
+  .lede{
+    margin:16px 0 0;
+    font-size:1.03rem;
+    line-height:1.85;
+    color:var(--ink-soft);
+    max-width:56ch;
+  }
+
+  .hero-diagram{
+    margin-top:34px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{
+    margin-top:6px;
+    text-align:center;
+    font-size:0.8rem;
+    color:var(--ink-faint);
+  }
+
+  .callout{
+    margin-top:22px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:var(--accent-soft);
+    border:1px solid var(--accent-line);
+    border-radius:12px;
+    padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none;
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    font-size:1rem;
+    color:var(--accent);
+    background:var(--surface);
+    border:1px solid var(--accent-line);
+    border-radius:50%;
+    width:26px;height:26px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  /* ---------- SECTIONS ---------- */
+  .pagewrap{ padding-block:8px 0; }
+
+  section.concept{
+    padding-block:44px;
+    border-bottom:1px solid var(--line);
+  }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .concept-num{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    font-size:0.95rem;
+    color:var(--ink-faint);
+    flex:none;
+  }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+
+  .concept p{
+    font-size:0.98rem;
+    line-height:1.9;
+    color:var(--ink-soft);
+    margin:0 0 14px;
+  }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0;
+    border-left:3px solid var(--warm);
+    background:var(--surface);
+    border-radius:0 10px 10px 0;
+    padding:13px 16px;
+    box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+    color:var(--warm);
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- CASE STUDY ---------- */
+  .case{ padding-block:44px 8px; }
+  .case + .case{ padding-block:8px; }
+  .case-head{ margin-bottom:22px; }
+  .case-head h2{ font-size:1.6rem; margin-bottom:8px; }
+  .case-head p{ color:var(--ink-soft); line-height:1.85; margin:0; font-size:0.97rem; }
+  .case-subhead{
+    margin:0 0 18px;
+    font-size:1.1rem;
+    color:var(--ink-faint);
+    font-family:"Noto Sans TC",sans-serif;
+    font-weight:700;
+  }
+
+  .case-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+  @media (max-width:600px){ .case-grid{ grid-template-columns:1fr; } }
+
+  .case-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 17px;
+    box-shadow:var(--shadow);
+  }
+  .case-card .k{
+    display:inline-block;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.7rem;
+    letter-spacing:0.06em;
+    color:var(--accent);
+    background:var(--accent-soft);
+    border-radius:999px;
+    padding:2px 10px;
+    margin-bottom:8px;
+  }
+  .case-card h4{
+    margin:0 0 6px;
+    font-size:1.02rem;
+    font-family:"Noto Sans TC",sans-serif;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .case-card p{ margin:0; font-size:0.9rem; line-height:1.75; color:var(--ink-soft); }
+
+  .timeline{
+    position:relative;
+    margin:8px 0 40px;
+    display:flex;
+    flex-direction:column;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left:15px; top:6px; bottom:6px;
+    border-left:2px solid var(--line);
+  }
+  .titem{
+    position:relative;
+    display:grid;
+    grid-template-columns:32px 1fr;
+    gap:16px;
+    padding-block:15px;
+  }
+  .tdot{
+    position:relative; z-index:1;
+    width:32px; height:32px;
+    border-radius:50%;
+    background:var(--surface);
+    border:2px solid var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.72rem; font-weight:600;
+    color:var(--accent);
+  }
+  .titem .meta{
+    display:block;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.7rem;
+    letter-spacing:0.05em;
+    color:var(--warm);
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .titem h4{
+    margin:0 0 6px;
+    font-size:1.02rem;
+    font-family:"Noto Sans TC",sans-serif;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .titem p{ margin:0; font-size:0.93rem; line-height:1.85; color:var(--ink-soft); }
+  .titem .figures{
+    display:inline-flex;
+    gap:8px;
+    margin-top:8px;
+    flex-wrap:wrap;
+  }
+  .titem .figures span{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:2px 8px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{
+    background:var(--ink);
+    color:var(--bg);
+    border-radius:16px;
+    padding:32px 28px;
+  }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{
+    color:inherit;
+    font-size:1.3rem;
+    margin:10px 0 12px;
+  }
+  .closing-panel p{
+    margin:0 0 10px;
+    line-height:1.85;
+    font-size:0.96rem;
+    opacity:0.88;
+  }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  footer{
+    text-align:center;
+    padding-block:20px 40px;
+    color:var(--ink-faint);
+    font-size:0.78rem;
+  }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">科普專題 · AI 如何協作</span>
+    <h1 class="title">AI團隊分工學</h1>
+    <p class="lede">你可能聽過「AI 自己蓋了一個 App」這種說法，聽起來像魔法。但拆開來看，它其實跟一群人分工完成一份大報告差不多——只是隊員換成了 AI。這篇文章分成三組核心概念，再用一個真實案例把它們串起來；內容比較長，可以用下方的分頁跳著讀，也可以照順序一路往下。</p>
+
+    <div class="hero-diagram" aria-hidden="true">
+      <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg">
+        <rect x="260" y="10" width="120" height="40" rx="8" fill="var(--surface)" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <text x="320" y="35" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">你（下決定的人）</text>
+
+        <line x1="320" y1="50" x2="320" y2="76" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <polygon points="320,82 315,73 325,73" fill="var(--ink-faint)"/>
+
+        <rect x="245" y="84" width="150" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="320" y="109" text-anchor="middle" font-family="Noto Sans TC" font-size="15" font-weight="700" fill="var(--accent)">AI 總管</text>
+
+        <line x1="320" y1="124" x2="120" y2="156" stroke="var(--accent-line)" stroke-width="1.5"/>
+        <line x1="320" y1="124" x2="320" y2="156" stroke="var(--accent-line)" stroke-width="1.5"/>
+        <line x1="320" y1="124" x2="520" y2="156" stroke="var(--accent-line)" stroke-width="1.5"/>
+
+        <rect x="55" y="158" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="120" y="183" text-anchor="middle" font-family="Noto Sans TC" font-size="13.5" fill="var(--ink-soft)">調查小組</text>
+
+        <rect x="255" y="158" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="320" y="183" text-anchor="middle" font-family="Noto Sans TC" font-size="13.5" fill="var(--ink-soft)">設計小組</text>
+
+        <rect x="455" y="158" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="520" y="183" text-anchor="middle" font-family="Noto Sans TC" font-size="13.5" fill="var(--ink-soft)">開發小組</text>
+      </svg>
+      <div class="cap">你只跟「AI 總管」溝通，它再把工作拆給不同的執行者</div>
+    </div>
+
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><b>核心概念：</b>AI 團隊能做出複雜的東西，靠的不是某一個 AI 特別聰明，而是「分層指揮、同時進行、不斷修改、過濾雜訊、資源用得剛好」這一整套工作方式，最後仍由人拍板定案。</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">核心概念 Ⅰ</button>
+      <button class="tab" type="button" data-goto="2">核心概念 Ⅱ</button>
+      <button class="tab" type="button" data-goto="3">核心概念 Ⅲ</button>
+      <button class="tab" type="button" data-goto="4">案例：發想與調查</button>
+      <button class="tab" type="button" data-goto="5">案例：設計與回饋</button>
+      <button class="tab" type="button" data-goto="6">案例：建置與總結</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 6</span>
+  </div>
+</nav>
+
+<!-- PAGE 1 -->
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>分層指揮：你不用管理每一個細節</h2>
+      </div>
+      <p>如果你要一個人同時盯著十件事——查資料、寫程式、畫畫面、測試——你會很快就累壞，而且容易漏東漏西。所以做法通常是：只找<b>一個總負責人</b>溝通，剩下的事交給他去分配、去確認進度。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像班級打掃時間，老師不會一個個學生盯著看，而是先跟<b>班長</b>說清楚「今天要做到什麼程度」，班長再把工作分給各排的排長，排長帶著自己那一排去完成。老師只需要跟班長確認結果就好。</p>
+      </div>
+
+      <p>在 AI 的世界裡，這個「班長」的角色常被稱作<b>協調者（coordinator）</b>。使用的人只需要把目標講清楚，協調者會自動把任務拆解、指派給不同的 AI 去執行，並且追蹤誰做完了、誰還沒做完。這些分派出去的任務通常會各自開在獨立的工作視窗裡，總負責人隨時可以切進任何一個視窗，直接看某一組正在做什麼，甚至臨時介入調整方向——不是丟出去就管不到了。</p>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>平行處理：同時做，比排隊做快得多</h2>
+      </div>
+      <p>如果三件事彼此不相關，卻要一件做完才做下一件，就是在浪費時間。把它們拆開、同時進行，才能真正省下時間。</p>
+
+      <div class="diagram-box" aria-hidden="true">
+        <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="20" font-family="IBM Plex Mono" font-size="12" fill="var(--ink-faint)">依序完成（一個接一個）</text>
+          <rect x="10" y="30" width="180" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="100" y="47" text-anchor="middle" font-family="Noto Sans TC" font-size="12" fill="var(--ink-soft)">查資料</text>
+          <rect x="196" y="30" width="180" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="286" y="47" text-anchor="middle" font-family="Noto Sans TC" font-size="12" fill="var(--ink-soft)">做投影片</text>
+          <rect x="382" y="30" width="180" height="26" rx="4" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="472" y="47" text-anchor="middle" font-family="Noto Sans TC" font-size="12" fill="var(--ink-soft)">練習報告</text>
+          <text x="572" y="47" font-family="IBM Plex Mono" font-size="12" fill="var(--ink-faint)">共 3 天</text>
+
+          <text x="10" y="86" font-family="IBM Plex Mono" font-size="12" fill="var(--accent)">同時進行（分工合作）</text>
+          <rect x="10" y="96" width="180" height="15" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="100" y="106.5" text-anchor="middle" font-family="Noto Sans TC" font-size="10.5" fill="var(--accent)">查資料</text>
+          <rect x="10" y="115" width="180" height="15" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="100" y="125.5" text-anchor="middle" font-family="Noto Sans TC" font-size="10.5" fill="var(--accent)">做投影片</text>
+          <rect x="10" y="134" width="180" height="15" rx="3" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="100" y="144.5" text-anchor="middle" font-family="Noto Sans TC" font-size="10.5" fill="var(--accent)">練習報告</text>
+          <text x="572" y="113" font-family="IBM Plex Mono" font-size="12" fill="var(--accent)">共 1 天</text>
+        </svg>
+        <div class="cap">三件互不相關的事，拆給三個人同時做，時間可以壓到三分之一</div>
+      </div>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>分組報告時，如果四個人排隊輪流一個人做完全部，會拖很久；但如果<b>同時</b>有人查資料、有人做投影片、有人練習口說，效率會高上好幾倍。AI 團隊也是這樣運作：把任務拆成互不干擾的部分，同時交給不同的 AI 去處理。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">01–02 · 分層指揮 / 平行處理</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>反覆修改：沒有人一次就做到完美</h2>
+      </div>
+      <p>不管是人還是 AI，第一次做出來的東西通常不是最終版本。真正重要的，是「拿出來討論、根據意見修改」這個循環。</p>
+
+      <div class="diagram-box" aria-hidden="true">
+        <svg viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="65" width="120" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="80" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="13" fill="var(--ink-soft)">寫草稿</text>
+
+          <line x1="140" y1="85" x2="216" y2="85" stroke="var(--ink-faint)" stroke-width="1.5"/>
+          <polygon points="222,85 213,80 213,90" fill="var(--ink-faint)"/>
+
+          <rect x="224" y="65" width="140" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)" stroke-width="1.5"/>
+          <text x="294" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="13" fill="var(--warm)">給意見 / 抓問題</text>
+
+          <line x1="364" y1="85" x2="440" y2="85" stroke="var(--ink-faint)" stroke-width="1.5"/>
+          <polygon points="446,85 437,80 437,90" fill="var(--ink-faint)"/>
+
+          <rect x="448" y="65" width="120" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="508" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="13" fill="var(--ink-soft)">修改</text>
+
+          <path d="M508 105 C508 140, 80 140, 80 105" fill="none" stroke="var(--ink-faint)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <polygon points="80,105 75,114 85,114" fill="var(--ink-faint)"/>
+          <text x="294" y="150" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="var(--ink-faint)">重複這個循環，直到滿意為止</text>
+        </svg>
+        <div class="cap">草稿 → 回饋 → 修改，這個循環會重複好幾輪</div>
+      </div>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>寫作文也是一樣：你交出第一份草稿，老師說「這一段的論點不夠清楚」，你就照著改，可能要來回兩三次才會定稿。AI 做出來的設計圖或程式，也是先給人看過、聽取意見、修改，一輪一輪逼近理想的樣子。</p>
+      </div>
+
+      <p>這個「給意見」的動作，不一定要用文字。有時候更有效率的做法，是把方案做成一個可以直接點擊、圈選、刪改的畫面，讓對方在上面比手畫腳地標註「這裡不對」「這段拿掉」，比起要人讀完一份三百多行的落落長報告，這樣的來回修改快得多。</p>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>人類仍是最後拍板的人</h2>
+      </div>
+      <p>AI 團隊再厲害，也不會自己決定「這個功能要不要做」「這個顏色好不好看」。這些判斷始終由人來下。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像使用<b>導航軟體</b>：它能幫你算出最快的路線、提醒哪裡塞車，甚至自動繞路，但要不要照著走、要不要臨時改去別的地方，方向盤還是握在你手上。AI 提供選項和執行力，最終的判斷和喜好，仍然是人的事。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03–04 · 反覆修改 / 人類拍板</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>過濾雜訊：看重點，不代表看不到細節</h2>
+      </div>
+      <p>AI 團隊做事的過程中，會不斷查資料、讀檔案、呼叫各種小工具——如果每一步都攤開來看，畫面會塞滿密密麻麻的操作紀錄，反而讓人抓不到重點。所以通常會把這些過程收起來，只留下「說了什麼、結論是什麼」。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像看球賽精華剪輯：你不需要看完整整兩小時的比賽，只要看關鍵的幾個進球畫面，就能掌握戰況。但如果哪一球有爭議，你隨時可以調出完整重播來確認——收起雜訊不等於資料消失，需要時仍然查得到。</p>
+      </div>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>資源要用得剛好，不是每次都上最強配備</h2>
+      </div>
+      <p>很多人以為每件事都該用「最強」的 AI，結果才會最好。但實際上，不少任務用中階、甚至比較省成本的配置就能完成，一味追求最強反而是浪費。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像騎腳踏車到巷口買醬油，不需要開跑車去；寫聯絡簿也不需要用高級鋼筆。工具要配合任務的份量，才是聰明的資源分配，而不是預設每件事都要動用最頂規的配備。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">05–06 · 過濾雜訊 / 資源要用得剛好</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap-wide">
+    <section class="case">
+      <div class="case-head">
+        <span class="eyebrow">實際案例</span>
+        <h2>從一句話到一個能用的 App：「艾迪的錢包」全紀錄</h2>
+        <p>起因很單純：一位工程師的孩子需要一個記錄零用錢的地方——什麼時候存了多少、借了多少、要怎麼還。與其繼續用筆記本手記，不如做一個 App，順便教孩子看懂「餘額」「借貸」「利息」這些觀念。這個專案實際跑過十個階段，對照的正是前面六個核心概念，先看前四個階段：從提出需求，到決定要不要花錢用現成的雲端服務。</p>
+      </div>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">1</div>
+          <div>
+            <span class="meta">提出需求 · 分層指揮</span>
+            <h4>把腦中的想法一次講清楚，交給總管去理解</h4>
+            <p>開發者一次講完所有條件：虛擬貨幣、不能是真錢；要有「家長模式」（可存款、可放款）和「小孩模式」（唯讀，只能看餘額和紀錄）；資料要能跨裝置同步，因為存提款可能在自己手機上操作，孩子則是用平板查看。這一長串需求，交給總管去拆解、規劃，開發者不用自己想好每一個技術細節。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">2</div>
+          <div>
+            <span class="meta">降噪與資源分配 · 過濾雜訊 / 資源要用得剛好</span>
+            <h4>刻意不用最強配備，也把畫面切成「只看結論」</h4>
+            <p>開發者特地立下規則：這次全程只用中階模型來執行任務，用意是證明就算不動用最頂規的 AI，也能做出完整的東西；同時把介面切到「降噪模式」，過程中大量的工具呼叫、檔案讀取都收起來不顯示，畫面上只留下「我說了什麼、AI 回了什麼」，需要追查細節時才會展開。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">3</div>
+          <div>
+            <span class="meta">雙軌調查 · 平行處理</span>
+            <h4>「市場上有沒有類似產品」和「該用什麼技術做」同時查</h4>
+            <p>這兩個問題彼此不相關，於是被同時派給兩組去查，誰都不用等誰。市場調查的結論是：找不到完全符合「純虛擬貨幣＋家長管控＋孩子唯讀」這個組合的現成 App，值得自己動手做；技術調查則交出了一份包含資料庫、帳本設計、iOS 開發方式的完整草案。</p>
+            <div class="figures"><span>兩條調查線同時展開</span><span>不用排隊等結果</span></div>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">4</div>
+          <div>
+            <span class="meta">技術取捨 · 人類拍板</span>
+            <h4>省下八成後端費用的決定，AI 不會替你做</h4>
+            <p>技術草案原本建議用一套現成的雲端資料庫服務，方便但要收月費；開發者評估後認為「只有三個人用的東西不需要這麼貴」，改成自己租一台便宜的雲端主機。同一個功能，成本從<b>每月約新台幣 800 元</b>降到<b>每月約新台幣 170 元</b>——這種「划不划算」的判斷，只有人會在意，AI 不會主動幫你省。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">案例 1–4 · 發想與調查</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="pagewrap" id="page-5" hidden>
+  <div class="wrap-wide">
+    <section class="case">
+      <p class="case-subhead">接下來三個階段：意見怎麼給、畫面怎麼改</p>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">5</div>
+          <div>
+            <span class="meta">互動式回饋 · 反覆修改</span>
+            <h4>不讀長報告，直接在網頁上點選、刪除、標註意見</h4>
+            <p>技術草案原本長達三百多行文字，開發者不想逐字閱讀，於是把它轉成一個可以互動的網頁：架構圖、成本試算都攤開在畫面上，覺得多餘的項目直接點掉、覺得數字不合理就直接標註「這裡不對，改成更便宜的方案」。回饋一來一回，比起讀完整份文件再打字反應要快上許多。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">6</div>
+          <div>
+            <span class="meta">畫面原型 · 反覆修改</span>
+            <h4>第一版做出來，才發現「點數」不是孩子熟悉的東西</h4>
+            <p>做出可以實際點擊的畫面原型後，開發者發現第一版用了抽象的「點數」當單位，但孩子平常用的是真實貨幣，於是要求改回實際幣別；同時也反映畫面「不夠有童趣」，希望再更貼近孩子的使用情境。這些意見被吸收後，畫面又重畫了一輪。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">7</div>
+          <div>
+            <span class="meta">視覺設計 · 反覆修改</span>
+            <h4>選圖案、選顏色，也是來回討論出來的</h4>
+            <p>設計小豬撲滿圖案當作 App 的主視覺，主色調選了孩子喜歡的金黃色；App 圖示也一次生成好幾款候選，讓開發者從中挑選、再要求放大主體、加強童趣感——不是一次到位，而是每一版都有具體意見再修一次。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">案例 5–7 · 設計與回饋</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="pagewrap" id="page-6" hidden>
+  <div class="wrap-wide">
+    <section class="case">
+      <p class="case-subhead">最後三個階段：把東西做出來、公開、實際測試</p>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">8</div>
+          <div>
+            <span class="meta">後端建置 · 分層指揮</span>
+            <h4>申請開發者帳號、設定網域，交給總管代勞</h4>
+            <p>包含在蘋果開發者平台申請 App 專屬識別碼、設定「透過蘋果帳號登入」功能，以及替後端主機申請一個專屬網址，這些瑣碎但需要照著步驟做的雜務，都由總管接手執行，開發者只需要在關鍵處確認一下。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">9</div>
+          <div>
+            <span class="meta">公開上線 · 分層指揮</span>
+            <h4>發布成公開專案後，連拼字錯誤都一併修正</h4>
+            <p>專案被公開發布到程式碼託管平台上，讓其他人也看得到；開發者事後發現孩子的名字拼錯了一個字母，只提醒了一句，總管就同時把本機檔案和公開頁面上的名稱都同步修正，不用自己一個個地方去改。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">10</div>
+          <div>
+            <span class="meta">實機測試 · 綜合驗證</span>
+            <h4>存 10 元進去，孩子那一端立刻看到餘額變成 10 元</h4>
+            <p>最後在模擬的平板畫面上完整走一次流程：用蘋果帳號登入、家長模式存入 10 元並留下紀錄、切換到孩子視角，餘額同步顯示 10 元；登出後重新登入，雲端上的資料依然都在。整個成品，最終仍要靠人一步一步操作、確認「這是不是我要的東西」。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-grid">
+        <div class="case-card">
+          <span class="k mono">01 分層指揮</span>
+          <h4>一次講清楚需求，交給總管去拆解</h4>
+          <p>開發者只描述「我想要什麼」，總管就把它拆成調查、規劃、開發、部署等好幾條線，分別指派出去執行。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">02 平行處理</span>
+          <h4>市場調查與技術規劃同時展開</h4>
+          <p>兩件互不相關的事，同時交給兩組去查，最後同時交回結果，沒有誰在等誰。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">03 反覆修改</span>
+          <h4>單位、畫面、圖示都改了不只一輪</h4>
+          <p>從「點數」改回真實貨幣、從陽春畫面改成更有童趣的版本，每一次修改都來自具體的意見回饋。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">04 人類拍板</span>
+          <h4>該花多少錢、用哪種方案，人來決定</h4>
+          <p>把月費從約 800 元降到約 170 元的決定，是開發者評估成本後主動要求的——這類取捨，AI 不會替你做。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">05 過濾雜訊</span>
+          <h4>介面只顯示對話，不顯示每一步操作</h4>
+          <p>大量的工具呼叫與檔案讀取被收在背後，畫面上只留下「說了什麼、結論是什麼」，需要時才展開查看。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">06 資源用得剛好</span>
+          <h4>全程只用中階模型，證明不需要動用最強配備</h4>
+          <p>開發者刻意不選最頂規的模型，用意是驗證合理成本的配置也能把完整的專案做出來。</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="wrap">
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow mono">重點回顧</span>
+        <h3>AI 團隊合作，靠的是方法，不是魔法</h3>
+        <p>把一件複雜的工作做出來，關鍵從來不是找到一個無所不能的天才，而是把工作拆解、分工、同時進行，過濾掉不必要的雜訊、把資源用在刀口上，再透過不斷討論修正來逼近理想結果——最後拍板的，始終是人。這套方法用在 AI 團隊上是這樣，用在人類團隊——包括你下次的分組報告——其實也是一樣的道理。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">案例 8–10 · 建置與總結</span>
+      <button class="navbtn" type="button" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+
+<footer>看得懂也做得到的 AI 協作原理 · 科普圖文</footer>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('aitc_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){
+    try{ localStorage.setItem('aitc_page', String(n)); }catch(e){}
+  }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){
+    t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); });
+  });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
