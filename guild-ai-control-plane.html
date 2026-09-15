@@ -1,0 +1,718 @@
+<title>代理人中控室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  /* ---------- PROGRESS + NAV ---------- */
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:16.66%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- HERO ---------- */
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  /* ---------- SECTIONS ---------- */
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- CASE STUDY ---------- */
+  .case{ padding-block:44px 8px; }
+  .case + .case{ padding-block:8px; }
+  .case-head{ margin-bottom:22px; }
+  .case-head h2{ font-size:1.6rem; margin-bottom:8px; }
+  .case-head p{ color:var(--ink-soft); line-height:1.85; margin:0; font-size:0.97rem; }
+  .case-subhead{
+    margin:0 0 18px;
+    font-size:1.1rem;
+    color:var(--ink-faint);
+    font-family:"Noto Sans TC",sans-serif;
+    font-weight:700;
+  }
+
+  .case-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:600px){ .case-grid{ grid-template-columns:1fr; } }
+  .case-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 17px; box-shadow:var(--shadow); }
+  .case-card .k{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.06em;
+    color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:2px 10px; margin-bottom:8px;
+  }
+  .case-card h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .case-card p{ margin:0; font-size:0.9rem; line-height:1.75; color:var(--ink-soft); }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; margin:8px 0 40px; display:flex; flex-direction:column; }
+  .timeline::before{ content:""; position:absolute; left:15px; top:6px; bottom:6px; border-left:2px solid var(--line); }
+  .titem{ position:relative; display:grid; grid-template-columns:32px 1fr; gap:16px; padding-block:15px; }
+  .tdot{
+    position:relative; z-index:1; width:32px; height:32px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:600; color:var(--accent);
+  }
+  .titem .meta{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.05em;
+    color:var(--warm); text-transform:uppercase; margin-bottom:4px;
+  }
+  .titem h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .titem p{ margin:0; font-size:0.93rem; line-height:1.85; color:var(--ink-soft); }
+  .titem .figures{ display:inline-flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+  .titem .figures span{
+    font-family:"IBM Plex Mono",monospace; font-size:0.76rem; background:var(--surface-2);
+    border:1px solid var(--line); border-radius:6px; padding:2px 8px; color:var(--ink-soft);
+  }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{ margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7; }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">科普專題 · AI 浪潮下的新創</span>
+    <h1 class="title">代理人中控室</h1>
+    <p class="lede">去年這個時候，讓 AI 代理人處理工作還只是好奇心作祟的「實驗」；今年不一樣了，不少公司裡已經有代理人 24 小時掛在正式環境裡跑，真的在寫程式、真的在處理客服、真的在花錢。這篇文章整理自一支跟拍新創公司 Guild AI 一整天的紀錄片式訪談——這家由 Meta 前工程團隊創辦、募得 4400 萬美元的公司，做的正是幫企業「看得到、管得動」這些 AI 代理人的基礎建設。內容比較長，可以用下方分頁跳著讀，也可以照順序一路往下。</p>
+
+    <div class="hero-diagram" aria-hidden="true">
+      <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg">
+        <rect x="255" y="10" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <text x="320" y="35" text-anchor="middle" font-family="Noto Sans TC" font-size="14" fill="var(--ink)">你（工程主管）</text>
+
+        <line x1="320" y1="50" x2="320" y2="76" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <polygon points="320,82 315,73 325,73" fill="var(--ink-faint)"/>
+
+        <rect x="235" y="84" width="170" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="320" y="109" text-anchor="middle" font-family="Noto Sans TC" font-size="15" font-weight="700" fill="var(--accent)">Guild 中控台</text>
+
+        <line x1="320" y1="124" x2="110" y2="156" stroke="var(--accent-line)" stroke-width="1.5"/>
+        <line x1="320" y1="124" x2="320" y2="156" stroke="var(--accent-line)" stroke-width="1.5"/>
+        <line x1="320" y1="124" x2="530" y2="156" stroke="var(--accent-line)" stroke-width="1.5"/>
+
+        <rect x="45" y="158" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="110" y="183" text-anchor="middle" font-family="Noto Sans TC" font-size="13" fill="var(--ink-soft)">代理人：寫程式</text>
+
+        <rect x="255" y="158" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="320" y="183" text-anchor="middle" font-family="Noto Sans TC" font-size="13" fill="var(--ink-soft)">代理人：客服</text>
+
+        <rect x="465" y="158" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="530" y="183" text-anchor="middle" font-family="Noto Sans TC" font-size="13" fill="var(--ink-soft)">代理人：資料整理</text>
+      </svg>
+      <div class="cap">你只要看中控台的儀表板，就能同時掌握好幾個代理人在做什麼、花了多少錢</div>
+    </div>
+
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><b>核心概念：</b>AI 代理人一旦從實驗進入正式上線，真正稀缺的不再是「哪個模型比較聰明」，而是一整套讓人「看得到它在幹嘛、算得清它花了多少錢、改得動它的設定」的管理機制——這正是「控制平面」想解決的問題。</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">淘金潮與中控台</button>
+      <button class="tab" type="button" data-goto="2">耗油考績與起源故事</button>
+      <button class="tab" type="button" data-goto="3">死板程式碼與代理人市集</button>
+      <button class="tab" type="button" data-goto="4">軟體工廠與案例開場</button>
+      <button class="tab" type="button" data-goto="5">案例：抓出燒錢代理人</button>
+      <button class="tab" type="button" data-goto="6">案例總結與創業者的話</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 6</span>
+  </div>
+</nav>
+
+<!-- PAGE 1 -->
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>第二波淘金潮：從賣工具，到把金子煉好</h2>
+      </div>
+      <p>去年這個時候，多數公司讓 AI 代理人處理任務還只是「實驗性質」——試試看能不能自動寫一段程式、自動回一封客服信。今年不一樣了：不少代理人已經 24 小時掛在正式環境裡跑，真的在做事、真的在花錢。企業這才發現，帳單上多出一大筆 AI 費用，卻沒人講得出這筆錢究竟花在哪個代理人、哪一天、哪個功能上。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>19 世紀淘金熱真正賺錢的，往往不是下礦坑挖金子的人，而是賣十字鎬、賣牛仔褲、賣鏟子給他們的商家——這是這幾年常被拿來形容 AI 產業的比喻。第一波 AI 基礎建設（晶片、雲端算力、模型訓練）就像那批賣鏟子的人，把最基本的挖礦工具鋪好了。而 Guild AI 瞄準的，是「金子已經挖出來之後」的下一步——把挖出來的礦石好好提煉、秤重、控管成本，變成真正能用、算得清楚成本的黃金。</p>
+      </div>
+
+      <p>這家公司從兩家創投——Google Ventures 和 Costanoa Ventures——那裡募得<b>4400 萬美元</b>，外界估值一度喊到<b>3 億美元</b>左右，正是看中這個「淘金潮下一浪」的位置：基礎設施已經有人做好了，現在需要有人幫忙把它「負責任地」用出成果。</p>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>中控台：不是不相信代理人，而是不能沒人看著</h2>
+      </div>
+      <p>想像一間公司同時雇用了幾十個新進員工，如果沒有任何一個主管知道誰在做什麼、誰的產出品質如何、誰默默把預算燒光了，這間公司遲早會出事。Guild AI 的產品被稱為「控制平面」（control plane），做的正是這件事——統一部署公司裡所有的 AI 代理人、看得到它們每一步實際在做什麼，並且不管背後用的是哪一家的 AI 模型，都能想辦法把 token（可以理解成 AI 處理文字的計價單位）的花費壓低。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像一間貨運公司的調度中心：司機（代理人）實際在路上跑，但調度中心要看得到每一台車現在在哪、載了什麼、油錢花了多少，才有辦法在司機繞遠路或空轉怠速的時候喊停，而不是等到月底帳單來了才傻眼。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <span></span>
+      <span class="mid mono">01–02 · 淘金潮與中控台</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>用「耗了多少油」幫司機打考績</h2>
+      </div>
+      <p>當一間公司決定要「看 AI 代理人的產出」來打考績，最直覺的做法常常是看「用了多少 token」——用得越多，看起來越認真做事。但這套邏輯其實大有問題。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>這就像一間貨運公司想評估司機認不認真，結果拿「燒了多少油」來打考核。用這套標準，最會拿高分的司機，反而是開著最耗油的大引擎車、故意繞遠路、甚至常常怠速停在路邊不熄火的人——因為這些行為都在「增加耗油量」，卻完全沒有讓貨物更快送到。據說 Uber 就曾經因為類似的誘因，一口氣燒光了一整季的 AI 預算。</p>
+      </div>
+
+      <p>真正該問的問題，從來不是「用了多少」，而是「這筆花費換來多少實際的商業價值」——也就是<b>投資報酬率（ROI）</b>，而不是消耗量本身。把「用得多」誤當成「做得好」，只會逼出一堆表面上很忙、實際上在浪費錢的行為。</p>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>起源故事：從 Meta 內部工具，到獨立創業</h2>
+      </div>
+      <p>Guild AI 不是憑空冒出來的點子，而是從內部真實痛點裡長出來的。創辦人 James 與包含 Chris Waterson 在內的核心團隊，原本都待在 Meta 負責「開發者基礎建設」的同一個團隊。</p>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">1</div>
+          <div>
+            <span class="meta">文化背景</span>
+            <h4>Meta 的「指標癡迷」文化</h4>
+            <p>在 Meta，幾乎每一個專案都被要求要有一個儀表板——這種「凡事都要量化、看得到數據」的文化，深深影響了後來 Guild AI 的產品設計方向。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">2</div>
+          <div>
+            <span class="meta">意外發現</span>
+            <h4>AI 已經悄悄寫了 20% 到 50% 的新程式碼</h4>
+            <p>團隊注意到，當時 Meta 內部有 20% 到 50% 的新增程式碼，其實是由 AI 代理人寫出來的——這個比例遠高於外界想像。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">3</div>
+          <div>
+            <span class="meta">起心動念</span>
+            <h4>「與其服務 4 萬名工程師，何不服務 4000 萬名？」</h4>
+            <p>James 的一句話成了創業起點：「如果這套東西不只服務 Meta 內部四萬名工程師，而是讓全世界四千萬名開發者都能用，豈不是很酷？」</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">4</div>
+          <div>
+            <span class="meta">內部工具雛形</span>
+            <h4>程式碼一送出，AI 自動接手檢查</h4>
+            <p>最早的版本，其實是一套讓公司內部各種工具能夠「隨時呼叫 AI」的基礎建設——比如工程師一把程式碼送進版本庫（check in），系統就自動觸發合規檢查、自動做程式碼審查，完全不用人工提醒。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">5</div>
+          <div>
+            <span class="meta">撞上瓶頸</span>
+            <h4>「同一個問題問兩次，答案可能不一樣」</h4>
+            <p>這套系統規模一路做大，卻撞上一個根本問題——<b>程式碼是非決定性的</b>：同一個問題問 AI 兩次，不保證會得到一模一樣的答案。這代表沒辦法把 AI 代理人當成一般寫死的程式那樣信任，而是需要一整套基礎建設，去管理、部署、運行這些「每次都可能不太一樣」的代理人——這正是後來獨立成立 Guild AI 要解決的問題。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像開車用導航：同一條路線，不同時間問導航軟體，它可能因為當下路況給你不一樣的建議，這不代表導航壞掉了，而是它本來就是會隨情境變動的系統，需要額外的機制去監控、去校正——而不是假設它每次都會給一模一樣的答案。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03–04 · 耗油考績與起源故事</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>不是所有工作都需要一個「很聰明」的代理人</h2>
+      </div>
+      <p>是不是所有工作都該交給一個「看起來很聰明、什麼都能做」的 AI 代理人處理？團隊在內部讀書會討論過一篇微軟 Azure 網路團隊的案例研究，結論恰恰相反。</p>
+
+      <p>這篇案例研究做的事情，是把原本「完全由 LLM 代理人處理」的工作流程，逐漸轉換成「由固定死的程式碼處理」（這個轉換過程被稱為「代理人優化器」）。一開始，100% 的工作都靠 AI 代理人自己判斷、自己決定下一步；但經過 8 個月的調整，團隊發現其實高達 <b>45%</b> 的工作可以寫成完全固定的程式碼規則去處理，另外約 <b>25%</b> 用「半自動」的混合模式（代理人＋固定規則搭配），只剩下一小部分真的需要保留完整的自主判斷能力、可以自由調用各種工具的 AI 代理人。結果，整體成本降低了<b>超過 70%</b>。</p>
+
+      <div class="diagram-box" aria-hidden="true">
+        <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="18" font-family="IBM Plex Mono" font-size="11.5" fill="var(--ink-faint)">第 0 個月：100% 全靠 AI 代理人自己判斷</text>
+          <rect x="10" y="26" width="600" height="24" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="310" y="42" text-anchor="middle" font-family="Noto Sans TC" font-size="12" fill="var(--accent)">100% 自主代理人</text>
+
+          <text x="10" y="80" font-family="IBM Plex Mono" font-size="11.5" fill="var(--ink-faint)">第 8 個月：拆解後，多數工作交給固定規則處理</text>
+          <rect x="10" y="88" width="270" height="24" rx="4" fill="var(--surface)" stroke="var(--line)" stroke-width="1.2"/>
+          <text x="145" y="104" text-anchor="middle" font-family="Noto Sans TC" font-size="11.5" fill="var(--ink-soft)">45% 固定程式碼</text>
+          <rect x="284" y="88" width="150" height="24" rx="4" fill="var(--warm-soft)" stroke="var(--warm)" stroke-width="1.2"/>
+          <text x="359" y="104" text-anchor="middle" font-family="Noto Sans TC" font-size="11.5" fill="var(--warm)">25% 混合模式</text>
+          <rect x="438" y="88" width="172" height="24" rx="4" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.2"/>
+          <text x="524" y="104" text-anchor="middle" font-family="Noto Sans TC" font-size="11.5" fill="var(--accent)">30% 全自主代理人</text>
+          <text x="310" y="138" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="var(--ink-faint)">整體成本降低超過 70%</text>
+        </svg>
+        <div class="cap">不是每件事都需要「全自主、能自由調用工具」的代理人</div>
+      </div>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>這就像一間連鎖店的作業流程：結帳、補貨這種每天重複、規則很清楚的事，寫成一張固定的 SOP 清單交給任何人照做就好，不需要每次都找店長臨場判斷；只有遇到客訴、突發狀況這種沒有固定答案的情境，才真的需要請出有經驗、能隨機應變的店長出面處理。不是每一件事都需要動用「最聰明、最貴」的判斷力。</p>
+      </div>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>Agent Hub：代理人界的 App Store</h2>
+      </div>
+      <p>如果說前面幾個概念都在談「怎麼管理已經存在的代理人」，Agent Hub 談的則是「怎麼讓更多人一開始就用得上代理人」。它的設計概念很像是一個專門給 AI 代理人用的 App Store，或是軟體工程師熟悉的 GitHub 程式碼倉庫——有人做出一個好用的代理人，就發布上去，其他人可以直接瀏覽、下載、甚至複製一份改成自己要的樣子，不用從零開始寫。</p>
+
+      <p>為了讓完全沒用過這套系統的人也能馬上感受到價值，裡面還有一個引導流程叫「Smith」。使用者只要挑一個現成的範本（比如「幫我追蹤競爭對手的最新動態」），回答幾個簡單的問題（比如競爭對手叫什麼名字），Smith 就會自動把整個工作環境設定好，甚至直接跑一次「交接」（handoff）任務，把第一份成果送到你面前——例如自動整理好一份競爭對手新聞摘要，直接寄進你的信箱。整個設計的用意，是讓新使用者不需要先學會怎麼用這套工具，就能先嚐到甜頭。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像新人第一天到職，不會先丟一本幾百頁的操作手冊叫你自己讀完才能上工，而是由一位資深同事帶著，從一個具體的小任務做起，一邊做一邊熟悉——等你上手了，自然就知道其他更複雜的功能怎麼用。一位歐洲新創公司的 CTO（化名 Will）就是靠朋友分享的一篇貼文找到這套工具，他特別看重的，正是 Agent Hub 這種「社群共享、互相參考」的市集感，而不只是單一功能好不好用而已。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">05–06 · 死板程式碼與代理人市集</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>軟體工廠：人只留下真正需要判斷的關卡</h2>
+      </div>
+      <p>團隊在受訪時多次提到一個詞——「軟體工廠」（software factories）。這背後的想法是：一旦一件工作被拆解、規劃得夠清楚，它就會變得像樂高積木一樣，可以拆成一個個「自成一體」的小任務，直接交給 AI 代理人去執行，人只需要每隔一段時間回來檢查進度就好。真正需要人力介入的，只剩下那些必須由人做判斷、必須有人為最終結果負責的關卡。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>這就像一條真正成熟的生產線：原料怎麼送進來、每個站要做什麼，事先都規劃得清清楚楚，工人不需要每一步都盯著，只要在關鍵的品管站抽查確認就好。但前提是「規劃要做得夠扎實」——如果流程本身亂七八糟，就算換上再多機械手臂，也做不出好產品。能不能順利把工作交給代理人，關鍵不在代理人多聰明，而在人有沒有先把工作拆解、規劃清楚。</p>
+      </div>
+    </section>
+
+    <section class="case">
+      <div class="case-head">
+        <span class="eyebrow">實際案例</span>
+        <h2>把「用了多少 token」變成「看得懂、改得動」：Guild Insights 實測</h2>
+        <p>前面提到，去年還在做實驗，今年已經是全天候跑在正式環境裡的產品——但財務報表上多出的那筆快速膨脹的 AI 費用，卻常常沒人說得清楚花在哪個代理人、哪個模型、哪一天。Guild Insights 就是設計來補上這個視覺死角的儀表板，接下來走一遍它實際被使用的過程。</p>
+      </div>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">1</div>
+          <div>
+            <span class="meta">打開儀表板 · 中控台</span>
+            <h4>總花費、每日 token 用量，一次看清楚</h4>
+            <p>Guild Insights 的總覽畫面，把整間公司的 AI 花費拆成好幾個維度：按天、按代理人、按模型、按使用者，通通可以切換著看。原本埋在帳單裡看不出頭緒的數字，變成一張隨時能查的清單。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">2</div>
+          <div>
+            <span class="meta">抓到問題 · 耗油考績</span>
+            <h4>一個寫程式的代理人，單日燒了 126 美元</h4>
+            <p>排行榜一拉出來，馬上就能看到某個負責寫程式的代理人，單日花費高達 <b>126 美元</b>。這種異常，過去往往要等到月底對帳才會被發現，現在當天就能看到。</p>
+            <div class="figures"><span>$126 · 單一代理人單日花費</span></div>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">3</div>
+          <div>
+            <span class="meta">啟動 Optimize · 死板程式碼 vs 靈活代理人</span>
+            <h4>先評估，不是直接砍預算</h4>
+            <p>系統不會粗暴地直接調降額度，而是先啟動一套自動化的「代理人優化器」（Optimize）：拿這個代理人過去所有的對話紀錄，加上它原本被設定要達成的目標，去評估「換一種做法，品質到底會不會掉」。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">07 · 軟體工廠 ／ 案例 1–3</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="pagewrap" id="page-5" hidden>
+  <div class="wrap">
+    <section class="case">
+      <p class="case-subhead">接下來：優化建議怎麼提出、又怎麼一鍵套用</p>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">4</div>
+          <div>
+            <span class="meta">優化建議一 · 換一顆更便宜的腦袋</span>
+            <h4>換成 Haiku 4.5，成本降 23%，品質幾乎沒差</h4>
+            <p>系統建議把背後使用的模型，換成價格較低的 Haiku 4.5，並且用一套自動評分機制（evals）反覆驗證輸出品質——結果品質幾乎沒有差別，成本卻降了 <b>23%</b>。</p>
+            <div class="figures"><span>省 23%</span><span>用 evals 驗證品質</span></div>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">5</div>
+          <div>
+            <span class="meta">優化建議二 · 不換模型也能省</span>
+            <h4>另一個代理人，光調設定就省 16%</h4>
+            <p>不是每個案例都需要換模型。另一個代理人不需要動到底層模型，只調整一些設定組合，就省下 <b>16%</b> 的花費，其他地方完全不用更動。</p>
+            <div class="figures"><span>省 16%</span><span>不換模型</span></div>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">6</div>
+          <div>
+            <span class="meta">一鍵套用 · 中控台</span>
+            <h4>建議不是拿來讀的報告，是可以直接按下去的按鈕</h4>
+            <p>這些優化建議附帶一個「一鍵套用」按鈕，按下去就能直接套用到正式環境，不需要工程師另外手動調整設定。官方說法是，這樣規模化下來，一年可以幫企業省下上看<b>數百萬美元</b>的 AI 支出。</p>
+            <div class="figures"><span>一鍵套用</span><span>宣稱：每年省下數百萬美元</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">案例 4–6 · 抓出燒錢代理人</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="pagewrap" id="page-6" hidden>
+  <div class="wrap">
+    <section class="case">
+      <p class="case-subhead">七個核心概念，重點回顧</p>
+      <div class="case-grid">
+        <div class="case-card">
+          <span class="k mono">01 第二波淘金潮</span>
+          <h4>基礎建設已就位，換誰把金子練好</h4>
+          <p>第一波 AI 浪潮是把挖礦工具做好，Guild AI 瞄準的是「把挖出來的東西負責任地用出成果」這一步。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">02 中控台</span>
+          <h4>不是不信任代理人，是不能沒人看著</h4>
+          <p>統一部署、監控、跨模型降低成本，讓公司裡每一個代理人的行為都看得到、管得動。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">03 耗油考績</span>
+          <h4>用得多不等於做得好</h4>
+          <p>用消耗量打考績，只會逼出繞遠路、開大引擎的行為；真正該看的是投資報酬率。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">04 起源故事</span>
+          <h4>從 Meta 內部工具，到獨立創業</h4>
+          <p>指標文化 ＋「程式碼非決定性」這個真實痛點，是 Guild AI 誕生的起點。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">05 死板程式碼</span>
+          <h4>不是每件事都需要全自主代理人</h4>
+          <p>Azure 案例研究顯示，把部分工作轉成固定規則，8 個月內成本降低超過 70%。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">06 Agent Hub</span>
+          <h4>代理人界的 App Store</h4>
+          <p>發布、瀏覽、複製、改造別人做好的代理人，加上引導流程讓新手不用先學會用就能拿到成果。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">07 軟體工廠</span>
+          <h4>人只留下真正需要判斷的關卡</h4>
+          <p>工作規劃夠清楚，就能拆給代理人執行，人只需要定期檢查、處理真正需要人拍板的事。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow mono">創業路上的一句話</span>
+        <h3>不是每間公司都會成功，這也沒關係</h3>
+        <p>創辦人在訪談最後給出的職涯建議是：不是每一間公司都會成功，而這是可以接受的——只要你願意再試一次，過程中累積的知識不會白費。真正能成功的關鍵，是去追求一個自己深信不疑的願景、一個你認為別人還沒看見的觀察、一件你打從心底覺得「這個世界需要它存在」的事情。</p>
+        <p>他也提醒，經營一間公司、募資這件事，從來沒有一套固定不變的規則可以照抄——你可以，也應該，去定義屬於自己的規則。</p>
+      </div>
+    </section>
+
+    <div class="source-note">內容整理、摘要並改寫自 YouTube 影片〈24hrs Inside the $300M Startup Building the Infrastructure Layer for AI Agents〉，非逐字紀錄。</div>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">案例總結與創業者的話</span>
+      <button class="navbtn" type="button" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+
+<footer>看得懂也做得到的 AI 與創業觀念 · 科普圖文</footer>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('guild_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('guild_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
