@@ -1,0 +1,628 @@
+<title>巨人對巨人</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  /* ---------- PROGRESS + NAV ---------- */
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:16.66%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- HERO ---------- */
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  /* ---------- SECTIONS ---------- */
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; margin:8px 0 40px; display:flex; flex-direction:column; }
+  .timeline::before{ content:""; position:absolute; left:15px; top:6px; bottom:6px; border-left:2px solid var(--line); }
+  .titem{ position:relative; display:grid; grid-template-columns:32px 1fr; gap:16px; padding-block:15px; }
+  .tdot{
+    position:relative; z-index:1; width:32px; height:32px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:600; color:var(--accent);
+  }
+  .titem .meta{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.05em;
+    color:var(--warm); text-transform:uppercase; margin-bottom:4px;
+  }
+  .titem h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .titem p{ margin:0; font-size:0.93rem; line-height:1.85; color:var(--ink-soft); }
+
+  /* ---------- GRID RECAP ---------- */
+  .case-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:600px){ .case-grid{ grid-template-columns:1fr; } }
+  .case-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 17px; box-shadow:var(--shadow); }
+  .case-card .k{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.06em;
+    color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:2px 10px; margin-bottom:8px;
+  }
+  .case-card h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .case-card p{ margin:0; font-size:0.9rem; line-height:1.75; color:var(--ink-soft); }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">科普專題 · 創業與 AI 浪潮</span>
+    <h1 class="title">巨人對巨人</h1>
+    <p class="lede">Scale AI 創辦人、現任 Meta 超級智慧實驗室負責人 Alexandr Wang，19 歲創業，十年內從「幫忙標註訓練資料」做到執掌一整個前沿 AI 實驗室。這篇文章整理自他的一場對談，談他怎麼判斷方向、AI 如何改變創業這件事，以及他對下一個十年的看法。內容比較長，可以用下方分頁跳著讀。</p>
+
+    <div class="hero-diagram" aria-hidden="true">
+      <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg">
+        <text x="14" y="26" font-family="IBM Plex Mono" font-size="12" fill="var(--ink-faint)">十年前</text>
+        <rect x="40" y="44" width="90" height="34" rx="7" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="85" y="65" text-anchor="middle" font-family="Noto Sans TC" font-size="12.5" fill="var(--ink-soft)">小新創</text>
+        <text x="152" y="65" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="var(--ink-faint)">vs</text>
+        <rect x="176" y="20" width="180" height="82" rx="10" fill="var(--surface)" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <text x="266" y="65" text-anchor="middle" font-family="Noto Sans TC" font-size="14" fill="var(--ink)">大公司</text>
+
+        <line x1="14" y1="122" x2="626" y2="122" stroke="var(--line)" stroke-width="1"/>
+
+        <text x="14" y="146" font-family="IBM Plex Mono" font-size="12" fill="var(--accent)">現在</text>
+        <rect x="40" y="132" width="200" height="60" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="140" y="158" text-anchor="middle" font-family="Noto Sans TC" font-size="13" font-weight="700" fill="var(--accent)">新創</text>
+        <text x="140" y="176" text-anchor="middle" font-family="Noto Sans TC" font-size="11.5" fill="var(--accent)">＋ AI 代理人放大</text>
+        <text x="270" y="165" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="var(--ink-faint)">vs</text>
+        <rect x="300" y="132" width="200" height="60" rx="10" fill="var(--surface)" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <text x="400" y="167" text-anchor="middle" font-family="Noto Sans TC" font-size="14" fill="var(--ink)">大公司</text>
+      </svg>
+      <div class="cap">以前是「以小博大」，現在因為 AI 放大了執行力，變成「巨人對巨人」</div>
+    </div>
+
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><b>核心概念：</b>就算 AI 模型從今天起完全停止進步，光是把它推廣到全世界、讓所有產業和制度都跟上，就還有好幾十年的變革空間——這正是標題所說「文明等級的機會」。</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">起點與第一原理</button>
+      <button class="tab" type="button" data-goto="2">巨人對巨人</button>
+      <button class="tab" type="button" data-goto="3">個人超級智慧</button>
+      <button class="tab" type="button" data-goto="4">打造前沿實驗室</button>
+      <button class="tab" type="button" data-goto="5">稀缺資源變了</button>
+      <button class="tab" type="button" data-goto="6">系統思考與Alpha</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 6</span>
+  </div>
+</nav>
+
+<!-- PAGE 1 -->
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>第一原理思考：在多數人看懂之前，自己先算過一遍</h2>
+      </div>
+      <p>大部分真正成功的事業，都是在「這件事還不被看好」的時候就開始做的。等到所有人都認同、都覺得這是好主意的時候，通常已經來不及了——你必須發展出一套自己驗證過、別人還不相信的判斷。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像挑一支還沒紅的興趣或才藝去投入，你沒辦法等到大家都說「這個以後很吃香」才開始，因為那時候位子早就被別人卡走了。你得自己觀察、自己算過一遍，才敢在別人還不看好時繼續往前走。</p>
+      </div>
+
+      <p>以下是他從高中到創業第一年的實際歷程，正好示範了這種思考方式是怎麼運作的。</p>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">1</div>
+          <div>
+            <span class="meta">起步</span>
+            <h4>從一個不起眼的小鎮出發</h4>
+            <p>他在美國新墨西哥州一個不算大的地方長大，靠著參加數學和程式競賽累積實力。一位學長先一步進入矽谷公司實習，成了他最早的參考範例——原來這條路是走得通的。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">2</div>
+          <div>
+            <span class="meta">提前試錯</span>
+            <h4>18 歲就一邊工作、一邊念書</h4>
+            <p>高中畢業後他先休學一年到矽谷公司上班，隔年才進大學；大學期間又提前動手訓練自己的第一批 AI 模型。他形容那兩年像是不斷從水管口喝水——資訊量大到來不及消化，但也因此累積了「公司到底怎麼運作」的第一手經驗。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">3</div>
+          <div>
+            <span class="meta">第一次嘗試就摔跤</span>
+            <h4>第一個點子，一兩個月就被判出局</h4>
+            <p>大學讀了一年後，他申請進入新創加速器，最初做的是一個協助病人取得醫療照護的 AI 工具。方向本身沒有錯——這類應用現在確實愈來愈普遍——但時機不對。做了一兩個月後，帶他們的業師直接說：這個可能做不出結果。這句話反而是當時最需要聽到的提醒。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">4</div>
+          <div>
+            <span class="meta">回到第一原理</span>
+            <h4>訓練一個模型，到底缺什麼？</h4>
+            <p>被業師點醒後，他們重新從頭想：訓練一個 AI 模型需要三樣東西——運算資源、程式碼、還有訓練用的資料。前兩樣，網路上按個鈕就能取得；唯獨資料，當時完全沒有一個方便的取得管道。這個落差，就成了後來創業的起點。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">5</div>
+          <div>
+            <span class="meta">苦熬多年不被看好</span>
+            <h4>好幾年裡，投資人都覺得這門生意「不夠性感」</h4>
+            <p>即使營收數字亮眼，往後好幾年，每次募資都會被投資人質疑：這樣的生意有沒有前景？因為沒有一個投資人自己訓練過模型，很難真正理解資料的重要性。直到多年後，這些當初持保留態度的投資人，反而開始撰寫文章，強調資料是 AI 產業裡最關鍵的機會之一。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <span></span>
+      <span class="mid mono">01 · 起點與第一原理</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>從「以小博大」變成「巨人對巨人」</h2>
+      </div>
+      <p>過去要創業對抗大公司，資源天生就矮人一截，只能靠速度快、靠鑽大公司不屑做的縫隙取勝——像是一個人赤手空拳挑戰巨人。但當 AI 代理人能大量分擔原本需要一整個團隊才能完成的工作，情況整個翻轉了。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>如果一個十幾人的團隊，靠著指揮一群 AI 代理人，就能做到過去要上百人才做得到的事，那麼這個團隊本身也變成了一個「巨人」，只是換了一種放大自己的方式。競爭因此從「小蝦米對抗大鯨魚」，變成「兩隻鯨魚互相較量」——一邊是被 AI 放大的新創公司，一邊是傳統資源雄厚的大公司。</p>
+      </div>
+
+      <p>這也代表創業這件事的核心問題變了：以前要煩惱「人手不夠怎麼辦」，現在要煩惱的是「該怎麼設計，才能讓 AI 代理人把自己的團隊放大成一個真正的巨人」。誰能想清楚這一點、大膽去做，誰就能在這個階段占到便宜。</p>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 巨人對巨人</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>人人都有一個「超級智慧」，而不是一個統治世界的 AI</h2>
+      </div>
+      <p>他現在任職的實驗室，對未來的想像不是打造一個統一控制一切的超級大腦，而是讓每一個人都擁有一個完全了解自己處境和目標、能幫忙擴展能力邊界的專屬助理。重點不是取代人做決定，而是讓人能做到過去做不到的事。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像每個人都配了一位完全了解你目標和處境的私人助理——它不會替你決定人生要往哪裡走，但會幫你把「原本做不到的事」變成「做得到的事」。這位助理服務的對象是你，而不是某個中央控制系統。</p>
+      </div>
+
+      <p>這個想法也延伸到創業機會：目前在該公司平台上做生意的商家大約有兩億家，願景是隨著 AI 工具普及，這個數字能再成長到數十億——每個人都能靠 AI 的幫助，開創一門原本沒有資源、沒有團隊也做不到的小生意，形成一個由許多小型、分散的個人與商家組成的生態系，而不是由少數幾個巨型系統壟斷一切。</p>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 個人超級智慧與生態系</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>打造一個前沿實驗室，像養一座會自己長大的城市</h2>
+      </div>
+      <p>他接手實驗室時，前一代模型的發展方向並不理想，於是團隊選擇從零開始重新打造整套研發體系，而不是修修補補。九個月內推出了新一代模型，兩個月後又接著推出影像模型與升級版本。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>組建這種團隊最重要的一件事，是「人才密度」：把足夠多優秀的人放在一起，就像球隊挖到一位明星球員，會吸引更多明星球員想加入同一支隊伍——人才會自己吸引人才，形成一個越滾越大的正向循環。</p>
+      </div>
+
+      <p>他也強調，前沿 AI 的研發工作本質上是科學研究：不斷實驗、探索模型的極限，這和過去經營一般網路產品的做法很不一樣，需要一套能夠隨著能力、運算量、使用量同時暴增而持續演化的組織方式——與其說是蓋一棟固定大小的房子，不如說是在養一座會跟著人口一起長大的城市，管理方式必須跟著規模不斷調整，而不是一開始蓋好就不變。</p>
+
+      <div class="diagram-box" aria-hidden="true">
+        <svg viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg">
+          <rect x="30" y="128" width="70" height="24" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+          <text x="65" y="160" text-anchor="middle" font-family="Noto Sans TC" font-size="11" fill="var(--ink-faint)">自駕車</text>
+          <rect x="180" y="98" width="70" height="54" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.2"/>
+          <text x="215" y="160" text-anchor="middle" font-family="Noto Sans TC" font-size="11" fill="var(--ink-faint)">聊天機器人</text>
+          <rect x="330" y="58" width="70" height="94" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.4"/>
+          <text x="365" y="160" text-anchor="middle" font-family="Noto Sans TC" font-size="11" fill="var(--accent)">寫程式代理人</text>
+          <rect x="480" y="20" width="70" height="132" fill="none" stroke="var(--ink-faint)" stroke-width="1.4" stroke-dasharray="5 4"/>
+          <text x="515" y="160" text-anchor="middle" font-family="Noto Sans TC" font-size="11" fill="var(--ink-faint)">下一波？</text>
+          <text x="320" y="18" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="var(--ink-faint)">每一波，大約比上一波大 10 倍（示意，非精確比例）</text>
+        </svg>
+        <div class="cap">自駕車 → 聊天機器人 → 寫程式代理人：一波比一波大的技術浪潮</div>
+      </div>
+
+      <p>他也提到一項具體的定價理念：新一代模型的價格大約只有同級競品的八分之一。理由很直接——如果強大的 AI 只留給付得起高價的少數人使用，這項技術就無法真正發揮它該有的影響力；同時，團隊也持續投入開源模型，希望能力不被少數幾家公司壟斷，而是讓更多開發者都能站上同一個起跑點。</p>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 打造前沿實驗室</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="pagewrap" id="page-5" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>十年後回頭看，稀缺的資源變了</h2>
+      </div>
+      <p>過去要完成一件大事，最稀缺的資源往往是「剛好有一群夠聰明、夠有能力的人聚在一起」——一個國家的建立是這樣，幾乎每一家新創公司也是這樣起步的。但當人人都能透過 AI 取得等同一整支團隊的能力時，這個稀缺資源正在消失。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>當「聰明的腦袋」和「動手做事的能力」變得像水電一樣隨處可得，真正稀缺、真正值錢的東西，就變成了「你到底想把世界變成什麼樣子」的想像力和決心——也就是眼光和野心，而不是執行力本身。</p>
+      </div>
+
+      <p>他也提醒，這波變化同時帶來責任與機會：一邊是整個社會的規則、企業和政府的運作方式，都還沒真正跟上這項技術，包括資訊安全、生物安全等風險都需要被認真面對；另一邊，則是前所未有的機會——過去解不開的健康、科學難題，過去做不出來的新事業和新創意，如今都有機會被實現。這正是他所說「文明等級的機會」的另一面：風險與機會同時放大。</p>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">05 · 稀缺資源變了</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="pagewrap" id="page-6" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>系統思考不會退流行，只是換了指揮的對象</h2>
+      </div>
+      <p>面對「以後還需要學程式、學技術嗎」這類疑問，他的看法是：有邏輯、有條理地把複雜問題拆解、組織起來的能力，從來不會過時——會變的只是這個能力要用在什麼樣的工具上。</p>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>就像工匠原本要親手刨木頭做家具，後來變成管理整條生產線的人；現在的變化是，工程師原本自己寫程式碼，漸漸變成要指揮一群 AI 代理人去寫程式碼，未來或許要學會指揮「一大群 AI 組成的隊伍」一起完成任務。每換一層，真正重要的底層能力，都是把複雜的事情拆解、組織清楚的系統思考，只是指揮的對象從自己的雙手，變成了一群數位員工。</p>
+      </div>
+
+      <p>因此他不建議完全放棄扎實的邏輯與技術訓練，但同樣重要的是培養對「世界該往哪裡發展」的清楚判斷——技術能力和價值判斷，兩者要一起練。</p>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>真正的 Alpha，藏在不斷轉動的回饋迴圈裡</h2>
+      </div>
+      <p>他提到一個具體、還很有空間發揮的機會：多數公司的運作，其實就是一連串靠人力推動的回饋迴圈。</p>
+
+      <div class="diagram-box" aria-hidden="true">
+        <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="55" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="75" y="80" text-anchor="middle" font-family="Noto Sans TC" font-size="12.5" fill="var(--ink-soft)">顧客滿意</text>
+          <line x1="140" y1="75" x2="180" y2="75" stroke="var(--ink-faint)" stroke-width="1.5"/>
+          <polygon points="186,75 177,70 177,80" fill="var(--ink-faint)"/>
+          <rect x="188" y="55" width="130" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="253" y="80" text-anchor="middle" font-family="Noto Sans TC" font-size="12.5" fill="var(--ink-soft)">花更多錢</text>
+          <line x1="318" y1="75" x2="358" y2="75" stroke="var(--ink-faint)" stroke-width="1.5"/>
+          <polygon points="364,75 355,70 355,80" fill="var(--ink-faint)"/>
+          <rect x="366" y="55" width="130" height="40" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="431" y="80" text-anchor="middle" font-family="Noto Sans TC" font-size="12.5" fill="var(--accent)">請更多人</text>
+          <line x1="496" y1="75" x2="536" y2="75" stroke="var(--ink-faint)" stroke-width="1.5"/>
+          <polygon points="542,75 533,70 533,80" fill="var(--ink-faint)"/>
+          <rect x="544" y="55" width="90" height="40" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="589" y="80" text-anchor="middle" font-family="Noto Sans TC" font-size="12" fill="var(--ink-soft)">服務更多顧客</text>
+          <path d="M589 95 C589 128, 75 128, 75 95" fill="none" stroke="var(--ink-faint)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <polygon points="75,95 70,104 80,104" fill="var(--ink-faint)"/>
+        </svg>
+        <div class="cap">公司很像一台不斷轉動的水車：每一格過去都要靠人力去推</div>
+      </div>
+
+      <div class="analogy">
+        <span class="tag">生活情境</span>
+        <p>一家公司很像一台不斷轉動的水車：顧客滿意，就會花更多錢；公司賺更多錢，就能請更多人；請更多人，就能服務更多顧客——顧客又更滿意。過去這台水車的每一格，都要靠人一步步去推。如果能找到對的指標，讓 AI 代理人接手其中幾格、自動優化，水車轉動的速度就能快上非常多倍——他提到內部確實看過，一組設計良好的 AI 代理人，能做到比上百人的團隊還多的產出。</p>
+      </div>
+
+      <p>而他也提醒，拆開來看，這些聽起來很厲害的「自動化」，機制往往很平凡：一份寫清楚的操作說明、一個定時提醒、一個明確的目標——組合起來並不神秘，重點始終在於有沒有把問題本身拆解清楚，而不是去追逐社群媒體上包裝得很玄的說法。</p>
+    </section>
+
+    <div class="case-grid">
+      <div class="case-card">
+        <span class="k mono">01 第一原理</span>
+        <h4>在多數人看懂之前，自己先算過一遍</h4>
+        <p>從「模型缺資料」這個親身觀察出發，即使多年不被投資人看好，也沒有隨波逐流改變判斷。</p>
+      </div>
+      <div class="case-card">
+        <span class="k mono">02 巨人對巨人</span>
+        <h4>AI 讓小團隊也能放大成巨人</h4>
+        <p>創業的競爭邏輯，從資源上的以小博大，變成執行力被同等放大後的正面較量。</p>
+      </div>
+      <div class="case-card">
+        <span class="k mono">03 資源用得剛好</span>
+        <h4>不讓好工具只留給付得起錢的人</h4>
+        <p>新模型刻意訂在更低的價格，理念是讓更多人用得起，而不是把能力鎖在少數人手裡。</p>
+      </div>
+      <div class="case-card">
+        <span class="k mono">04 系統思考</span>
+        <h4>指揮的對象變了，拆解問題的能力沒變</h4>
+        <p>從自己寫程式，到指揮 AI 代理人，再到指揮一大群代理人，底層仍是同一種系統思考。</p>
+      </div>
+    </div>
+
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow mono">給18歲自己的一句話</span>
+        <h3>建立自己的判斷羅盤，押注在夠陡、又夠長的曲線上</h3>
+        <p>他認為最重要的，是發展出一套自己相信、且與多數人不同的判斷，因為外界的雜訊隨時都會讓人動搖。另一個建議，是找到一條坡度夠陡、又能持續夠久的成長曲線押注下去——就算它一開始的樣子並不起眼。他們最早做的技術，只是「在影片裡認出貓」這麼平凡的東西，但重點從來不是起點看起來夠不夠酷，而是這條曲線會走多陡、走多久。</p>
+      </div>
+    </section>
+
+    <div class="source-note">內容整理、摘要並改寫自 Alexandr Wang 於 Y Combinator 活動上的訪談對話，非逐字紀錄。</div>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">06–07 · 系統思考與真正的 Alpha</span>
+      <button class="navbtn" type="button" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+
+<footer>看得懂也做得到的科技與創業觀念 · 科普圖文</footer>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('gvg_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('gvg_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
