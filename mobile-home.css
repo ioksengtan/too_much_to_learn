@@ -1,0 +1,28 @@
+@media (max-width: 600px) {
+  html { font-size: 18px; }
+  body { font-size: 1rem; -webkit-text-size-adjust: 100%; }
+  .wrap { width: 100%; padding-left: max(20px, env(safe-area-inset-left)); padding-right: max(20px, env(safe-area-inset-right)); }
+  .hero { padding-block: 32px 28px !important; }
+  .hero .eyebrow { margin-bottom: 10px !important; font-size: 14px !important; }
+  h1.title { font-size: 36px !important; line-height: 1.22 !important; }
+  .lede { margin-top: 14px !important; color: var(--ink) !important; font-size: 19px !important; font-weight: 500; line-height: 1.75 !important; }
+  .meta-row { margin-top: 18px !important; gap: 10px 16px !important; }
+  .meta-row .item { min-height: 32px; font-size: 16px !important; }
+  .index { padding-block: 28px 48px !important; }
+  .index-head { margin-bottom: 16px !important; }
+  .index-head h2 { font-size: 16px !important; }
+  .index-count { font-size: 15px !important; }
+  .entries { gap: 18px !important; }
+  .entry { min-height: 44px; padding: 20px !important; border-radius: 16px !important; }
+  .entry-top { gap: 14px !important; }
+  .entry-num { width: 44px !important; height: 44px !important; font-size: 16px !important; }
+  .entry-title { margin-bottom: 8px !important; font-size: 24px !important; line-height: 1.35 !important; }
+  .entry-desc { color: var(--ink) !important; font-size: 19px !important; font-weight: 500; line-height: 1.75 !important; }
+  .entry-foot { align-items: flex-start !important; margin-top: 16px !important; padding-top: 14px !important; gap: 10px !important; }
+  .tag { padding: 5px 11px !important; font-size: 14px !important; line-height: 1.4; }
+  .entry-scope { width: 100%; color: var(--ink-soft) !important; font-size: 16px !important; line-height: 1.6; }
+  .entry-go { width: 100%; min-height: 44px; margin-left: 0 !important; justify-content: flex-end; font-size: 17px !important; }
+  .entry-go svg { width: 18px !important; height: 18px !important; }
+  .upcoming { align-items: flex-start !important; margin-top: 18px !important; padding: 18px !important; font-size: 17px !important; line-height: 1.65 !important; }
+  footer { padding: 26px 20px max(36px, env(safe-area-inset-bottom)) !important; font-size: 15px !important; line-height: 1.6; }
+}
