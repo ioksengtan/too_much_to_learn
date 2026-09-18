@@ -13,6 +13,7 @@
   var startY = 0;
   var atBottom = false;
   var ignoreGesture = false;
+  var startAtFirst = new URLSearchParams(window.location.search).get('start') === '1';
 
   history.scrollRestoration = 'manual';
 
@@ -124,6 +125,14 @@
   }
   updateProgress();
   centerActiveTab();
+
+  if (startAtFirst) {
+    var firstTab = document.querySelector('.tab');
+    if (firstTab && !firstTab.classList.contains('active')) firstTab.click();
+    var cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete('start');
+    history.replaceState(null, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+  }
 
   function visibleNextButton() {
     return document.querySelector('.pagewrap:not([hidden]) [data-dir="1"], .page:not([hidden]) [data-dir="1"]');
