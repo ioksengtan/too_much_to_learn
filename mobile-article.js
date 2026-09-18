@@ -20,7 +20,7 @@
       hint.className = 'gesturehint';
       nav.appendChild(hint);
     }
-    hint.textContent = '頁尾繼續往下換頁 · 往左滑回文章列表';
+    hint.textContent = '頁尾繼續往下換頁 · 往右滑回文章列表';
   }
 
   function articleTop() {
@@ -71,7 +71,7 @@
     var dy = touch.clientY - startY;
 
     if (Math.abs(dx) > 90 && Math.abs(dx) > Math.abs(dy) * 1.4) {
-      if (dx < 0 && back && back.href) window.location.href = back.href;
+      if (dx > 0 && back && back.href) window.location.href = back.href;
       return;
     }
 
