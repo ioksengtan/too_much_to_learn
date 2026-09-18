@@ -37,6 +37,14 @@
     mobileProgressTrack.setAttribute('aria-valuenow', parts[1]);
   }
 
+  function centerActiveTab() {
+    var tabs = document.querySelector('.tabs');
+    var active = tabs && tabs.querySelector('.tab.active');
+    if (!tabs || !active || !tabs.clientWidth) return;
+    var left = active.offsetLeft - (tabs.clientWidth - active.offsetWidth) / 2;
+    tabs.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
+  }
+
   if (nav) {
     var hint = nav.querySelector('.swipehint');
     if (!hint) {
@@ -62,6 +70,7 @@
   if (count && hero) {
     new MutationObserver(function () {
       updateProgress();
+      centerActiveTab();
       settleArticleTop();
     }).observe(count, {
       childList: true,
@@ -70,6 +79,7 @@
     });
   }
   updateProgress();
+  centerActiveTab();
 
   function visibleNextButton() {
     return document.querySelector('.pagewrap:not([hidden]) [data-dir="1"], .page:not([hidden]) [data-dir="1"]');
