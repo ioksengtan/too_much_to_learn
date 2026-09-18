@@ -1,3 +1,4 @@
 id,source_id,topics,title,tldr,summary,image_type,image_desc,generated_at
 ai-full-stack-moat,allin-86t6YNf_B7Q,"AI|semiconductors|vertical integration|technology strategy",AI 護城河不是一座牆,"AI 的真正護城河不是單一模型，而是晶片、運算、資料、模型、產品與使用回饋形成的閉環。","以 Meta、NVIDIA、Tesla、Google 與 Apple 為例，拆解垂直整合如何縮短學習回路，以及全端策略的成本與風險。",diagram,"晶片、運算、模型、產品與使用回饋相連的五層堆疊",2026-09-18
 stablecoin-dollar-promise,allin-86t6YNf_B7Q,"stablecoin|payments|regulation|GENIUS Act",穩定幣不是數位美鈔,"穩定幣是一項美元兌換承諾；真正支撐穩定的是準備金、流動性、贖回制度與監管。","從發行、準備金、收益、擠兌到 GENIUS Act 的最新落地時程，說明支付型穩定幣如何連接區塊鏈與傳統金融。",diagram,"一美元進入發行人、鑄造成代幣並可按面額贖回的流程",2026-09-18
+dont-rent-your-ai-brain,allin-hdcsTeCFE0I,"enterprise AI|multi-model|AI sovereignty|interoperability",別把公司的記憶租給一顆模型,"企業可以使用所有模型，但記憶、評測、工具與替換權必須留在自己手上。","從 Satya Nadella 的多模型主張出發，拆解企業如何用外部記憶、編排層、拔除測試與代理人監控避免供應商鎖定。",diagram,"企業資料經過外部記憶與編排層連接多種可替換模型",2026-09-19
