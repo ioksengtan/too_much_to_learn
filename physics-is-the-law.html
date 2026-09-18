@@ -1,0 +1,114 @@
+<title>物理定律不接受簡報</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{--bg:#EEF0F3;--surface:#fff;--surface-2:#F7F8FA;--ink:#171C26;--ink-soft:#525C6A;--ink-faint:#8A93A0;--accent:#3652CC;--accent-soft:#DDE3FA;--accent-line:#B9C4F0;--warm:#DB7A34;--warm-soft:#F7E2CD;--line:#DCE1E7;--shadow:0 1px 2px rgba(23,28,38,.04),0 10px 24px rgba(23,28,38,.06)}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141C;--surface:#171D28;--surface-2:#1D2431;--ink:#E7EBF2;--ink-soft:#A2ADBC;--ink-faint:#6B7684;--accent:#8298FF;--accent-soft:#232B49;--accent-line:#3B4576;--warm:#F0975C;--warm-soft:#3A2A1C;--line:#28303D;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 24px rgba(0,0,0,.35)}}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;-webkit-font-smoothing:antialiased}h1,h2,h3{font-family:"Noto Serif TC",serif;font-weight:900;text-wrap:balance;margin:0}a{color:var(--accent)}[hidden]{display:none!important}.mono,.eyebrow{font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}.wrap{max-width:700px;margin:auto;padding-inline:20px}
+  .progressbar{position:fixed;inset:0 0 auto;height:3px;background:var(--line);z-index:60}.progressbar-fill{height:100%;width:16.66%;background:var(--accent);transition:width .35s}.pagenav{position:sticky;top:3px;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}.pagenav-inner{display:flex;align-items:center;gap:14px;padding-block:10px}.tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:none;font:500 .8rem "Noto Sans TC";color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer}.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}.pagecount{font-size:.76rem;color:var(--ink-faint);flex:none}
+  .hero{border-bottom:1px solid var(--line);padding-block:52px 40px;background:var(--surface)}.back-link{display:inline-block;color:var(--ink-faint);text-decoration:none;font-size:.76rem;margin-bottom:18px}.hero .eyebrow{display:block;margin-bottom:14px}.title{font-size:clamp(2rem,5vw,2.7rem);line-height:1.3}.lede{margin:16px 0 0;font-size:1.03rem;line-height:1.85;color:var(--ink-soft)}.callout{margin-top:22px;display:flex;gap:12px;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:12px;padding:14px 16px}.callout .mark{flex:none;color:var(--accent);font-weight:900}.callout p{margin:0;line-height:1.75;font-size:.94rem}
+  .hero-diagram,.diagram-box{margin-top:26px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:18px}.orbit{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:center;text-align:center}.orbit span{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:12px 6px;font-size:.82rem}.orbit b{color:var(--accent)}@media(max-width:560px){.orbit{grid-template-columns:1fr 1fr}}
+  .pagewrap{padding-block:8px 0}section.concept{padding-block:44px;border-bottom:1px solid var(--line)}.concept-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}.concept-num{font:600 .95rem "IBM Plex Mono";color:var(--ink-faint)}.concept-head h2{font-size:1.5rem;line-height:1.35}.concept p{font-size:.98rem;line-height:1.9;color:var(--ink-soft);margin:0 0 14px}.concept p b{color:var(--ink)}.analogy{margin:18px 0;border-left:3px solid var(--warm);background:var(--surface);border-radius:0 10px 10px 0;padding:13px 16px;box-shadow:var(--shadow)}.analogy .tag{display:block;color:var(--warm);font:.72rem "IBM Plex Mono";letter-spacing:.06em;margin-bottom:6px}.analogy p{margin:0;color:var(--ink);font-size:.95rem;line-height:1.8}.timeline{position:relative;margin:14px 0}.timeline:before{content:"";position:absolute;left:15px;top:8px;bottom:8px;border-left:2px solid var(--line)}.titem{position:relative;display:grid;grid-template-columns:32px 1fr;gap:16px;padding-block:14px}.tdot{z-index:1;width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.72rem}.titem h4{margin:0 0 5px}.titem p{margin:0;font-size:.93rem;line-height:1.8;color:var(--ink-soft)}
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}@media(max-width:600px){.case-grid{grid-template-columns:1fr}}.case-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 17px;box-shadow:var(--shadow)}.case-card .k{display:inline-block;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 9px;font-size:.7rem;margin-bottom:8px}.case-card h4{margin:0 0 6px}.case-card p{margin:0;font-size:.9rem;line-height:1.75;color:var(--ink-soft)}
+  .pagectrl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:36px;padding:20px 0 38px;border-top:1px solid var(--line)}.navbtn{font:700 .88rem "Noto Sans TC";color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:10px;padding:9px 16px;cursor:pointer}.navbtn:disabled{opacity:.35}.mid{font-size:.75rem;color:var(--ink-faint);text-align:center}.closing{padding-block:36px 8px}.closing-panel{background:var(--ink);color:var(--bg);border-radius:16px;padding:32px 28px}.closing-panel h3{font-size:1.3rem;margin:10px 0 12px}.closing-panel p{line-height:1.85;opacity:.88}.source-note{margin-top:14px;font-size:.78rem;color:var(--ink-faint);line-height:1.7}footer{text-align:center;padding:20px 20px 40px;color:var(--ink-faint);font-size:.78rem}@media(prefers-reduced-motion:reduce){.progressbar-fill{transition:none}}
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero"><div class="wrap">
+  <a class="back-link mono" href="index.html">← 白話科技 · 全部文章</a>
+  <span class="eyebrow">科普專題 · AI、太空與製造</span>
+  <h1 class="title">物理定律不接受簡報</h1>
+  <p class="lede">一間造火箭的公司，為什麼開始談 AI 模型互審、軌道超級電腦與自建晶圓廠？這場 Elon Musk 與 SpaceX 總裁 Gwynne Shotwell 的對談，看似從火箭跳到晶片，其實反覆回答同一個問題：當野心大到沒有現成答案時，怎麼把風險變成可以測試、可以修正、可以交付的工程問題？</p>
+  <div class="hero-diagram"><div class="orbit"><span>人才與組織</span><span>AI 安全</span><span><b>可驗證的工程</b></span><span>火箭與晶片</span></div></div>
+  <div class="callout"><span class="mark">!</span><p>文中的時程、商業數字與風險判斷，都是受訪者在對談中的陳述或預測；它們適合用來理解其策略，不等同於本站獨立查證後的既成事實。</p></div>
+</div></section>
+
+<nav class="pagenav" id="pagenav"><div class="wrap pagenav-inner"><div class="tabs">
+  <button class="tab active" data-goto="1">從第 7 位員工開始</button><button class="tab" data-goto="2">讓高手真的做事</button><button class="tab" data-goto="3">AI 互相改考卷</button><button class="tab" data-goto="4">把電腦送上太空</button><button class="tab" data-goto="5">火箭要像飛機</button><button class="tab" data-goto="6">從晶片到總結</button>
+</div><span class="pagecount mono" id="pagecount">1 / 6</span></div></nav>
+
+<div class="pagewrap" data-page="1"><div class="wrap">
+  <section class="concept"><div class="concept-head"><span class="concept-num">01</span><h2>先賣出還不存在的火箭</h2></div>
+    <p>Shotwell 加入 SpaceX 的方式很偶然：她陪朋友去見 Musk，當面指出公司缺少全職商務開發主管，隔天就收到面試邀請。她是第 7 位簽約員工，正式到職時約是第 11 位；當時公司主要還在研發，甚至沒有可交付的火箭，卻在約一年後賣出了第一枚。</p>
+    <div class="analogy"><span class="tag">生活比喻</span><p>這像餐廳還在裝修，就先請第一桌客人訂位。客人買的不是眼前的一餐，而是你是否看懂他的痛點，以及你能不能把承諾做出來。</p></div>
+    <p>她認為機會來自既有發射市場的兩個缺口：價格昂貴、客戶服務不佳；911 事件後，美國軍方也更重視快速部署能力。新公司不是憑空創造需求，而是在成熟供應商沒有解好的地方切入。</p>
+    <div class="timeline"><div class="titem"><span class="tdot">01</span><div><h4>商務開發</h4><p>先找客戶，再讓需求替技術排優先順序。</p></div></div><div class="titem"><span class="tdot">02</span><div><h4>職責自然擴張</h4><p>有了銷售，就需要客戶管理、財務與政府關係；她一路把這些責任接起來。</p></div></div><div class="titem"><span class="tdot">03</span><div><h4>2008 年成為總裁</h4><p>在前往談判 NASA 16 億美元貨運補給合約的路上，Musk 邀請她接任總裁。</p></div></div></div>
+  </section>
+  <section class="concept"><div class="concept-head"><span class="concept-num">02</span><h2>不要躲風險，要把它變成進度表</h2></div><p>早期 SpaceX 的做法不是等待所有不確定性消失，而是承接一個比公司當時規模更大的任務，再用測試逐步消掉未知。Shotwell 提到，NASA 早期貨運開發合約起初約 2.78 億美元，後因範圍增加至約 4.06 億美元；對兩三百人的公司而言，目標幾乎像用小隊打造太空梭接班人。</p><p><b>「快速失敗」真正的意思不是草率，</b>而是讓錯誤盡快在可控制的測試裡出現，不要等到正式任務才揭曉。</p></section>
+  <div class="pagectrl"><button class="navbtn" disabled>← 上一頁</button><span class="mid mono">創業與風險</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="2" hidden><div class="wrap">
+  <section class="concept"><div class="concept-head"><span class="concept-num">03</span><h2>管理者不是轉寄郵件的人</h2></div>
+    <p>對談把 SpaceX 的主管稱為「球員兼教練」：不能只管理，還要懂得親手做自己負責的事情。主管的工作不是增加一層指令，而是讓團隊的方向一致，並把行政摩擦、無意義會議與等待時間清掉。</p>
+    <div class="analogy"><span class="tag">球隊比喻</span><p>好教練不必每球都自己投，但必須看得懂場上發生什麼、知道球員為何卡住，也能在必要時下場示範。只站在場邊傳話，很快就會變成雜訊。</p></div>
+    <p>Shotwell 的人才公式很直接：嚴格面試、找曾經交付成果的人，交給他們真正困難的問題，再保護他們的專注時間。她形容一般大型組織裡，工程師一天可能只有兩小時真的在工程；主管應努力讓這個數字接近十小時。</p>
+  </section>
+  <section class="concept"><div class="concept-head"><span class="concept-num">04</span><h2>最難的題目，本身就是留才工具</h2></div>
+    <p>公司上市或估值上升後，員工可能因股票變得富有，但 SpaceX 並未出現受訪者擔心的大量離職。Shotwell 的解釋不是福利，而是有意義、看得見成果的工作。人員也會在發射、運算中心與 AI 團隊之間移動，把成熟團隊的能力補到新戰場。</p>
+    <p>這形成一個正向循環：高手想解難題，難題吸引更多高手，而高手又會延攬高手。宏大的目標不是文化海報，而是每天確實需要解決的工程限制。</p>
+    <div class="case-grid"><div class="case-card"><span class="k mono">訊號</span><h4>產品真的運作</h4><p>火箭進入軌道、衛星連得上、客戶拿到服務。</p></div><div class="case-card"><span class="k mono">雜訊</span><h4>只讓人顯得很忙</h4><p>層層核准、重複彙報、沒有決策價值的會議。</p></div></div>
+  </section>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">人才與管理</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="3" hidden><div class="wrap">
+  <section class="concept"><div class="concept-head"><span class="concept-num">05</span><h2>AI 公司不該自己改自己的考卷</h2></div>
+    <p>Musk 在後半場加入對談，把近期代理人資安事件視為警訊：模型能力越強，欺騙、逃避偵測、網路攻擊或接觸關鍵系統的風險也可能升高。他提出的近期做法，是讓主要 AI 公司在模型發布前，互相執行各自的安全測試套件。</p>
+    <div class="analogy"><span class="tag">改考卷比喻</span><p>學生自己出題、自己作答、自己評分，很容易看不見習慣性的錯誤。把同一份答案交給八位背景不同的老師，找到漏洞的機會就高得多。</p></div>
+    <p>異質模型與團隊會從不同角度找問題，也比較不容易只把公開評測題背熟。測試過程保留紀錄，可降低藉機偷取模型能力或智慧財產的疑慮；若公司收到危險警告仍選擇發布，之後事故的聲譽與法律代價也會更高。</p>
+  </section>
+  <section class="concept"><div class="concept-head"><span class="concept-num">06</span><h2>同業互審不是萬靈丹，是現在能做的一步</h2></div>
+    <p>這個構想借鏡電影與遊戲產業的同業分級：先建立各方能接受、可迅速開始的自律機制，再視需要增加監管。它的現實考量是，美國單方面的規則若無法讓中國公司參與，只會讓守規者承受成本；API 提前存取與公開警告，則不必讓外國監管者進入公司內部。</p>
+    <p>但它仍依賴透明度、公共壓力與產品責任，無法保證所有參與者誠實，也不能取代更完整的技術研究和治理。對談給出的重點比較像工程排序：先部署今天做得到的護欄，不必等一套完美的全球制度從天而降。</p>
+    <div class="case-grid"><div class="case-card"><span class="k mono">優點</span><h4>多雙眼睛找盲點</h4><p>不同模型、不同安全團隊可降低單一評測過度擬合。</p></div><div class="case-card"><span class="k mono">限制</span><h4>仍需要信任與問責</h4><p>測試範圍、揭露門檻與事故責任仍要明確定義。</p></div></div>
+  </section>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">AI 安全互審</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="4" hidden><div class="wrap">
+  <section class="concept"><div class="concept-head"><span class="concept-num">07</span><h2>地面很擠，所以把超級電腦搬上軌道？</h2></div>
+    <p>Shotwell 認為地面資料中心不只要買 GPU，還面臨土地漲價、許可、建築、電網設備與發電機交期。SpaceX 的構想是把 AI 運算衛星送入軌道：公司已有發射能力，軌道空間不需購地，太陽能供電時間更長，熱量則可透過散熱器向太空輻射。</p>
+    <div class="analogy"><span class="tag">垂直整合比喻</span><p>一般餐廳要向房東租店面、向電力公司申請容量、找物流送貨；如果同一家公司同時擁有土地、發電與運輸，它就能重新計算「在哪裡開店」這道題。</p></div>
+    <p>但「太空很冷，所以冷卻免費」是簡化說法：真空中沒有空氣帶走熱量，只能靠大型散熱器以輻射排熱；維修、太空輻射、通訊延遲與發射成本也仍是硬問題。這項構想之所以值得注意，不是因為它已經解答一切，而是 SpaceX 的發射優勢改變了成本邊界。</p>
+  </section>
+  <section class="concept"><div class="concept-head"><span class="concept-num">08</span><h2>Starlink 從網路服務變成現金與基礎設施</h2></div>
+    <p>對談中，Shotwell 說 Starlink 在不同國家的滲透率約為 1.5% 至 2%，仍有成長空間；直接連手機服務則希望透過取得的頻譜減少對各國電信商切分頻段的依賴，補上偏遠地區的死角。她也提到 V3 寬頻衛星、下一代行動衛星與 AI 運算衛星等計畫。</p>
+    <p>這些業務之間不是各自孤立：衛星網路提供收入與通訊，火箭壓低部署成本，AI 帶來運算需求，太陽能與晶片製造補上供應鏈。對談真正描繪的是一套互相餵養的基礎設施組合。</p>
+  </section>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">軌道運算與 Starlink</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="5" hidden><div class="wrap">
+  <section class="concept"><div class="concept-head"><span class="concept-num">09</span><h2>Falcon 9 是小客車，Starship 要成為客機</h2></div>
+    <p>Shotwell 用「小客車去火星」形容 Falcon 9 加 Dragon：它可靠、許多任務仍依賴它，但六個月的火星旅程需要更大的載荷與空間。公司希望用 Starship 淘汰自己的舊產品，因為如果自己不做，競爭者終究會做。</p>
+    <p>Falcon 9 已能回收第一節，但第二節每次仍會損失，成本被比作丟掉一架中型飛機；海上回收與整備也要時間。Starship 的目標則是助推器和飛船都回到發射塔附近，像飛機一樣快速再次使用。</p>
+    <div class="analogy"><span class="tag">航空比喻</span><p>今天的火箭若每次飛完都丟掉一大段，就像航空公司每趟航班都報廢一具引擎。真正改變票價的不是飛得更快，而是昂貴設備能不能迅速再飛。</p></div>
+  </section>
+  <section class="concept"><div class="concept-head"><span class="concept-num">10</span><h2>可重複使用之前，先證明不會把碎片灑在人頭上</h2></div>
+    <p>依對談當時的規畫，第 14 次飛行將是嘗試用塔臂捕捉飛船前的最後一次驗證；若成功，第 15 次才會正式嘗試。Musk 給首次捕捉約 50% 至 60% 的主觀成功率，並預測 2027 年很可能達到完整且快速的重複飛行。</p>
+    <p>上一趟飛行已在澳洲西北方約一千英里的海上模擬落點；團隊寧可多做一次海上確認，因為返回飛船若在陸地解體，後果不是多修一個零件，而是威脅居民與整個計畫的社會信任。這正好說明「快速失敗」仍要選對失敗地點。</p>
+  </section>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">Starship 與再使用</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="6" hidden><div class="wrap">
+  <section class="concept"><div class="concept-head"><span class="concept-num">11</span><h2>Terafab：不是只蓋晶圓廠，而是補齊整條鏈</h2></div>
+    <p>Musk 將 Terafab 的理由分成兩層：第一是地緣政治風險，希望降低先進晶片供應集中於台灣所帶來的不確定性；第二是純粹的產能限制。AI 伺服器、人形機器人與汽車若持續擴張，現有晶圓廠即使沒有政治事件，也可能無法供應足夠的邏輯、記憶體與先進封裝。</p>
+    <p>Tesla 與 SpaceX 計畫先在奧斯汀 Giga Texas 園區建立研發線，設備已下單。受訪者用「爬、走、跑」形容路徑：先學會操作設備並做出東西，再做出有用晶片，最後才談大量生產；封裝則被視為已經動手、且供應尤其緊張的入口。</p>
+    <div class="timeline"><div class="titem"><span class="tdot">爬</span><div><h4>研發線做得出東西</h4><p>先取得實際製程經驗，不假設跨產業能力會自動轉移。</p></div></div><div class="titem"><span class="tdot">走</span><div><h4>做出有用晶片</h4><p>從實驗成功跨到可用規格、品質與良率。</p></div></div><div class="titem"><span class="tdot">跑</span><div><h4>大規模生產</h4><p>把邏輯、記憶體與封裝都接成可靠供應鏈。</p></div></div></div>
+  </section>
+  <section class="concept"><div class="concept-head"><span class="concept-num">12</span><h2>物理是裁判，其他規則都有商量空間</h2></div>
+    <p>對談中最能串起所有主題的一句話，是「物理是法律，其他只是建議」。火箭會不會爆炸、衛星能不能連線、晶片能不能量產，都不會因簡報漂亮而改變。這也解釋 Shotwell 為何強調壞消息要立刻浮上檯面：工程真相遲早會出現，越晚承認，修正成本越高。</p>
+    <p>她與 Musk 長期合作的另一面，是 IQ 之外還需要 EQ 與坦白。當創辦人權力與聲量愈來愈大，組織更需要有人敢說實話；不是為了唱反調，而是讓決策在撞上現實以前先接受檢驗。</p>
+  </section>
+  <section class="closing"><div class="closing-panel"><span class="eyebrow">這場對談留下的共同方法</span><h3>大膽不是忽略限制，而是更早把限制搬上桌</h3><p>先賣一枚不存在的火箭、讓競爭者檢查模型、把運算送上軌道、自建晶片產線——每個構想都很大，也都可能失敗。可複製的部分不是 Musk 或 SpaceX 的規模，而是把願景拆成一連串能被現實否證的小步驟：找出真正瓶頸、讓高手直接處理、公開壞消息、在安全範圍內測試，再根據結果重做。</p><p>野心提供方向；物理、數據與同儕檢驗，負責阻止團隊自我欺騙。</p></div></section>
+  <div class="source-note">內容整理、摘要並改寫自 YouTube 影片〈Elon Musk &amp; Gwynne Shotwell on AI Risks and Peer Review, Starship, Terafab, SpaceX/Tesla Merger〉，非逐字紀錄。文中未實現的時程、計畫與風險判斷均為受訪者在影片中的說法。</div>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">Terafab 與總結</span><button class="navbtn" disabled>已是最後一頁</button></div>
+</div></div>
+
+<footer>看得懂也做得到的 AI、工程與創業觀念 · 科普圖文</footer>
+<script>
+(function(){var pages=[].slice.call(document.querySelectorAll('.pagewrap')),tabs=[].slice.call(document.querySelectorAll('.tab')),total=pages.length,current=1,fill=document.getElementById('progressFill'),count=document.getElementById('pagecount'),nav=document.getElementById('pagenav'),reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function saved(){try{var v=parseInt(localStorage.getItem('physics_law_page')||'1',10);return v>=1&&v<=total?v:1}catch(e){return 1}}function render(){pages.forEach(function(p,i){p.hidden=i+1!==current});tabs.forEach(function(t){t.classList.toggle('active',+t.dataset.goto===current)});fill.style.width=current/total*100+'%';count.textContent=current+' / '+total;document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){b.disabled=current===1});document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){b.disabled=current===total})}function go(n,scroll){n=Math.min(Math.max(n,1),total);if(n===current)return;current=n;render();try{localStorage.setItem('physics_law_page',String(n))}catch(e){}if(scroll!==false)nav.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}tabs.forEach(function(t){t.onclick=function(){go(+t.dataset.goto)}});document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){b.onclick=function(){go(current+(+b.dataset.dir))}});document.addEventListener('keydown',function(e){if(e.target&&/input|textarea/i.test(e.target.tagName))return;if(e.key==='ArrowRight')go(current+1);if(e.key==='ArrowLeft')go(current-1)});current=saved();render()})();
+</script>
