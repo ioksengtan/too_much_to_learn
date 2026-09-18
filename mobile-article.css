@@ -13,11 +13,11 @@
   .flow { grid-template-columns: 1fr !important; gap: 9px !important; margin-top: 20px !important; }
   .flow i { transform: rotate(90deg); }
   .nav, .pagenav { top: 3px; box-shadow: 0 5px 16px rgba(0,0,0,.08); }
-  .navin, .pagenav-inner { gap: 8px !important; padding-block: 8px !important; }
-  .tabs { scroll-snap-type: x proximity; scrollbar-width: none; }
-  .tabs::-webkit-scrollbar { display: none; }
-  .tab { min-height: 44px; padding: 9px 15px !important; font-size: .9rem !important; scroll-snap-align: start; }
+  .navin, .pagenav-inner { display: grid !important; grid-template-columns: minmax(0,1fr) auto; gap: 12px !important; padding-block: 12px 8px !important; }
+  .tabs { display: none !important; }
   .count, .pagecount { font-size: .85rem !important; }
+  .mobile-page-progress { align-self: center; height: 9px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .mobile-page-progress-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .25s ease; }
   .swipehint, .gesturehint { display: block; padding: 0 20px 8px; color: var(--ink-faint, var(--faint)); font-size: .82rem !important; text-align: center; }
   .pagewrap { padding-top: 0 !important; }
   .concept, section.concept { padding-block: 32px !important; }

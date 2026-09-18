@@ -6,12 +6,36 @@
   var nav = document.querySelector('.nav, .pagenav');
   var count = document.querySelector('.count, .pagecount');
   var back = document.querySelector('.back, .back-link');
+  var navInner = nav && nav.querySelector('.navin, .pagenav-inner');
+  var mobileProgress = null;
+  var mobileProgressTrack = null;
   var startX = 0;
   var startY = 0;
   var atBottom = false;
   var ignoreGesture = false;
 
   history.scrollRestoration = 'manual';
+
+  if (navInner && count) {
+    mobileProgressTrack = document.createElement('div');
+    mobileProgressTrack.className = 'mobile-page-progress';
+    mobileProgressTrack.setAttribute('role', 'progressbar');
+    mobileProgressTrack.setAttribute('aria-label', '文章閱讀進度');
+    mobileProgressTrack.setAttribute('aria-valuemin', '1');
+    mobileProgress = document.createElement('span');
+    mobileProgress.className = 'mobile-page-progress-fill';
+    mobileProgressTrack.appendChild(mobileProgress);
+    navInner.insertBefore(mobileProgressTrack, count);
+  }
+
+  function updateProgress() {
+    if (!mobileProgress || !count) return;
+    var parts = count.textContent.match(/(\d+)\s*\/\s*(\d+)/);
+    if (!parts) return;
+    mobileProgress.style.width = (Number(parts[1]) / Number(parts[2]) * 100) + '%';
+    mobileProgressTrack.setAttribute('aria-valuemax', parts[2]);
+    mobileProgressTrack.setAttribute('aria-valuenow', parts[1]);
+  }
 
   if (nav) {
     var hint = nav.querySelector('.swipehint');
@@ -36,12 +60,16 @@
   }
 
   if (count && hero) {
-    new MutationObserver(settleArticleTop).observe(count, {
+    new MutationObserver(function () {
+      updateProgress();
+      settleArticleTop();
+    }).observe(count, {
       childList: true,
       subtree: true,
       characterData: true
     });
   }
+  updateProgress();
 
   function visibleNextButton() {
     return document.querySelector('.pagewrap:not([hidden]) [data-dir="1"], .page:not([hidden]) [data-dir="1"]');
