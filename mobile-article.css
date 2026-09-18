@@ -19,8 +19,11 @@
   .tabs::before, .tabs::after { content: ""; flex: 0 0 calc(50% - 48px); }
   .tab { flex: none; min-height: 44px; padding: 9px 15px !important; font-size: .9rem !important; }
   .count, .pagecount { font-size: .85rem !important; }
-  .mobile-page-progress { align-self: center; height: 9px; overflow: hidden; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
-  .mobile-page-progress-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: var(--accent); transition: width .25s ease; }
+  .mobile-page-progress { position: relative; align-self: center; height: 32px; border-radius: 999px; cursor: grab; touch-action: none; }
+  .mobile-page-progress::before { content: ""; position: absolute; inset: 11px 0; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+  .mobile-page-progress:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .mobile-page-progress:active { cursor: grabbing; }
+  .mobile-page-progress-fill { position: absolute; top: 11px; bottom: 11px; left: 0; display: block; width: 0; border-radius: 999px; background: var(--accent); transition: width .18s ease; pointer-events: none; }
   .swipehint, .gesturehint { display: block; padding: 0 20px 8px; color: var(--ink-faint, var(--faint)); font-size: .82rem !important; text-align: center; }
   .pagewrap { padding-top: 0 !important; }
   .concept, section.concept { padding-block: 32px !important; }

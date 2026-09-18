@@ -16,12 +16,13 @@
 
   history.scrollRestoration = 'manual';
 
-  if (navInner && count) {
+  if (navInner && count && window.matchMedia('(max-width: 600px)').matches) {
     mobileProgressTrack = document.createElement('div');
     mobileProgressTrack.className = 'mobile-page-progress';
-    mobileProgressTrack.setAttribute('role', 'progressbar');
+    mobileProgressTrack.setAttribute('role', 'slider');
     mobileProgressTrack.setAttribute('aria-label', '文章閱讀進度');
     mobileProgressTrack.setAttribute('aria-valuemin', '1');
+    mobileProgressTrack.setAttribute('tabindex', '0');
     mobileProgress = document.createElement('span');
     mobileProgress.className = 'mobile-page-progress-fill';
     mobileProgressTrack.appendChild(mobileProgress);
@@ -35,6 +36,49 @@
     mobileProgress.style.width = (Number(parts[1]) / Number(parts[2]) * 100) + '%';
     mobileProgressTrack.setAttribute('aria-valuemax', parts[2]);
     mobileProgressTrack.setAttribute('aria-valuenow', parts[1]);
+    mobileProgressTrack.setAttribute('aria-valuetext', '第 ' + parts[1] + ' 頁，共 ' + parts[2] + ' 頁');
+  }
+
+  function goToProgress(clientX) {
+    if (!mobileProgressTrack) return;
+    var tabs = [].slice.call(document.querySelectorAll('.tab'));
+    if (!tabs.length) return;
+    var rect = mobileProgressTrack.getBoundingClientRect();
+    var ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    var page = Math.round(ratio * (tabs.length - 1));
+    tabs[page].click();
+  }
+
+  if (mobileProgressTrack) {
+    var draggingProgress = false;
+    mobileProgressTrack.addEventListener('pointerdown', function (event) {
+      draggingProgress = true;
+      mobileProgressTrack.setPointerCapture(event.pointerId);
+      goToProgress(event.clientX);
+      event.preventDefault();
+    });
+    mobileProgressTrack.addEventListener('pointermove', function (event) {
+      if (!draggingProgress) return;
+      goToProgress(event.clientX);
+      event.preventDefault();
+    });
+    mobileProgressTrack.addEventListener('pointerup', function (event) {
+      draggingProgress = false;
+      if (mobileProgressTrack.hasPointerCapture(event.pointerId)) mobileProgressTrack.releasePointerCapture(event.pointerId);
+    });
+    mobileProgressTrack.addEventListener('pointercancel', function () { draggingProgress = false; });
+    mobileProgressTrack.addEventListener('keydown', function (event) {
+      var tabs = [].slice.call(document.querySelectorAll('.tab'));
+      var active = tabs.findIndex(function (tab) { return tab.classList.contains('active'); });
+      var target = active;
+      if (event.key === 'ArrowLeft') target = Math.max(0, active - 1);
+      else if (event.key === 'ArrowRight') target = Math.min(tabs.length - 1, active + 1);
+      else if (event.key === 'Home') target = 0;
+      else if (event.key === 'End') target = tabs.length - 1;
+      else return;
+      tabs[target].click();
+      event.preventDefault();
+    });
   }
 
   function centerActiveTab() {
@@ -52,7 +96,7 @@
       hint.className = 'gesturehint';
       nav.appendChild(hint);
     }
-    hint.textContent = '頁尾繼續往下換頁 · 往右滑回文章列表';
+    hint.textContent = '頁尾續滑換頁 · 拖進度條跳章 · 右滑回列表';
   }
 
   function articleTop() {
@@ -91,7 +135,7 @@
     startX = touch.clientX;
     startY = touch.clientY;
     atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 24;
-    ignoreGesture = !!event.target.closest('button, a, .tabs');
+    ignoreGesture = !!event.target.closest('button, a, .tabs, .mobile-page-progress');
   }, { passive: true });
 
   document.addEventListener('touchmove', function (event) {
