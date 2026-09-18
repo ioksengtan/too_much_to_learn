@@ -1,0 +1,384 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jev：讓 AI 在流程裡做判斷</title>
+<link rel="stylesheet" href="mobile-article.css?v=progress-4">
+<script defer src="mobile-article.js?v=progress-4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  /* ---------- PROGRESS + NAV ---------- */
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:16.66%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- HERO ---------- */
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  /* ---------- SECTIONS ---------- */
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; margin:8px 0 40px; display:flex; flex-direction:column; }
+  .timeline::before{ content:""; position:absolute; left:15px; top:6px; bottom:6px; border-left:2px solid var(--line); }
+  .titem{ position:relative; display:grid; grid-template-columns:32px 1fr; gap:16px; padding-block:15px; }
+  .tdot{
+    position:relative; z-index:1; width:32px; height:32px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:600; color:var(--accent);
+  }
+  .titem .meta{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.05em;
+    color:var(--warm); text-transform:uppercase; margin-bottom:4px;
+  }
+  .titem h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .titem p{ margin:0; font-size:0.93rem; line-height:1.85; color:var(--ink-soft); }
+
+  /* ---------- GRID RECAP ---------- */
+  .case-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:600px){ .case-grid{ grid-template-columns:1fr; } }
+  .case-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 17px; box-shadow:var(--shadow); }
+  .case-card .k{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.06em;
+    color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:2px 10px; margin-bottom:8px;
+  }
+  .case-card h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .case-card p{ margin:0; font-size:0.9rem; line-height:1.75; color:var(--ink-soft); }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero"><div class="wrap"><a class="back-link" href="index.html">← 白話科技 · 全部文章</a><span class="eyebrow">科普專題 · 決策模型與工作流程</span><h1 class="title">Jev：讓 AI 在流程裡做判斷</h1><p class="lede">收到一張客服工單，要送去哪裡、還缺什麼、何時交給人？Jev 把這些判斷做成程式能接手的結果。理解它，要同時看懂型別、信心與流程責任。</p>
+<div class="hero-diagram"><svg viewBox="0 0 600 110" role="img" aria-label="資料與問題交給 Jev 判斷，再由程式規則與人工接手"><path d="M170 45H210 M390 45H430" stroke="var(--accent)" stroke-width="2"/><g fill="var(--surface)" stroke="var(--accent-line)"><rect x="0" y="15" width="170" height="60" rx="10"/><rect x="210" y="15" width="180" height="60" rx="10"/><rect x="430" y="15" width="170" height="60" rx="10"/></g><g fill="var(--ink)" text-anchor="middle" font-size="19"><text x="85" y="52">資料＋明確問題</text><text x="300" y="52">Jev 回傳判斷</text><text x="515" y="52">程式規則與人</text></g></svg><div class="cap">理解訊息、做出判斷、執行操作，是可以分開設計的步驟。</div></div>
+<div class="callout"><span class="mark">!</span><p>資料查核日期：2026 年 9 月 19 日。依官方文件整理；效能數字為供應商主張，情境與導入建議為編輯延伸，未進行 API 實測。</p></div></div></section>
+<nav class="pagenav" id="pagenav"><div class="pagenav-inner wrap-wide"><div class="tabs" id="tabs">
+<button class="tab" type="button" data-goto="1">它解決什麼</button>
+<button class="tab" type="button" data-goto="2">三種判斷</button>
+<button class="tab" type="button" data-goto="3">信心與錯誤</button>
+<button class="tab" type="button" data-goto="4">速度與代價</button>
+<button class="tab" type="button" data-goto="5">如何放進工作</button>
+<button class="tab" type="button" data-goto="6">兩種角色的行動</button>
+</div><span class="pagecount mono" id="pagecount">1 / 6</span></div></nav>
+<div class="pagewrap" id="page-1"><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">01</span><h2>客服需要下一步，程式需要明確答案</h2></div>
+<p>想像客服收到一封訊息：「我昨天已經付款，但帳號還不能用。」接下來要把案件送去哪裡？是否缺少訂單資料？需要立刻通知值班人員嗎？這些工作需要理解文字，也需要能接進程式的判斷。</p>
+<p>Jev 是 TypeSafe AI 推出的模型。你提供待判讀的資料，以及預先定義的問題與答案型別，它回傳結構化結果，讓程式繼續執行。官方把這類產品稱為 System One Model。它的主要定位是流程中的決策，沒有自由文字生成能力。<a href="https://docs.typesafe.ai/introduction">官方入門文件</a>。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>可以把它想成工單分流台：讀懂來件，把標籤和判斷交給後面的處理系統。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">02</span><h2>模型、流程與代理人，各有自己的工作</h2></div>
+<p>本文的工單例子是編輯設計的情境，並非實測。假設 Jev 選出「帳務問題」，後面的程式仍要查詢帳號、驗證訂單，再依規則決定交給誰。模型回傳選項，本身不代表已完成這些操作。</p>
+<p>你仍需建好工具、權限、錯誤處理與工作紀錄。長篇回覆也可以交給文字模型草擬。這讓同一套系統中，不同元件各自處理適合的步驟。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>分流台知道要掛哪一科，並不表示它已經完成檢查和治療。分對類是流程的一步。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button><span class="mid mono">01 · 它解決什麼</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-2" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">03</span><h2>選類別、評程度、判斷是否成立</h2></div>
+<p>官方提供三種問題：Choice 從指定選項中挑選；Score 依你定義的等級評分；Noul 回傳某個敘述成立的機率，介於 0 與 1。Choice 與 Score 還會帶回機率分布與 confidence；Noul 沒有獨立的 confidence 欄位。<a href="https://docs.typesafe.ai/primitives">問題型別文件</a>。</p>
+<p>用工單來看，Choice 可以問「帳務、登入、功能操作或其他，哪一類最合適？」Score 可以評估影響程度，但必須說清楚每個等級代表什麼；Noul 可以問「這段文字是否明確要求退款？」</p>
+<p>一個是否題得到 0.5，不能解釋為「程度中等」。它可能表示系統對是或否難以判斷。把問題型別選對，結果才有清楚的業務意義。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>問「今天有沒有下雨」與「今天雨量多大」，需要不同的答案欄位。是非題不能直接拿來當雨量計。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">04</span><h2>先把問題拆小，再由程式組合</h2></div>
+<p>官方建議一次問一個範圍清楚的判斷。同一請求可包含多個問題，各自對同一份資料獨立評估；需要前一題答案的後續判斷，則應由程式另行安排。<a href="https://docs.typesafe.ai/introduction">官方入門文件</a>。</p>
+<p>例如先分別判斷問題類型、是否缺少資料與影響範圍，再由明確規則決定下一步。分類選項也應容納「其他」或無法歸類的情況。否則資料不合適時，系統仍可能在錯誤的選項集合裡選出一個答案。</p>
+<p>這裡的工程取捨是：你少寫了一些辨識自然語言的規則，但仍要維護問題定義與決策邏輯。當業務改變，這些部分也要跟著更新。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>報修單先分開記錄設備、故障現象與影響人數，派工規則才容易修改。把所有事情塞成一句「請妥善處理」，反而難以驗收。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">02 · 三種判斷</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-3" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">05</span><h2>信心很高，也需要拿實際答案核對</h2></div>
+<p>Jev 的 confidence 是由機率分布計算出的摘要指標。選项集中在一個答案，與分散在多個答案，代表不同的確定程度；不能直接把 confidence 0.9 解讀為這題有九成機率答對。<a href="https://docs.typesafe.ai/confidence">信心指標文件</a>。</p>
+<p>校準則是另一個需要用資料檢查的概念：例如一批被預測為約八成機率成立的事件，實際發生比例是否也接近八成。這是整批預測的統計性質，並非對每筆資料的保證。</p>
+<p>本文建議先用已知結果的工單，觀察不同分數區間的錯誤，再選擇哪些可以自動分派、哪些需要補問或覆核。還要檢查特殊語言、資料缺漏與新類型，不只看整體平均。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>天氣預報的八成降雨機率，要靠許多次預報和實際天氣對照才能評估，不能只拿今天有沒有下雨判定。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">06</span><h2>「零幻覺」要看它保證的是哪一層</h2></div>
+<p>官方把零幻覺的主張連到輸出型別與結構限制，並說明相關零值來自結構保證，而非逐筆實驗都答對。這不能延伸為「內容判斷永遠正確」。<a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">官方發布說明</a>。</p>
+<p>如果只能從帳務與登入兩個選項挑答案，系統不會憑空創造第三個部門，卻仍可能把帳務案件分到登入組。型別正確、內容正確、允許執行，是三個不同層次。</p>
+<p>即使模型很確定，權限與業務規則仍由程式執行。例如判斷客戶要求退款，不等於客戶符合退款條件，更不等於可以略過身分確認。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>表格只允許填合法日期，可以防止填入「下個星期八」，卻無法保證填的是正確生日。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">03 · 信心與錯誤</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-4" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">07</span><h2>快很多、便宜很多，怎麼比較才公平？</h2></div>
+<p>Vercel 的整合公告轉述 TypeSafe 評測主張：特定流程中最高快約 193.6 倍、便宜約 444.6 倍。這是供應商的結果，本文沒有進行獨立重測，也不把倍數視為各種工作都適用的保證。<a href="https://vercel.com/changelog/typesafe-ai-jev-now-available-on-ai-gateway">Vercel 整合公告</a>。</p>
+<p>官方評測包含資安事件、代理人紀錄、發票及客服四種流程，使用大型模型的綜合預測作為參照答案，並假設流程程式正確。它衡量的是在這種設計下的表現，不等同人工查證過的業務真實答案。<a href="https://evals.typesafe.ai/">官方評測方法</a>。</p>
+<p>實務比較應用同一批資料、相同驗收標準，並包括現有規則或簡單分類器。記下慢的那一批請求、失敗重試、人工接手與整合成本，才能知道換元件是否有益。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>新機器切菜快一百倍，出餐卻還要等煮熟、裝盤與配送。局部加速要放回整條流程看。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">08</span><h2>每次很便宜，也要算每天做幾次</h2></div>
+<p>截至 2026 年 9 月 19 日，官方發布頁列出的費用是每百萬輸入 token 0.042 美元，輸出不另計費；實際採用時仍要確認所用平台的報價。官方描述其並行輸出方式，並將訓練方法稱為 RLCD，著重校準決策。<a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">官方發布說明</a>。</p>
+<p>用上述單價做純算術示例：一百萬次呼叫、每次計費輸入一千 token，合計十億 token，模型輸入費約四十二美元。這不是完整帳單估價，未計平台、周邊服務、重試、人工及實際計費細節。</p>
+<p>便宜可能讓團隊把更多步驟交給模型，總用量因此增加。本文建議替每個流程設定呼叫預算，並觀察每件成功結案的總成本，避免只追求單次價格下降。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>影印一張便宜了，但每份文件多印十份，月底帳單仍可能增加。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">04 · 速度與代價</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-5" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">09</span><h2>適合先試的是範圍清楚的判斷</h2></div>
+<p>可以優先考慮工單分類、訊息意圖辨識與待覆核案件排序。它們容易整理歷史案例，也較容易看出模型選擇和人工判斷的差異。這是本文的試辦建議，不代表 Jev 已在你的領域達到可用水準。</p>
+<p>若任務是寫一篇說明、產生完整程式或規劃複雜專案，光有既定選項通常不夠。若一般規則已能準確解決，加入模型也未必划算。選擇應從工作需要的輸出出發。</p>
+<p>官方提供的流程模式，也強調把模型判斷與程式控制搭配使用。模型能力只是其中一部分，如何串接與驗證仍是產品的工作。<a href="https://docs.typesafe.ai/patterns">官方流程模式</a>。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>電子郵件自動分資料夾，與替客戶寫完整回覆，是兩種工作。可以分別選工具，不必強求同一個元件包辦。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">10</span><h2>把模糊決策變成可追查的紀錄</h2></div>
+<p>以客服分派為例，先用歷史工單離線比對，再讓新系統只產生建議，不改動正式派工。記錄輸入版本、問題定義、回傳結果、人工結論及耗時，才能定位哪種案件容易出錯。</p>
+<p>結果若有改善，再選一小段可回復的流程試用。遇到資料不足或服務失敗時，維持原本可用的處理方式；不要讓便宜的判斷元件成為整條流程唯一能運作的入口。</p>
+<p>這些是編輯提出的導入方法。本文沒有呼叫 Jev API，也未驗證它對繁體中文客服資料的表現；中文縮寫、混用英文與公司術語都應納入自己的測試。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>新同事剛接派工工作時，先對照資深同事的判斷，再逐步放手，比第一天就接管所有案件更容易發現盲點。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">05 · 如何放進工作</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-6" hidden><div class="wrap">
+<section class="concept" id="takeaways-engineer"><div class="concept-head"><span class="concept-num mono">11</span><h2>給工程師的 Takeaway</h2></div>
+<p>以下是編輯根據本文延伸的實務建議。</p>
+<p><b>先定義選項：</b>寫清楚每個類別的邊界，保留其他或資料不足的處理路徑，避免把問題定義不清誤判成模型問題。</p>
+<p><b>分開量測三層：</b>分別記錄輸出可用性、內容正確率與流程是否完成；一次成功回傳不等於業務成功。</p>
+<p><b>保留可替換介面：</b>把分類呼叫與派工邏輯分開，以同一份測試比較現有方案和 Jev。</p>
+<div class="analogy"><span class="tag">本週可以做與驗收</span><p>本週可以做：整理五十筆去識別化工單，先建立人工參照；若有服務存取權，以兩種方案比對誤分率、慢請求及成本。小樣本只作初步篩選，不作正式品質保證。</p></div></section>
+<section class="concept" id="takeaways-manager"><div class="concept-head"><span class="concept-num mono">12</span><h2>給小主管的 Takeaway</h2></div>
+<p>以下是編輯根據本文延伸的實務建議。</p>
+<p><b>選一個範圍小的流程：</b>先挑重複、可追查且能回復的分類工作，指定試辦負責人。</p>
+<p><b>衡量下游負擔：</b>把誤分後的轉單、覆核和返工算進去，避免前段變快卻讓別組更忙。</p>
+<p><b>先約定繼續與停止條件：</b>與接手同事確認可接受的錯誤類型及工作量，再看試辦結果。</p>
+<div class="analogy"><span class="tag">本週可以做與驗收</span><p>本週可以做：安排兩週只出建議的試辦，指定誰覆核；結束時比較總處理時間、誤分及人工負擔，再決定擴大、調整或停止。</p></div></section>
+<div class="case-grid">
+<div class="case-card"><h4>明確選項</h4><p>先定義工作需要什麼答案。</p></div>
+<div class="case-card"><h4>型別有界</h4><p>合法答案也可能選錯。</p></div>
+<div class="case-card"><h4>信心可測</h4><p>用自己的案例驗證分數意義。</p></div>
+<div class="case-card"><h4>流程有人管</h4><p>把執行權限與接手方式寫清楚。</p></div>
+</div><section class="closing"><div class="closing-panel"><span class="eyebrow">一句話帶走</span><h3>讓模型負責判讀，讓系統對結果負責</h3><p>Jev 提供了一種把 AI 判斷放進程式的方法。值得驗證的，是它能否在你的資料與限制下，讓整個流程更快、更省，而且仍然可追查。</p></div></section><div class="source-note">內容整理、摘要並改寫自 TypeSafe AI 發布說明、官方文件與評測頁，以及 Vercel 整合公告，非逐字紀錄。來源已就近連結；本篇未實測 API，價格與服務條件可能更新。</div>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">06 · 兩種角色的行動</span><button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button></div></div></div>
+<footer>白話科技 · 決策模型與工作流程</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('jev_decisions_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('jev_decisions_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
