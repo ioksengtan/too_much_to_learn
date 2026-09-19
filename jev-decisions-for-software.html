@@ -238,27 +238,29 @@
 
 
 <div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
-<section class="hero"><div class="wrap"><a class="back-link" href="index.html">← 白話科技 · 全部文章</a><span class="eyebrow">科普專題 · 決策模型與工作流程</span><h1 class="title">Jev：讓 AI 在流程裡做判斷</h1><p class="lede">收到一張客服工單，要送去哪裡、還缺什麼、何時交給人？Jev 把這些判斷做成程式能接手的結果。理解它，要同時看懂型別、信心與流程責任。</p>
+<section class="hero"><div class="wrap"><a class="back-link" href="index.html">← 白話科技 · 全部文章</a><span class="eyebrow">科普專題 · 決策模型與工作流程</span><h1 class="title">Jev：讓 AI 在流程裡做判斷</h1><p class="lede">已經在用 ChatGPT、Claude 或 Grok，Jev 要放在哪裡？它可以成為自動化程式中的分類元件，再由程式把需要分析、寫作的工作交給其他模型。先看懂如何分工，再決定是否值得多接一個服務。</p>
 <div class="hero-diagram"><svg viewBox="0 0 600 110" role="img" aria-label="資料與問題交給 Jev 判斷，再由程式規則與人工接手"><path d="M170 45H210 M390 45H430" stroke="var(--accent)" stroke-width="2"/><g fill="var(--surface)" stroke="var(--accent-line)"><rect x="0" y="15" width="170" height="60" rx="10"/><rect x="210" y="15" width="180" height="60" rx="10"/><rect x="430" y="15" width="170" height="60" rx="10"/></g><g fill="var(--ink)" text-anchor="middle" font-size="19"><text x="85" y="52">資料＋明確問題</text><text x="300" y="52">Jev 回傳判斷</text><text x="515" y="52">程式規則與人</text></g></svg><div class="cap">理解訊息、做出判斷、執行操作，是可以分開設計的步驟。</div></div>
 <div class="callout"><span class="mark">!</span><p>資料查核日期：2026 年 9 月 19 日。依官方文件整理；效能數字為供應商主張，情境與導入建議為編輯延伸，未進行 API 實測。</p></div></div></section>
 <nav class="pagenav" id="pagenav"><div class="pagenav-inner wrap-wide"><div class="tabs" id="tabs">
-<button class="tab" type="button" data-goto="1">它解決什麼</button>
+<button class="tab" type="button" data-goto="1">怎麼搭配現有工具</button>
 <button class="tab" type="button" data-goto="2">三種判斷</button>
 <button class="tab" type="button" data-goto="3">信心與錯誤</button>
 <button class="tab" type="button" data-goto="4">速度與代價</button>
-<button class="tab" type="button" data-goto="5">如何放進工作</button>
+<button class="tab" type="button" data-goto="5">完整串接例子</button>
 <button class="tab" type="button" data-goto="6">兩種角色的行動</button>
 </div><span class="pagecount mono" id="pagecount">1 / 6</span></div></nav>
 <div class="pagewrap" id="page-1"><div class="wrap">
-<section class="concept"><div class="concept-head"><span class="concept-num mono">01</span><h2>客服需要下一步，程式需要明確答案</h2></div>
-<p>想像客服收到一封訊息：「我昨天已經付款，但帳號還不能用。」接下來要把案件送去哪裡？是否缺少訂單資料？需要立刻通知值班人員嗎？這些工作需要理解文字，也需要能接進程式的判斷。</p>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">01</span><h2>先分清楚：你在聊天，還是在做自動化？</h2></div>
+<p><b>如果你只是打開 ChatGPT、Claude 或 Grok，請它整理資料、寫文章或協助寫程式，通常不需要特別加入 Jev。</b>本文介紹的是另一種使用情境：你正在建立應用程式，想把其中反覆出現的判斷自動化。</p>
 <p>Jev 是 TypeSafe AI 推出的模型。你提供待判讀的資料，以及預先定義的問題與答案型別，它回傳結構化結果，讓程式繼續執行。官方把這類產品稱為 System One Model。它的主要定位是流程中的決策，沒有自由文字生成能力。<a href="https://docs.typesafe.ai/introduction">官方入門文件</a>。</p>
-<div class="analogy"><span class="tag">白話比喻</span><p>可以把它想成工單分流台：讀懂來件，把標籤和判斷交給後面的處理系統。</p></div></section>
-<section class="concept"><div class="concept-head"><span class="concept-num mono">02</span><h2>模型、流程與代理人，各有自己的工作</h2></div>
-<p>本文的工單例子是編輯設計的情境，並非實測。假設 Jev 選出「帳務問題」，後面的程式仍要查詢帳號、驗證訂單，再依規則決定交給誰。模型回傳選項，本身不代表已完成這些操作。</p>
-<p>你仍需建好工具、權限、錯誤處理與工作紀錄。長篇回覆也可以交給文字模型草擬。這讓同一套系統中，不同元件各自處理適合的步驟。</p>
-<div class="analogy"><span class="tag">白話比喻</span><p>分流台知道要掛哪一科，並不表示它已經完成檢查和治療。分對類是流程的一步。</p></div></section>
-<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button><span class="mid mono">01 · 它解決什麼</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="case-grid"><div class="case-card"><h4>在聊天視窗裡工作</h4><p>先用熟悉的工具完成任務，無須為了追新模型而改流程。</p></div><div class="case-card"><h4>請 AI 協助開發工具</h4><p>可以讓程式助理協助撰寫串接程式，實際服務呼叫仍需要設定與驗證。</p></div><div class="case-card"><h4>已經有自動化服務</h4><p>可評估把分類或分派步驟交給 Jev，再讓既有模型處理分析與回覆。</p></div><div class="case-card"><h4>規則已經足夠</h4><p>金額計算、必填欄位檢查等明確規則，通常直接用程式處理即可。</p></div></div>
+<div class="analogy"><span class="tag">白話比喻</span><p>每天寄幾封信，可以自己分類；經營每天處理大量信件的收發室，才可能需要專門的分流設備。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">02</span><h2>由你的程式串接，模型才會一起工作</h2></div>
+<p>API 可以理解成「讓程式向服務提出請求的接口」。本文的搭配方式，是你的程式先呼叫 Jev，取得分類結果，再依規則呼叫你選用的 OpenAI、Claude 或 Grok 模型 API。通常選一個適合的文字模型即可，無須把三家都接上。</p>
+<p><b>這套示意架構需要你建立串接流程；在聊天視窗輸入「幫我用 Jev」，不會自動建立它。</b>使用聊天產品與開發 API 服務是不同操作；要另外確認服務存取權、憑證、用量計費與資料處理條件，不要假設聊天訂閱已包含所有 API 呼叫。</p>
+<p>想像收到「已付款卻無法登入」的工單：Jev 協助判斷類型，你的程式查詢必要的訂單資料，再交給文字模型草擬回覆，最後依流程安排覆核。工具呼叫、權限與失敗接手仍由系統設計負責。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>兩家外包公司各有專長，仍需要窗口傳遞資料、交代工作、檢查交付。你的程式就是這個協調窗口。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button><span class="mid mono">01 · 怎麼搭配現有工具</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-2" hidden><div class="wrap">
 <section class="concept"><div class="concept-head"><span class="concept-num mono">03</span><h2>選類別、評程度、判斷是否成立</h2></div>
 <p>官方提供三種問題：Choice 從指定選項中挑選；Score 依你定義的等級評分；Noul 回傳某個敘述成立的機率，介於 0 與 1。Choice 與 Score 還會帶回機率分布與 confidence；Noul 沒有獨立的 confidence 欄位。<a href="https://docs.typesafe.ai/primitives">問題型別文件</a>。</p>
@@ -273,7 +275,7 @@
 <div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">02 · 三種判斷</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-3" hidden><div class="wrap">
 <section class="concept"><div class="concept-head"><span class="concept-num mono">05</span><h2>信心很高，也需要拿實際答案核對</h2></div>
-<p>Jev 的 confidence 是由機率分布計算出的摘要指標。選项集中在一個答案，與分散在多個答案，代表不同的確定程度；不能直接把 confidence 0.9 解讀為這題有九成機率答對。<a href="https://docs.typesafe.ai/confidence">信心指標文件</a>。</p>
+<p>Jev 的 confidence 是由機率分布計算出的摘要指標。選項集中在一個答案，與分散在多個答案，代表不同的確定程度；不能直接把 confidence 0.9 解讀為這題有九成機率答對。<a href="https://docs.typesafe.ai/confidence">信心指標文件</a>。</p>
 <p>校準則是另一個需要用資料檢查的概念：例如一批被預測為約八成機率成立的事件，實際發生比例是否也接近八成。這是整批預測的統計性質，並非對每筆資料的保證。</p>
 <p>本文建議先用已知結果的工單，觀察不同分數區間的錯誤，再選擇哪些可以自動分派、哪些需要補問或覆核。還要檢查特殊語言、資料缺漏與新類型，不只看整體平均。</p>
 <div class="analogy"><span class="tag">白話比喻</span><p>天氣預報的八成降雨機率，要靠許多次預報和實際天氣對照才能評估，不能只拿今天有沒有下雨判定。</p></div></section>
@@ -296,17 +298,21 @@
 <div class="analogy"><span class="tag">白話比喻</span><p>影印一張便宜了，但每份文件多印十份，月底帳單仍可能增加。</p></div></section>
 <div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">04 · 速度與代價</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-5" hidden><div class="wrap">
-<section class="concept"><div class="concept-head"><span class="concept-num mono">09</span><h2>適合先試的是範圍清楚的判斷</h2></div>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">09</span><h2>一張工單，如何走過兩種模型？</h2></div>
+<p>以下是編輯設計的串接示意，並非可直接執行的 API 範例，也未實測分類效果。以「我付款了，帳號卻不能用」為例：</p>
+<div class="timeline"><div class="titem"><div class="tdot">1</div><div><h4>你的服務接收工單</h4><p>整理訊息與允許提供的資料，先用程式檢查是否缺少必要欄位。</p></div></div><div class="titem"><div class="tdot">2</div><div><h4>呼叫 Jev 做初步判斷</h4><p>詢問問題類型與是否需要補資料。可能得到「付款後未開通」等事先定義的選項。</p></div></div><div class="titem"><div class="tdot">3</div><div><h4>程式決定分支</h4><p>資料不足就補問；判斷不明就交給人。資料足夠時，由具有適當權限的服務查詢訂單。</p></div></div><div class="titem"><div class="tdot">4</div><div><h4>呼叫選定的文字模型</h4><p>將已核對的訂單狀態與回覆規則交給 OpenAI、Claude 或 Grok 的模型，產生回覆草稿。</p></div></div><div class="titem"><div class="tdot">5</div><div><h4>驗收與執行</h4><p>核對草稿中的事實，再依既定流程覆核或送出。模型說可以退款，不代表它獲得了退款權限。</p></div></div></div>
 <p>可以優先考慮工單分類、訊息意圖辨識與待覆核案件排序。它們容易整理歷史案例，也較容易看出模型選擇和人工判斷的差異。這是本文的試辦建議，不代表 Jev 已在你的領域達到可用水準。</p>
 <p>若任務是寫一篇說明、產生完整程式或規劃複雜專案，光有既定選項通常不夠。若一般規則已能準確解決，加入模型也未必划算。選擇應從工作需要的輸出出發。</p>
 <p>官方提供的流程模式，也強調把模型判斷與程式控制搭配使用。模型能力只是其中一部分，如何串接與驗證仍是產品的工作。<a href="https://docs.typesafe.ai/patterns">官方流程模式</a>。</p>
 <div class="analogy"><span class="tag">白話比喻</span><p>電子郵件自動分資料夾，與替客戶寫完整回覆，是兩種工作。可以分別選工具，不必強求同一個元件包辦。</p></div></section>
-<section class="concept"><div class="concept-head"><span class="concept-num mono">10</span><h2>把模糊決策變成可追查的紀錄</h2></div>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">10</span><h2>原本的模型也能分類，為什麼要加 Jev？</h2></div>
+<p><b>你完全可以先讓原本的模型同時處理分類與草擬回覆。</b>只有當分類頻繁到值得優化，而且實測顯示 Jev 在可接受品質下改善了延遲或總成本，才有增加它的理由。</p>
+<p>比較兩個版本：A 版用現有模型分類、回覆；B 版把分類換成 Jev，保留原本的回覆模型。使用相同工單與驗收標準，記錄整段流程的時間、誤分、返工及費用。若 B 版只省了一點呼叫費，卻需要更多維護，維持 A 版也很合理。</p>
 <p>以客服分派為例，先用歷史工單離線比對，再讓新系統只產生建議，不改動正式派工。記錄輸入版本、問題定義、回傳結果、人工結論及耗時，才能定位哪種案件容易出錯。</p>
 <p>結果若有改善，再選一小段可回復的流程試用。遇到資料不足或服務失敗時，維持原本可用的處理方式；不要讓便宜的判斷元件成為整條流程唯一能運作的入口。</p>
 <p>這些是編輯提出的導入方法。本文沒有呼叫 Jev API，也未驗證它對繁體中文客服資料的表現；中文縮寫、混用英文與公司術語都應納入自己的測試。</p>
 <div class="analogy"><span class="tag">白話比喻</span><p>新同事剛接派工工作時，先對照資深同事的判斷，再逐步放手，比第一天就接管所有案件更容易發現盲點。</p></div></section>
-<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">05 · 如何放進工作</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">05 · 完整串接例子</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-6" hidden><div class="wrap">
 <section class="concept" id="takeaways-engineer"><div class="concept-head"><span class="concept-num mono">11</span><h2>給工程師的 Takeaway</h2></div>
 <p>以下是編輯根據本文延伸的實務建議。</p>
