@@ -8,6 +8,8 @@
   .lede { margin-top: 14px !important; color: var(--ink) !important; font-size: 19px !important; font-weight: 500; line-height: 1.75 !important; }
   .meta-row { margin-top: 18px !important; gap: 10px 16px !important; }
   .meta-row .item { min-height: 32px; font-size: 16px !important; }
+  .column-nav { margin-top: 18px !important; gap: 10px !important; }
+  .column-link { min-height: 46px !important; padding: 10px 16px !important; font-size: 17px !important; }
   .index { padding-block: 28px 48px !important; }
   .index-head { margin-bottom: 16px !important; }
   .index-head h2 { font-size: 16px !important; }
