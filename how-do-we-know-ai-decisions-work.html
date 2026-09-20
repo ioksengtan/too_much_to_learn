@@ -1,0 +1,380 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 選了往左，誰知道它選對了？</title>
+<link rel="stylesheet" href="mobile-article.css?v=progress-4">
+<script defer src="mobile-article.js?v=progress-4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  /* ---------- PROGRESS + NAV ---------- */
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:16.66%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- HERO ---------- */
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  /* ---------- SECTIONS ---------- */
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; margin:8px 0 40px; display:flex; flex-direction:column; }
+  .timeline::before{ content:""; position:absolute; left:15px; top:6px; bottom:6px; border-left:2px solid var(--line); }
+  .titem{ position:relative; display:grid; grid-template-columns:32px 1fr; gap:16px; padding-block:15px; }
+  .tdot{
+    position:relative; z-index:1; width:32px; height:32px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:600; color:var(--accent);
+  }
+  .titem .meta{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.05em;
+    color:var(--warm); text-transform:uppercase; margin-bottom:4px;
+  }
+  .titem h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .titem p{ margin:0; font-size:0.93rem; line-height:1.85; color:var(--ink-soft); }
+
+  /* ---------- GRID RECAP ---------- */
+  .case-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:600px){ .case-grid{ grid-template-columns:1fr; } }
+  .case-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 17px; box-shadow:var(--shadow); }
+  .case-card .k{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.06em;
+    color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:2px 10px; margin-bottom:8px;
+  }
+  .case-card h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .case-card p{ margin:0; font-size:0.9rem; line-height:1.75; color:var(--ink-soft); }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero"><div class="wrap"><a class="back-link" href="index.html">← 白話科技 · 全部文章</a><span class="eyebrow">白話問答 · Jev、遊戲控制與驗證</span><h1 class="title">AI 選了往左，誰知道它選對了？</h1><p class="lede">從「Jev 怎麼跟現有工具一起用」，到「只吃文字怎麼玩遊戲」，最後追問「怎麼知道判斷是對的」。把這串問題接起來，才看得到 AI 示範背後完整的工程工作。</p>
+<div class="hero-diagram"><svg viewBox="0 0 600 135" role="img" aria-label="狀態經模型判斷交由程式執行，再以遊戲結果驗證並回到新狀態"><path d="M130 40H155M285 40H310M440 40H465M530 70V110H65V70" fill="none" stroke="var(--accent)" stroke-width="2"/><g fill="var(--surface)" stroke="var(--accent-line)"><rect x="0" y="10" width="130" height="60" rx="10"/><rect x="155" y="10" width="130" height="60" rx="10"/><rect x="310" y="10" width="130" height="60" rx="10"/><rect x="465" y="10" width="130" height="60" rx="10"/></g><g fill="var(--ink)" text-anchor="middle" font-size="18"><text x="65" y="47">讀取狀態</text><text x="220" y="47">模型判斷</text><text x="375" y="47">程式執行</text><text x="530" y="47">結果驗證</text></g></svg><div class="cap">回傳一個答案，只完成了整個循環的一部分。</div></div><div class="callout"><span class="mark">!</span><p>本文整理自讀者與編輯的討論，產品介面依 2026 年 9 月 20 日官方文件核對。遊戲架構與實驗為教學設計，未還原或實測社群影片。</p></div></div></section>
+<nav class="pagenav" id="pagenav"><div class="pagenav-inner wrap-wide"><div class="tabs" id="tabs">
+<button class="tab" type="button" data-goto="1">先搞懂誰做什麼</button>
+<button class="tab" type="button" data-goto="2">模型如何合作</button>
+<button class="tab" type="button" data-goto="3">遊戲怎麼接</button>
+<button class="tab" type="button" data-goto="4">到底怎樣算對</button>
+<button class="tab" type="button" data-goto="5">用實驗驗證</button>
+<button class="tab" type="button" data-goto="6">帶回自己的工作</button>
+</div><span class="pagecount mono" id="pagecount">1 / 6</span></div></nav>
+<div class="pagewrap" id="page-1"><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">01</span><h2>TypeSafe AI、Jev 與聊天工具，是什麼關係？</h2></div>
+<p>看到一個新模型很紅，第一個問題往往是：我已經有聊天工具，還需要它做什麼？TypeSafe AI 是提供 Jev 的公司；Jev 是用來回傳結構化判斷的模型。它接收資料與指定問題，輸出程式可以繼續處理的結果。<a href="https://docs.typesafe.ai/introduction">官方入門文件</a>。</p>
+<p>「型別安全」可以想成填表時有固定欄位與格式。它有助程式接手，但填進合法選項，仍可能選錯。就像生日欄位填了一個合法日期，並不代表那是你的生日。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>公司是工具供應商，模型是工具，使用工具完成工作的流程則要另外設計。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">02</span><h2>做外掛的 AI，與外掛裡的 AI</h2></div>
+<p>有人說「用 Jev 弄了一個 Chrome 外掛，速度很快」，這句話可能省略了兩件不同的事：開發時由程式助理幫忙寫外掛；執行時，外掛呼叫 Jev 做分類。沒有原始實作，不能直接判定他採用哪種方式。</p>
+<p>例如整理網頁連結：外掛取得文字，Jev 協助分類，外掛再顯示標籤。程式助理可以協助開發這些元件。若只是使用聊天視窗寫文章或討論問題，通常不必特別加上這一層。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>請人幫你蓋廚房，與每天請人在廚房煮飯，是不同工作；開發工具與執行工具也要分清楚。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button><span class="mid mono">01 · 先搞懂誰做什麼</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-2" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">03</span><h2>串接的主角，是你的程式</h2></div>
+<p>把 Jev 與其他模型放在一起，可以由你的服務負責協調：先送一份資料給 Jev 分類，再把需要分析、寫作的部分交給選定的 OpenAI、Claude 或 Grok 模型服務。這是架構示意，不需要把所有供應商都接上。</p>
+<p>API 是程式向服務提出請求的接口。你的程式要安排資料傳遞、權限、費用與失敗處理。聊天視窗中的一句要求，不會自行建立這套服務；服務憑證也不應寫進公開外掛或前端網頁。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>兩個外包團隊不會因為坐在同一棟樓就自動合作，仍需要窗口交付資料、安排順序與驗收。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">04</span><h2>原本的模型也能做，為什麼還要拆？</h2></div>
+<p>加入 Jev 的理由，應該是某個反覆執行的判斷步驟值得單獨優化。以同一批資料比較現有方案和新方案，確認品質、延遲及總成本，才能知道拆開是否有幫助。</p>
+<p>工作量很小、一般規則已足夠，或加入服務後的維護成本大於收益時，維持原本做法很合理。模型數量不是成熟度指標，可靠完成工作才是。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>早餐只做一份，自己完成全部步驟很方便；大量出餐才可能值得設立專門的備料工作站。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">02 · 模型如何合作</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-3" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">05</span><h2>模型沒看畫面，怎麼知道前面有火車？</h2></div>
+<p>我們討論的起點是一張跑酷示範的社群截圖。截圖提到同時跑五十局與極低成本，但沒有提供可重現程式或完整計費紀錄。本文不把這些敘述當成獨立驗證結果，也不宣稱已還原原作者的架構。</p>
+<p>一種可實作的方法，是由遊戲提供角色位置、障礙物與速度，再由程式整理成文字或 JSON。畫面是給人看的，模型收到的可以是「角色在中間、中間有柵欄、左邊暫時暢通」。</p>
+<p>自己開發遊戲時可以設計狀態接口；若只有外部遊戲畫面，還要另外處理影像辨識或狀態擷取。狀態若漏了障礙，後面的模型再快也無法補回它沒收到的資訊。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>交通控制中心不一定要看每一張道路照片，也可以接收感測器整理的車流資料；但感測器漏報仍會影響判斷。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">06</span><h2>狀態、判斷、操作，形成一個循環</h2></div>
+<p>示意流程是：讀取目前狀態，列出合法動作，請模型選擇，再由遊戲執行，取得新狀態後重複。Jev 的 Choice 可以從固定選項中選一項；Score 用來按定義好的等級評分；Noul 則表達是非問題成立的機率。<a href="https://docs.typesafe.ai/primitives">官方問題型別文件</a>。</p>
+<p>跑酷初版可以每次只允許往左、維持、往右、跳躍或滑行其中一個動作。若要同時換道與跳躍，應定義合法組合，或由程式安排先後；兩個分開判斷的答案不一定能直接合併。</p>
+<p>遊戲持續前進，回答也可能過期。系統要保存狀態時間、限制未完成的請求，並處理逾時；畫面每秒更新六十次，不代表需要每秒呼叫模型六十次。同時跑五十局也只說明並行規模，不能證明單局決策足夠快。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>導航說前方路口左轉，但車已經開過路口，原本正確的指令也不能照做。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">03 · 遊戲怎麼接</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-4" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">07</span><h2>合法、立即安全與長期有效，是三道檢查</h2></div>
+<p>角色在中間，前面出現柵欄，模型選擇往左。第一道檢查是動作合法：遊戲規則允不允許換道？第二道是立即安全：執行後是否碰撞？第三道是長期效果：躲過眼前障礙後，會不會進入下一個死角？</p>
+<p>合法性可以由規則檢查，碰撞由遊戲引擎判定，長期效果則需要更長的觀察。模型輸出成功，不等於遊戲動作成功，更不等於取得最佳分數。還要先說清楚目標：優先存活，還是收集道具、跑得更遠？</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>棋子落在合法格子，只代表符合規則；它可能立刻送掉一顆棋，也可能幾步之後才顯露問題。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">08</span><h2>高信心不能替代遊戲引擎</h2></div>
+<p>官方文件說明，Choice 與 Score 的 confidence 是從機率分布計算的摘要；Noul 沒有獨立的 confidence。不能直接把 confidence 0.9 解釋為這步有九成機率不會死。<a href="https://docs.typesafe.ai/confidence">官方信心指標文件</a>。</p>
+<p>模型可能很確定，卻漏看輸入裡的條件、誤解規則，或遇到它不熟悉的局面。資料轉換和網路延遲也可能造成失敗。碰撞時應沿整條流程查原因，不能一律歸因於模型不聰明。</p>
+<p>若要研究信心是否有用，可以把過去決策按分數分組，對照後續結果。但局面難度不同、系統又可能攔截危險動作，因此分組結果也需要連同測試條件解讀。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>駕駛很有把握，不會讓路口的障礙物消失。信心是一種訊號，路況與實際結果才是檢查依據。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">04 · 到底怎樣算對</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-5" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num mono">09</span><h2>先看結果，也可以先在分身裡試走</h2></div>
+<p>第一種方法是執行後記錄：當時的狀態、選擇、等待時間、實際執行動作，以及後續是否碰撞。只看成功影片會漏掉失敗與重試；一段漂亮操作不足以代表整體能力。</p>
+<p>第二種方法是在能複製狀態的遊戲裡，把同一局面分成幾份，分別往左、跳躍、往右，模擬接下來一段時間。這可以檢查有哪些動作可行；同一局面可能不只一個正確選擇。</p>
+<p>短時間模擬不保證整局最佳；隨機遊戲可能需要重複模擬。如果最後是模擬器替你挑出最佳動作，也要明確區分：成果來自 Jev 的建議，還是後面的搜尋與篩選。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>先用測試分支試改程式，可以看出眼前測試會不會壞，但不能保證上線後所有情境都沒問題。</p></div></section>
+<section class="concept"><div class="concept-head"><span class="concept-num mono">10</span><h2>拿同一批地圖，和簡單規則比一比</h2></div>
+<p>本文建議先建立規則控制器，例如前方有障礙就找可通行車道。讓它與 Jev 使用相同資訊、相同動作限制及固定測試地圖；隨機關卡可以固定種子並多次執行。調整設定用一批地圖，最後評估再用沒看過的地圖。</p>
+<p>比較存活距離、碰撞率、分數、決策延遲與整局費用，也記錄逾時、危險動作被程式攔下的次數。若測試暫停遊戲等待回答，結果不能直接宣稱是即時操作表現。</p>
+<p>遊戲結果回傳到系統，不表示模型權重會自動更新。你可以用紀錄修正輸入、提示、規則或決策頻率；真正的訓練則是另外的流程。本文沒有訓練 Jev，也沒有執行跑酷測試。</p>
+<div class="analogy"><span class="tag">白話比喻</span><p>兩位跑者要在可比較的賽道與規則下測試。只替其中一位挑平路，成績就無法回答誰跑得更好。</p></div></section>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">05 · 用實驗驗證</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
+<div class="pagewrap" id="page-6" hidden><div class="wrap">
+<section class="concept" id="takeaways-engineer"><div class="concept-head"><span class="concept-num mono">11</span><h2>給工程師的 Takeaway</h2></div>
+<p>以下為編輯根據本文延伸的實務建議。</p>
+<p><b>先做可重播的紀錄：</b>保存狀態、時間、模型答案及實際動作，讓失敗能定位到擷取、判斷或執行。</p>
+<p><b>把規則和模型分開：</b>非法動作由程式攔截，模型負責需要判斷的部分，並記錄攔截是否影響成績。</p>
+<p><b>建立不用 AI 的基準：</b>保留簡單控制器，用相同條件比較；新增模型必須證明提供額外價值。</p>
+<div class="analogy"><span class="tag">本週可以做與驗收</span><p>本週可以做：在自製三車道小遊戲固定十組關卡種子，比較規則控制器與模型控制器，輸出存活距離、延遲及失敗原因表。這是初步試驗，不能推廣成所有遊戲的結論。</p></div></section>
+<section class="concept" id="takeaways-manager"><div class="concept-head"><span class="concept-num mono">12</span><h2>給小主管的 Takeaway</h2></div>
+<p>以下為編輯根據本文延伸的實務建議。</p>
+<p><b>先約定成功的意思：</b>要求示範同時報告品質、速度與成本，讓團隊知道要改善哪一項。</p>
+<p><b>分配整條流程的責任：</b>資料擷取、模型呼叫及驗收都指定負責人，避免問題發生時只換模型。</p>
+<p><b>要求保留失敗案例：</b>審查完整測試紀錄與對照方案，讓投資決策有可比較的證據。</p>
+<div class="analogy"><span class="tag">本週可以做與驗收</span><p>本週可以做：選一個現有 AI 示範，請團隊用同一批案例跑原方案與新方案，確認結果可重現、人工接手有紀錄，再決定是否投入下一輪。</p></div></section>
+<div class="case-grid">
+<div class="case-card"><h4>格式正確</h4><p>輸出符合程式要求。</p></div>
+<div class="case-card"><h4>動作合法</h4><p>操作符合遊戲規則。</p></div>
+<div class="case-card"><h4>立即安全</h4><p>執行後通過碰撞檢查。</p></div>
+<div class="case-card"><h4>長期有效</h4><p>整批測試達到事先定義的目標。</p></div>
+</div><section class="closing"><div class="closing-panel"><span class="eyebrow">一句話帶走</span><h3>讓模型提出選擇，讓可觀察的結果驗證它</h3><p>工程價值在於把資料、判斷、執行與驗收接起來。遊戲如此，客服分流、程式代理人與企業自動化也值得問同樣的問題：我們用什麼證據知道這次真的做對了？</p></div></section><div class="source-note">內容整理、摘要並改寫自本次 Jev 與 AI 應用討論，非逐字紀錄。產品說明依 TypeSafe AI 官方文件，來源已就近連結。社群截圖僅作為提問背景，未獨立驗證五十局與成本宣稱。延伸閱讀：<a href="jev-decisions-for-software.html?start=1">Jev：讓 AI 在流程裡做判斷</a>。</div>
+<div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">06 · 帶回自己的工作</span><button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button></div></div></div>
+<footer>白話科技 · AI 判斷與驗證</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_game_decisions_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_game_decisions_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
