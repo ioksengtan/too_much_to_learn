@@ -1,8 +1,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Jev：讓 AI 在流程裡做判斷</title>
-<link rel="stylesheet" href="mobile-article.css?v=progress-4">
-<script defer src="mobile-article.js?v=progress-4"></script>
+<link rel="stylesheet" href="mobile-article.css?v=jev-meme-1">
+<script defer src="mobile-article.js?v=jev-meme-1"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -238,7 +238,7 @@
 
 
 <div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
-<section class="hero"><div class="wrap"><a class="back-link" href="index.html">← 白話科技 · 全部文章</a><span class="eyebrow">科普專題 · 決策模型與工作流程</span><h1 class="title">Jev：讓 AI 在流程裡做判斷</h1><p class="lede">已經在用 ChatGPT、Claude 或 Grok，Jev 要放在哪裡？它可以成為自動化程式中的分類元件，再由程式把需要分析、寫作的工作交給其他模型。先看懂如何分工，再決定是否值得多接一個服務。</p>
+<section class="hero"><div class="wrap"><a class="back-link" href="index.html">← 白話科技 · 全部文章</a><span class="eyebrow">科普專題 · 決策模型與工作流程</span><h1 class="title">Jev：讓 AI 在流程裡做判斷</h1><p class="lede">已經在用 ChatGPT、Claude 或 Grok，還要不要再接一個叫 Jev 的服務？它不是來陪你聊天的，比較像自動化程式裡專管分類的元件；分析、寫作仍可交給其他模型。先看懂怎麼分工，再決定多接一個值不值得。</p>
 <div class="hero-diagram"><svg viewBox="0 0 600 110" role="img" aria-label="資料與問題交給 Jev 判斷，再由程式規則與人工接手"><path d="M170 45H210 M390 45H430" stroke="var(--accent)" stroke-width="2"/><g fill="var(--surface)" stroke="var(--accent-line)"><rect x="0" y="15" width="170" height="60" rx="10"/><rect x="210" y="15" width="180" height="60" rx="10"/><rect x="430" y="15" width="170" height="60" rx="10"/></g><g fill="var(--ink)" text-anchor="middle" font-size="19"><text x="85" y="52">資料＋明確問題</text><text x="300" y="52">Jev 回傳判斷</text><text x="515" y="52">程式規則與人</text></g></svg><div class="cap">理解訊息、做出判斷、執行操作，是可以分開設計的步驟。</div></div>
 <div class="callout"><span class="mark">!</span><p>資料查核日期：2026 年 9 月 19 日。依官方文件整理；效能數字為供應商主張，情境與導入建議為編輯延伸，未進行 API 實測。</p></div></div></section>
 <nav class="pagenav" id="pagenav"><div class="pagenav-inner wrap-wide"><div class="tabs" id="tabs">
@@ -254,19 +254,39 @@
 <p><b>如果你只是打開 ChatGPT、Claude 或 Grok，請它整理資料、寫文章或協助寫程式，通常不需要特別加入 Jev。</b>本文介紹的是另一種使用情境：你正在建立應用程式，想把其中反覆出現的判斷自動化。</p>
 <p>Jev 是 TypeSafe AI 推出的模型。你提供待判讀的資料，以及預先定義的問題與答案型別，它回傳結構化結果，讓程式繼續執行。官方把這類產品稱為 System One Model。它的主要定位是流程中的決策，沒有自由文字生成能力。<a href="https://docs.typesafe.ai/introduction">官方入門文件</a>。</p>
 <div class="case-grid"><div class="case-card"><h4>在聊天視窗裡工作</h4><p>先用熟悉的工具完成任務，無須為了追新模型而改流程。</p></div><div class="case-card"><h4>請 AI 協助開發工具</h4><p>可以讓程式助理協助撰寫串接程式，實際服務呼叫仍需要設定與驗證。</p></div><div class="case-card"><h4>已經有自動化服務</h4><p>可評估把分類或分派步驟交給 Jev，再讓既有模型處理分析與回覆。</p></div><div class="case-card"><h4>規則已經足夠</h4><p>金額計算、必填欄位檢查等明確規則，通常直接用程式處理即可。</p></div></div>
-<div class="analogy"><span class="tag">白話比喻</span><p>每天寄幾封信，可以自己分類；經營每天處理大量信件的收發室，才可能需要專門的分流設備。</p></div></section>
+<div class="analogy"><span class="tag">白話比喻</span><p>每天寄幾封信，自己分就好；經營每天處理大量信件的收發室，才可能需要專門的分流設備——工具要對上流量，不是對上時髦。</p></div>
+<figure class="meme-panel">
+  <img src="assets/memes/jev-decisions-for-software/01-chat-vs-automation.png" alt="左側自己分幾封信，右側收發室分流設備處理大量信件。" width="700" loading="lazy">
+  <figcaption>幾封信自己分；大量信件才需要分流設備。</figcaption>
+  <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+</figure>
+<aside class="related-read">
+  <p class="related-read-label">延伸閱讀</p>
+  <p>聊天視窗裡的一次判斷，跟自動化流程裡反覆跑的分類，不是同一件事。若想先看任務怎麼拆開、同時做、再由人拍板，可以回頭看<a href="ai-team-collab.html?v=meme-1&amp;start=1">《AI團隊分工學》</a>。</p>
+</aside>
+</section>
 <section class="concept"><div class="concept-head"><span class="concept-num mono">02</span><h2>由你的程式串接，模型才會一起工作</h2></div>
 <p>API 可以理解成「讓程式向服務提出請求的接口」。本文的搭配方式，是你的程式先呼叫 Jev，取得分類結果，再依規則呼叫你選用的 OpenAI、Claude 或 Grok 模型 API。通常選一個適合的文字模型即可，無須把三家都接上。</p>
 <p><b>這套示意架構需要你建立串接流程；在聊天視窗輸入「幫我用 Jev」，不會自動建立它。</b>使用聊天產品與開發 API 服務是不同操作；要另外確認服務存取權、憑證、用量計費與資料處理條件，不要假設聊天訂閱已包含所有 API 呼叫。</p>
 <p>想像收到「已付款卻無法登入」的工單：Jev 協助判斷類型，你的程式查詢必要的訂單資料，再交給文字模型草擬回覆，最後依流程安排覆核。工具呼叫、權限與失敗接手仍由系統設計負責。</p>
-<div class="analogy"><span class="tag">白話比喻</span><p>兩家外包公司各有專長，仍需要窗口傳遞資料、交代工作、檢查交付。你的程式就是這個協調窗口。</p></div></section>
+<div class="analogy"><span class="tag">白話比喻</span><p>兩家外包公司各有專長，仍需要窗口傳遞資料、交代工作、檢查交付。你的程式就是這個協調窗口；專長可以外包，窗口丟了，流程就散了。</p></div>
+<figure class="meme-panel">
+  <img src="assets/memes/jev-decisions-for-software/02-program-as-coordinator.png" alt="中間協調窗口標示你的程式，兩側分別是分類判斷與分析寫作。" width="700" loading="lazy">
+  <figcaption>專長可以外包，窗口還是要自己管。</figcaption>
+  <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+</figure>
+<aside class="related-read">
+  <p class="related-read-label">延伸閱讀</p>
+  <p>程式當窗口之後，若代理人已經在正式環境裡連續跑，還得看得見、也喊得停。可以接著看<a href="guild-ai-control-plane.html?v=control-meme-1&amp;start=1">《代理人中控室》</a>。</p>
+</aside>
+</section>
 <div class="pagectrl"><button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button><span class="mid mono">01 · 怎麼搭配現有工具</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-2" hidden><div class="wrap">
 <section class="concept"><div class="concept-head"><span class="concept-num mono">03</span><h2>選類別、評程度、判斷是否成立</h2></div>
 <p>官方提供三種問題：Choice 從指定選項中挑選；Score 依你定義的等級評分；Noul 回傳某個敘述成立的機率，介於 0 與 1。Choice 與 Score 還會帶回機率分布與 confidence；Noul 沒有獨立的 confidence 欄位。<a href="https://docs.typesafe.ai/primitives">問題型別文件</a>。</p>
 <p>用工單來看，Choice 可以問「帳務、登入、功能操作或其他，哪一類最合適？」Score 可以評估影響程度，但必須說清楚每個等級代表什麼；Noul 可以問「這段文字是否明確要求退款？」</p>
 <p>一個是否題得到 0.5，不能解釋為「程度中等」。它可能表示系統對是或否難以判斷。把問題型別選對，結果才有清楚的業務意義。</p>
-<div class="analogy"><span class="tag">白話比喻</span><p>問「今天有沒有下雨」與「今天雨量多大」，需要不同的答案欄位。是非題不能直接拿來當雨量計。</p></div></section>
+<div class="analogy"><span class="tag">白話比喻</span><p>問「今天有沒有下雨」與「今天雨量多大」，需要不同的答案欄位。是非題再自信，也不能直接拿來當雨量計。</p></div></section>
 <section class="concept"><div class="concept-head"><span class="concept-num mono">04</span><h2>先把問題拆小，再由程式組合</h2></div>
 <p>官方建議一次問一個範圍清楚的判斷。同一請求可包含多個問題，各自對同一份資料獨立評估；需要前一題答案的後續判斷，則應由程式另行安排。<a href="https://docs.typesafe.ai/introduction">官方入門文件</a>。</p>
 <p>例如先分別判斷問題類型、是否缺少資料與影響範圍，再由明確規則決定下一步。分類選項也應容納「其他」或無法歸類的情況。否則資料不合適時，系統仍可能在錯誤的選項集合裡選出一個答案。</p>
@@ -283,19 +303,29 @@
 <p>官方把零幻覺的主張連到輸出型別與結構限制，並說明相關零值來自結構保證，而非逐筆實驗都答對。這不能延伸為「內容判斷永遠正確」。<a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">官方發布說明</a>。</p>
 <p>如果只能從帳務與登入兩個選項挑答案，系統不會憑空創造第三個部門，卻仍可能把帳務案件分到登入組。型別正確、內容正確、允許執行，是三個不同層次。</p>
 <p>即使模型很確定，權限與業務規則仍由程式執行。例如判斷客戶要求退款，不等於客戶符合退款條件，更不等於可以略過身分確認。</p>
-<div class="analogy"><span class="tag">白話比喻</span><p>表格只允許填合法日期，可以防止填入「下個星期八」，卻無法保證填的是正確生日。</p></div></section>
+<div class="analogy"><span class="tag">白話比喻</span><p>表格只允許填合法日期，可以防止填入「下個星期八」，卻無法保證填的是正確生日——格式過關，不代表故事過關。</p></div>
+<figure class="meme-panel">
+  <img src="assets/memes/jev-decisions-for-software/03-type-safe-not-truth.png" alt="表格拒絕非法日期，合法日期仍可能不是正確生日；旁側標示型別正確、內容正確、允許執行三層。" width="700" loading="lazy">
+  <figcaption>表格擋得住亂填，擋不住填錯。</figcaption>
+  <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+</figure>
+<aside class="related-read">
+  <p class="related-read-label">延伸閱讀</p>
+  <p>型別與結構管得住輸出形狀，卻管不住業務真相；公司還要問這些判斷與記憶留在誰手上。可以接著看<a href="dont-rent-your-ai-brain.html?v=takeaways-1&amp;start=1">《別把公司的記憶租給一顆模型》</a>。</p>
+</aside>
+</section>
 <div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">03 · 信心與錯誤</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-4" hidden><div class="wrap">
 <section class="concept"><div class="concept-head"><span class="concept-num mono">07</span><h2>快很多、便宜很多，怎麼比較才公平？</h2></div>
 <p>Vercel 的整合公告轉述 TypeSafe 評測主張：特定流程中最高快約 193.6 倍、便宜約 444.6 倍。這是供應商的結果，本文沒有進行獨立重測，也不把倍數視為各種工作都適用的保證。<a href="https://vercel.com/changelog/typesafe-ai-jev-now-available-on-ai-gateway">Vercel 整合公告</a>。</p>
 <p>官方評測包含資安事件、代理人紀錄、發票及客服四種流程，使用大型模型的綜合預測作為參照答案，並假設流程程式正確。它衡量的是在這種設計下的表現，不等同人工查證過的業務真實答案。<a href="https://evals.typesafe.ai/">官方評測方法</a>。</p>
 <p>實務比較應用同一批資料、相同驗收標準，並包括現有規則或簡單分類器。記下慢的那一批請求、失敗重試、人工接手與整合成本，才能知道換元件是否有益。</p>
-<div class="analogy"><span class="tag">白話比喻</span><p>新機器切菜快一百倍，出餐卻還要等煮熟、裝盤與配送。局部加速要放回整條流程看。</p></div></section>
+<div class="analogy"><span class="tag">白話比喻</span><p>新機器切菜快一百倍，出餐卻還要等煮熟、裝盤與配送。局部加速很爽，整條流程仍可能在等。</p></div></section>
 <section class="concept"><div class="concept-head"><span class="concept-num mono">08</span><h2>每次很便宜，也要算每天做幾次</h2></div>
 <p>截至 2026 年 9 月 19 日，官方發布頁列出的費用是每百萬輸入 token 0.042 美元，輸出不另計費；實際採用時仍要確認所用平台的報價。官方描述其並行輸出方式，並將訓練方法稱為 RLCD，著重校準決策。<a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">官方發布說明</a>。</p>
 <p>用上述單價做純算術示例：一百萬次呼叫、每次計費輸入一千 token，合計十億 token，模型輸入費約四十二美元。這不是完整帳單估價，未計平台、周邊服務、重試、人工及實際計費細節。</p>
 <p>便宜可能讓團隊把更多步驟交給模型，總用量因此增加。本文建議替每個流程設定呼叫預算，並觀察每件成功結案的總成本，避免只追求單次價格下降。</p>
-<div class="analogy"><span class="tag">白話比喻</span><p>影印一張便宜了，但每份文件多印十份，月底帳單仍可能增加。</p></div></section>
+<div class="analogy"><span class="tag">白話比喻</span><p>影印一張便宜了，但每份文件多印十份，月底帳單仍可能變胖。</p></div></section>
 <div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">04 · 速度與代價</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-5" hidden><div class="wrap">
 <section class="concept"><div class="concept-head"><span class="concept-num mono">09</span><h2>一張工單，如何走過兩種模型？</h2></div>
@@ -314,6 +344,10 @@
 <div class="analogy"><span class="tag">白話比喻</span><p>新同事剛接派工工作時，先對照資深同事的判斷，再逐步放手，比第一天就接管所有案件更容易發現盲點。</p></div></section>
 <div class="pagectrl"><button class="navbtn" type="button" data-dir="-1">← 上一頁</button><span class="mid mono">05 · 完整串接例子</span><button class="navbtn" type="button" data-dir="1">下一頁 →</button></div></div></div>
 <div class="pagewrap" id="page-6" hidden><div class="wrap">
+<aside class="related-read">
+  <p class="related-read-label">延伸閱讀</p>
+  <p>把流程判斷拆清楚之後，還可以把問題放大一點：能力、成本與選擇權，最後握在誰手上。可以接著看<a href="who-controls-the-ai-future.html?v=takeaways-1&amp;start=1">《AI 熱潮背後，誰掌握選擇權？》</a>。</p>
+</aside>
 <section class="concept" id="takeaways-engineer"><div class="concept-head"><span class="concept-num mono">11</span><h2>給工程師的 Takeaway</h2></div>
 <p>以下是編輯根據本文延伸的實務建議。</p>
 <p><b>先定義選項：</b>寫清楚每個類別的邊界，保留其他或資料不足的處理路徑，避免把問題定義不清誤判成模型問題。</p>
