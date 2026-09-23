@@ -1,0 +1,477 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 試用很熱絡，為什麼轉正付費常常掉一半？</title>
+<link rel="stylesheet" href="mobile-article.css?v=trial-paid-1">
+<script defer src="mobile-article.js?v=trial-paid-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--warm);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="business.html">← 白話商業 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 試用與轉正付費</span>
+    <h1 class="title">AI 試用很熱絡，為什麼轉正付費常常掉一半？</h1>
+    <p class="lede">試用區常常像週末市集：人擠在一起，對話一直往下長，計分板上的紀錄也好看。走到轉正付費那一關，隊伍卻安靜下來。標題裡的「掉一半」，是很多人形容這種落差時的口語印象。本文沒有查核行業轉換率，也不引用未查核的市場數字。要看的是兩份紀錄：試用時被記下來的行為，和付費時要做的決定。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 132" role="img" aria-label="試用計分板記點擊、對話與哇；付費決定要問誰的工作變快、誰的預算買單、怎樣算值回票價">
+        <path d="M196 66H248" stroke="var(--warm)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="16" width="188" height="100" rx="10"/>
+          <rect x="252" y="16" width="380" height="100" rx="10" stroke="var(--warm)"/>
+        </g>
+        <g font-family="Noto Sans TC" fill="var(--ink)">
+          <text x="102" y="48" text-anchor="middle" font-size="16">試用計分板</text>
+          <text x="102" y="74" text-anchor="middle" font-size="13" fill="var(--ink-soft)">點擊、對話、哇</text>
+          <text x="102" y="96" text-anchor="middle" font-size="13" fill="var(--ink-soft)">遊樂場時間</text>
+          <text x="442" y="48" text-anchor="middle" font-size="16">付費要回答的三問</text>
+          <text x="442" y="74" text-anchor="middle" font-size="13" fill="var(--warm)">誰的工作變快</text>
+          <text x="442" y="96" text-anchor="middle" font-size="13" fill="var(--warm)">誰的預算買單 · 怎樣算值回票價</text>
+        </g>
+      </svg>
+      <div class="cap">左邊在記好奇。右邊在問工作、預算，以及這次值不值得繼續付。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見產品試用與轉正實務整理的科普短文，非整理自單一節目或供應商白皮書。標題「掉一半」是口語印象，不是已查核的行業轉換率。文中不引用未查核的市場數字，也不提供轉換率保證。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">試用很吵</button>
+      <button class="tab" type="button" data-goto="2">兩種行為</button>
+      <button class="tab" type="button" data-goto="3">三塊橋板</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>試用很吵、轉正很安靜</h2>
+      </div>
+      <p>功能一開放試用，團隊很容易先看見熱絡。有人點進來，有人把對話繼續往下送，有人在群組裡留一句「哇，這個可以」。待在試用區的時間也在累積。這些紀錄都是真的。它們回答的是：有人好奇，而且願意花時間玩。</p>
+      <p>轉正付費安靜，常常是因為付費要另外做幾件試用計分板沒有在記的事。要指出誰的工作會變快，找到願意用自己預算買單的人，還要寫下怎樣才算值回票價。玩得很開心的人，和能拍板的人，常常是兩位。拍板的人若在試用結束前還沒被請到桌邊，熱絡就會停在試用區。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>茶水間的新點心，第一天會被拿光，群組也會出現好評。要把同一款點心改成每週固定採購，行政還是得問：誰真的會再吃、預算掛在哪個部門、怎樣算沒有浪費。試吃的熱鬧，還沒有填完採購單上的三行。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-trial-to-paid-dropoff/01-trial-crowd-vs-paid-gate.png" alt="左側試用區人群擁擠，大家在體驗免費玩具；右側轉正付費的結帳櫃台前只有少數人通過閘門。" width="1280" height="720" loading="lazy">
+        <figcaption>試用區人很多；轉正閘門前，隊伍安靜下來。這張圖在對比兩種現場。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <p>熱絡指標可以繼續留著。它告訴你試用區有沒有人來。付費意圖要另開一本紀錄：誰把試用用進自己的工作、誰說得出預算在哪裡、成功長什麼樣子。兩本紀錄都值得看。把它們收成同一個「很熱絡」的總分，轉正為什麼安靜就會變成一句說不清的感覺。標題那種「掉一半」的口語，往往就是從這裡來的。</p>
+      <p><b>熱絡指標與付費意圖是兩份紀錄。</b>一份在數好奇。一份在問有沒有人準備為結果負責。安靜的那一關，要回到第二份紀錄裡找，而不是把第一份的熱鬧再加總一次。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 熱絡與安靜</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>試用行為在累積好奇</h2>
+      </div>
+      <p>試用行為很好數，因為它發生在產品裡，而且當下就有訊號。點擊、對話輪次、一聲「哇」、待在遊樂場的時間，都屬於這一側。它們適合回答：這次試用有沒有被打開、有沒有人願意多試一步、哪一個示範最容易引起注意。</p>
+      <p>這些紀錄升高，代表探索在發生。探索是之後合作的種子，值得被留下來。它還沒有變成委託。委託是另一種行為：有人把自己的工作交給這個功能，並準備為結果負責。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>付費行為在問工作、預算與票價</h2>
+      </div>
+      <p>付費行為要能回答三句，而且三句都要有叫得出名字的人。</p>
+      <p><b>誰的工作變快。</b>要指出某一類任務，在試用裡真的少花了時間，或少返工一次。變快的工作最好是試用者自己每週會再做的那種。只在示範裡出現一次的驚嘆，還停在好奇。</p>
+      <p><b>誰的預算買單。</b>試用常常由想試試看的人開啟。付費要找到預算掛在誰身上：這個團隊的工具預算、某個專案的預算，或已經在付的方案裡還有沒有空間。找不到這個人，熱絡會停在「我們很喜歡」。</p>
+      <p><b>怎樣算值回票價。</b>試用結束時要有一句雙方都認得的成功：哪一項任務完成、用什麼方式檢查、做到什麼程度才值得這個團隊繼續付。這句話若留到試用結束後才補，兩邊會用當時的好心情代替驗收。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>公司開放日，入口手環在數有多少人進過展示間。採購單在問下季要不要續約。兩張紙可以同時存在。把手環數量抄進採購單的效益欄，簽名的人仍然不知道哪一項工作會變快。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-trial-to-paid-dropoff/02-two-scoreboards-behaviors.png" alt="兩塊計分板並排：左側試用行為記點擊、對話、哇與遊樂場時間；右側付費行為記重複任務、預算核准與預算負責人簽核，後者尚未發生。" width="1280" height="720" loading="lazy">
+        <figcaption>左邊記好奇，右邊記工作有沒有被交付。圖上的字是示意，不是查核過的用量或轉換率。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>一旦決定付費，價錢單位要怎麼跟一次成功任務對上，可以接著看<a href="ai-per-use-billing-miscounts.html?v=billing-miscount-1&amp;start=1">《AI 功能按次收費，為什麼常常算錯帳？》</a>。本文先停在試用怎麼接到付費決定。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 兩種行為</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>先把兩種行為分開記</h2>
+      </div>
+      <p>橋的第一塊板是測量。試用路徑繼續記點擊、對話輪次、遊樂場時間。另外開一組付費意圖事件：有人把功能用進一件真實任務、有人指出預算負責人、有人寫下成功定義、有人在試用結束前約了轉正對話。兩組事件分開看，熱絡才不會蓋過安靜的那一側。</p>
+      <p>付費意圖事件可以先不帶金額。能記下「這次試用有沒有出現這四件事」，就已經比只有一個參與度總分更接近付費決定。金額、方案與合約條件，留到這四件事有著落之後再談。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>找到具名預算，並寫下成功定義</h2>
+      </div>
+      <p>第二塊板是人。試用名單上最活躍的人，不一定是預算負責人。這週做得到的，是請試用裡最常把功能用進工作的人，指出預算在誰那裡，並約一次短談，只談兩句：哪一項工作變快了，怎樣算值回票價。公司要不要追加一整年的採購額度，不是這一步的前提。沒有叫得出名字的人，就先標成「目前還沒有人能拍板」。</p>
+      <p>成功定義要短到能放進試用頁。例如寫成：指定的每週任務有初稿，負責人簽核後才送出。任務名稱由這個團隊自己定。寫不出任務名稱的成功，還停留在「哇」。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>試用結束前就把轉正條件寫進路徑</h2>
+      </div>
+      <p>第三塊板是時間。轉正條件要在試用結束前出現在產品路徑裡。路徑上可以有一個清楚的步驟：確認工作、確認預算負責人、確認成功定義。三項都勾了，才進入付費或續用申請。缺一項，畫面就停在缺的那一項，並寫出還要找誰。</p>
+      <p>這樣安靜就有了位置。它變成三塊板裡哪一塊還沒有人走過，而不是一句「人變少了」的感覺。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="三塊橋板依序是分開記兩種行為、找到具名預算與成功定義、試用結束前寫進轉正條件">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--warm)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">先分開記：好奇，以及付費意圖</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">找到具名預算，寫下成功定義</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">試用結束前，把轉正條件寫進路徑</text>
+        </svg>
+        <div class="cap">三塊板都要在試用還開著的時候放上去。</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>展覽最後一天，攤位要決定要不要改成長期櫃位。燈關掉之後再回想人潮，三行條件已經沒有人可以當場補。撤攤前把工作、預算、怎樣算值回票價寫在櫃位旁，缺的那一行就還看得到。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-trial-to-paid-dropoff/03-bridge-three-planks.png" alt="試用島與付費島之間有三塊橋板，分別寫著誰的工作變快、誰的預算買單、怎樣算值回票價。" width="1280" height="720" loading="lazy">
+        <figcaption>三塊橋板分別是工作、預算，以及怎樣算值回票價。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>試用期間若已經有代理人在做事，看得到它完成了哪一項工作，比只數對話輪次更接近付費要的證據。可以接著看<a href="guild-ai-control-plane.html?v=progress-4&amp;start=1">《代理人中控室》</a>。</p>
+      </aside>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>轉正之後，不容易被抄走的是真實工作裡一圈圈累積的回饋。試用區的人潮本身還不是那條護城河。可以接著看<a href="ai-full-stack-moat.html?v=takeaways-1&amp;start=1">《AI 護城河不是一座牆》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 三塊橋板</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>把試用漏斗事件和付費意圖事件分開觀測。</b>點擊、對話輪次、遊樂場停留，歸在試用行為。真實任務被完成、預算負責人被指名、成功定義被寫下、轉正條件被勾選，歸在付費意圖。兩組各自留欄，不要收成同一個參與度。</p>
+      <p><b>把轉正條件寫進產品路徑。</b>試用結束前，路徑要讓人勾選：哪一項工作變快、預算負責人是誰、怎樣算值回票價。缺的項目留在畫面上，並記到這次試用。</p>
+      <p><b>為這次試用定義成功任務。</b>成功是一項具名任務被做完，而且有人願意用它作為是否續用的依據。定義寫在事件旁邊，之後才知道付費意圖事件有沒有發生。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一個正在試用的功能，列出目前看得到的事件，分成「試用行為」和「付費意圖」兩欄。若付費意圖欄是空的，補上三個事件名稱：真實任務完成、預算負責人被指名、成功定義被儲存。驗收方式：同事能指著同一份清單，說出哪一欄只代表好奇、哪一個事件才代表有人準備為結果負責。這是這週的清單試驗，不能推成轉換率。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>先問預算在誰身上，再談要不要轉正。</b>請試用裡實際把功能用進工作的人，指出預算負責人。負責人若在別的團隊，這週的行動是約到對話。這一步不代替公司決定要不要追加採購額度。</p>
+      <p><b>用一句話說怎樣算值回票價。</b>和預算負責人一起寫下：哪一項工作變快、用什麼方式檢查、做到什麼程度才值得這個團隊繼續付。寫不出檢查方式，就還停在試用好評。</p>
+      <p><b>把轉正對話放在試用結束前。</b>對話只談三件事：工作、預算、成功定義。熱絡可以留在紀錄裡。轉正條件要在試用還開著的時候寫下來。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>約試用中最常使用的一位同事，寫下三行：誰的工作變快、預算負責人姓名或「目前還沒有人能拍板」、怎樣算值回票價。驗收方式：三行都寫在試用紀錄裡，而且預算那一行要麼是具名的人，要麼明確標成尚未找到。這三行不補未經查核的轉換率或節省金額。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>試用在記好奇。付費在問誰的工作變快、誰的預算買單、怎樣算值回票價。</h3>
+        <p>熱絡可以是真的。轉正安靜的時候，先看三塊板哪一塊還沒有人走過。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯依常見產品試用與轉正實務整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。標題「掉一半」是口語印象，不是已查核的行業轉換率。文中不引用未查核的市場數字或轉換率保證。延伸閱讀連回本站姊妹篇，供對照計價單位、代理人是否做了工作，以及真實使用回饋如何累積成不容易複製的優勢。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話商業 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_trial_to_paid_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_trial_to_paid_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
