@@ -1,103 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>白話科技</title>
+<meta name="description" content="把工程與 AI 領域裡聽起來很複雜的觀念，拆解成用生活比喻就能懂的短文。白話科技的文章總目錄，持續新增中。">
+<meta property="og:title" content="白話科技">
+<meta property="og:description" content="把工程與 AI 領域裡聽起來很複雜的觀念，拆解成用生活比喻就能懂的短文。">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
+<meta name="theme-color" content="#3652CC">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="assets/shared.css">
 <style>
-  :root{
-    --bg:#EEF0F3;
-    --surface:#FFFFFF;
-    --surface-2:#F7F8FA;
-    --ink:#171C26;
-    --ink-soft:#525C6A;
-    --ink-faint:#8A93A0;
-    --accent:#3652CC;
-    --accent-soft:#DDE3FA;
-    --accent-line:#B9C4F0;
-    --warm:#DB7A34;
-    --warm-soft:#F7E2CD;
-    --line:#DCE1E7;
-    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#10141C;
-      --surface:#171D28;
-      --surface-2:#1D2431;
-      --ink:#E7EBF2;
-      --ink-soft:#A2ADBC;
-      --ink-faint:#6B7684;
-      --accent:#8298FF;
-      --accent-soft:#232B49;
-      --accent-line:#3B4576;
-      --warm:#F0975C;
-      --warm-soft:#3A2A1C;
-      --line:#28303D;
-      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#10141C;
-    --surface:#171D28;
-    --surface-2:#1D2431;
-    --ink:#E7EBF2;
-    --ink-soft:#A2ADBC;
-    --ink-faint:#6B7684;
-    --accent:#8298FF;
-    --accent-soft:#232B49;
-    --accent-line:#3B4576;
-    --warm:#F0975C;
-    --warm-soft:#3A2A1C;
-    --line:#28303D;
-    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
-  }
-
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2{
-    font-family:"Noto Serif TC",serif;
-    font-weight:900;
-    text-wrap:balance;
-    margin:0;
-    color:var(--ink);
-  }
-  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
-  .eyebrow{
-    font-family:"IBM Plex Mono",monospace;
-    font-weight:600;
-    letter-spacing:0.10em;
-    text-transform:uppercase;
-    font-size:0.72rem;
-    color:var(--accent);
-  }
-  a{ color:inherit; text-decoration:none; }
-  img{max-width:100%;}
-
-  .wrap{ max-width:760px; margin:0 auto; padding-inline:20px; }
-
-  /* ---------- HERO ---------- */
-  .hero{
-    border-bottom:1px solid var(--line);
-    padding-block:52px 34px;
-    background:var(--surface);
-  }
-  .hero .eyebrow{ display:block; margin-bottom:14px; }
-  h1.title{
-    font-size:clamp(2rem, 6vw, 2.8rem);
-    line-height:1.25;
-  }
-  .lede{
-    margin:16px 0 0;
-    font-size:1.02rem;
-    line-height:1.85;
-    color:var(--ink-soft);
-    max-width:56ch;
-  }
+  h1.title{ font-size:clamp(2rem, 6vw, 2.8rem); line-height:1.25; }
+  .lede{ max-width:56ch; }
   .meta-row{
     margin-top:22px;
     display:flex;
@@ -116,134 +36,10 @@
     background:var(--accent);
     flex:none;
   }
-
-  /* ---------- INDEX LIST ---------- */
-  .index{ padding-block:36px 60px; }
-  .index-head{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    gap:12px;
-    margin-bottom:18px;
-    padding-bottom:10px;
-    border-bottom:1px solid var(--line);
-  }
-  .index-head h2{ font-size:1rem; font-family:"IBM Plex Mono",monospace; font-weight:600; letter-spacing:0.05em; color:var(--ink-faint); text-transform:uppercase; }
-  .index-count{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
-
-  .entries{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-  }
-
-  .entry{
-    display:block;
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:20px 22px;
-    box-shadow:var(--shadow);
-    transition:border-color .15s ease, transform .15s ease;
-  }
-  .entry:hover{ border-color:var(--accent-line); transform:translateY(-1px); }
-  .entry:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-
-  .entry-top{
-    display:flex;
-    align-items:flex-start;
-    gap:16px;
-  }
-  .entry-num{
-    flex:none;
-    width:38px; height:38px;
-    border-radius:10px;
-    background:var(--accent-soft);
-    color:var(--accent);
-    font-family:"IBM Plex Mono",monospace;
-    font-weight:700;
-    font-size:0.9rem;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .entry-body{ flex:1; min-width:0; }
-  .entry-title{
-    margin:0 0 5px;
-    font-size:1.14rem;
-    font-family:"Noto Sans TC",sans-serif;
-    font-weight:700;
-    color:var(--ink);
-  }
-  .entry-desc{
-    margin:0;
-    font-size:0.92rem;
-    line-height:1.75;
-    color:var(--ink-soft);
-  }
-  .entry-foot{
-    display:flex;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:8px;
-    margin-top:14px;
-    padding-top:12px;
-    border-top:1px solid var(--line);
-  }
-  .tag{
-    font-family:"IBM Plex Mono",monospace;
-    font-size:0.7rem;
-    letter-spacing:0.04em;
-    color:var(--warm);
-    background:var(--warm-soft);
-    border-radius:999px;
-    padding:3px 10px;
-  }
-  .entry-scope{
-    font-size:0.8rem;
-    color:var(--ink-faint);
-  }
-  .entry-go{
-    margin-left:auto;
-    font-size:0.86rem;
-    font-weight:700;
-    color:var(--accent);
-    display:flex;
-    align-items:center;
-    gap:4px;
-    flex:none;
-  }
-  .entry:hover .entry-go{ gap:7px; }
-  .entry-go svg{ width:14px; height:14px; transition:transform .15s ease; }
-  .entry:hover .entry-go svg{ transform:translateX(2px); }
-
-  .upcoming{
-    margin-top:14px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:14px 18px;
-    border:1px dashed var(--line);
-    border-radius:14px;
-    color:var(--ink-faint);
-    font-size:0.86rem;
-  }
-  .upcoming .pulse{
-    flex:none;
-    width:8px; height:8px;
-    border-radius:50%;
-    background:var(--warm);
-  }
-  @media (prefers-reduced-motion: no-preference){
-    .upcoming .pulse{ animation: pulse 2s ease-in-out infinite; }
-    @keyframes pulse{ 0%,100%{ opacity:0.4; } 50%{ opacity:1; } }
-  }
-
-  footer{
-    text-align:center;
-    padding-block:20px 40px;
-    color:var(--ink-faint);
-    font-size:0.78rem;
-  }
+  .meta-row .dot-warm{ background:var(--warm); }
 </style>
+</head>
+<body>
 
 <section class="hero">
   <div class="wrap">
@@ -252,7 +48,7 @@
     <p class="lede">把工程與 AI 領域裡聽起來很複雜的觀念，拆解成用生活比喻就能懂的短文。每一篇都獨立成頁，這裡是總目錄，之後新增的文章會陸續加進來。</p>
     <div class="meta-row">
       <span class="item"><span class="dot"></span>目前收錄 3 篇</span>
-      <span class="item"><span class="dot" style="background:var(--warm)"></span>持續新增中</span>
+      <span class="item"><span class="dot dot-warm"></span>持續新增中</span>
     </div>
   </div>
 </section>
@@ -324,3 +120,6 @@
 </div>
 
 <footer>白話科技 · 把複雜的技術觀念，說成大家都聽得懂的話</footer>
+
+</body>
+</html>

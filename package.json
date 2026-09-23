@@ -1,0 +1,11 @@
+{
+  "name": "too-much-to-learn",
+  "private": true,
+  "description": "白話科技 · 靜態科技科普網站",
+  "scripts": {
+    "lint:html": "html-validate \"*.html\""
+  },
+  "devDependencies": {
+    "html-validate": "^11.16.0"
+  }
+}
