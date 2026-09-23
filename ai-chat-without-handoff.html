@@ -1,0 +1,493 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>跟 AI 聊完了，為什麼還是交不出可交接的東西？</title>
+<link rel="stylesheet" href="mobile-article.css?v=handoff-gap-1">
+<script defer src="mobile-article.js?v=handoff-gap-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 交接與產出</span>
+    <h1 class="title">跟 AI 聊完了，為什麼還是交不出可交接的東西？</h1>
+    <p class="lede">對話很熱鬧，最後卻沒有一份別人接得走、驗得過的產出。聊天視窗裡有共識、有草稿、有「我再整理一下」。下一位同事打開來，看到的仍是一段還沒落地的過程。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 120" role="img" aria-label="聊天留下過程感，要再經過驗收標準、檔案形態與誰簽名，才成為別人接得走的交接包">
+        <path d="M188 60H226 M414 60H452" stroke="var(--accent)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="24" width="180" height="72" rx="10"/>
+          <rect x="230" y="24" width="180" height="72" rx="10" stroke="var(--accent)"/>
+          <rect x="452" y="24" width="180" height="72" rx="10"/>
+        </g>
+        <g text-anchor="middle" font-family="Noto Sans TC" fill="var(--ink)">
+          <text x="98" y="56" font-size="16">聊天留下過程感</text>
+          <text x="98" y="78" font-size="13" fill="var(--ink-soft)">來回很多</text>
+          <text x="320" y="50" font-size="15">驗收標準</text>
+          <text x="320" y="70" font-size="15">檔案形態</text>
+          <text x="320" y="90" font-size="15" fill="var(--accent)">誰簽名</text>
+          <text x="542" y="56" font-size="16">可交接的產出</text>
+          <text x="542" y="78" font-size="13" fill="var(--ink-soft)">別人接得走</text>
+        </g>
+      </svg>
+      <div class="cap">過程可以很完整。別人接得走的，是放在固定地方、對得上標準、並且有人簽名的那一份。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見工程實務整理的科普短文，非整理自單一節目或供應商白皮書；文中不引用未查核的市場數字或產品保證。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">聊天很熱鬧</button>
+      <button class="tab" type="button" data-goto="2">缺口三件套</button>
+      <button class="tab" type="button" data-goto="3">收成交接包</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>聊天留下過程感，交接要的是產物</h2>
+      </div>
+      <p>一段聊得很順的對話，會讓人覺得事情有進展。問題被說清楚了，資料有人願意補，流程有人畫了簡圖，負責某個模組的人還擔保「交接起來應該沒問題」。這些句子都發生過。它們證明團隊在動，也證明模型很會接話。</p>
+      <p>下一位要接手的人需要的是另一種東西。他要打得開一份檔案，對得上「怎樣算做完」，知道這份檔案以哪一種格式放在哪裡，也知道是誰點頭說這版可以往下用。聊天紀錄可以把過程留住。交接桌上看的是那一份產物。</p>
+      <p>過程感來自來回。產物來自收束。來回越久，越容易把「我們有討論」當成「已經交出去」。模型也很會把「好的，我來整理」說得很有精神。精神留在氣泡裡。下班前仍要有人把檔案存到別人找得到的地方。</p>
+      <p>三件事常常一起缺席。<b>沒有人先寫怎樣算做完</b>，所以每個人心裡的完成長得不一樣。<b>沒有約定檔案長什麼樣子、放在哪</b>，所以最好的段落還留在對話氣泡裡。<b>沒有人簽名</b>，所以出了差錯時，責任停在「當時是模型這樣回的」。這三項補上，聊天才收得成別人接得走的東西。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>會議聊到大家都點頭，散會時桌上只剩紙杯。下一位進門，聽到的是昨天很有共識。共識若沒被裝進一份他打得開的檔案，他就得把整段會議再聽一遍，才能知道自己該從哪裡接手。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-chat-without-handoff/01-chatty-vs-empty-handoff.png" alt="左側是熱鬧的團隊聊天室，右側是空白的待交接清單與一張還沒寫上內容的紙。" width="1280" height="720" loading="lazy">
+        <figcaption>聊天室很熱鬧。待交接清單上，還是空白的那一頁。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>模型換了、同一句話開始答得不一樣，是另一條路上的問題：版本、設定與回歸。這篇處理的是模型沒換、對話也很順，桌上仍然沒有一份接得走的檔案。可以接著看<a href="when-model-upgrade-makes-product-dumb.html?v=model-drift-1&amp;start=1">《模型換代時，產品為什麼會突然變笨？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 過程感與產物</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>驗收標準：先寫怎樣算做完</h2>
+      </div>
+      <p>驗收標準是一組可以核對的句子。它回答「做到哪裡，這次才算完成」。句子要讓另一個人看著產物打勾。語氣順不順、讀起來像不像完成，留在過程裡感受就好。</p>
+      <p>寫得動的標準通常很具體。必備欄位都在。範例可以照著跑完。檔案用約定的格式打得開。還沒決定的事項被另列，沒有混進已完成的段落。也寫明哪些話不能出現，例如不得自行承諾還沒核對的日期。</p>
+      <p>「看起來可以」「再潤一下稿」會推動下一輪對話，所以它們在聊天裡很有用。驗收要的是可以打勾的句子。兩個人對同一段回答點頭，仍可能對「還缺什麼」各有一套說法。標準先寫下來，對話才有終點。</p>
+      <p>先寫標準，也改變你跟模型說話的方式。你把檢查表放在前面：完成時要有這幾項，缺任何一項就還沒做完。模型可以起草。勾選由人對著產物與標準一起做。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>檔案形態：別人要打得開、找得到</h2>
+      </div>
+      <p>檔案形態是格式加上位置。格式讓人知道用什麼打開：一份純文字規格、一張檢查表、一頁差異說明，或一份已匯出的文件。位置讓人不用在聊天紀錄裡翻。路徑要固定，檔名要看得出版本。</p>
+      <p>對話視窗是一種介面。它會被捲走、被新話題蓋過，也常常綁在某一個人的帳號裡。下一位同事沒有那串對話的權限，或沒有時間從第一則氣泡讀起，這份工作就停在原處。把同一段文字存成約定格式、放進約定路徑，交接才開始。</p>
+      <p>最小的約定可以很短。這類工作一律寫進哪個資料夾、主檔叫什麼、附檔有哪些。模型若負責起草，輸出也寫進同一條路徑。貼在回覆裡的文字可以當草稿。路徑上的那一份，才是別人接得走的檔案。</p>
+      <p>形態不清楚時，故障往往很樸素。有人收到一段很完整的說明，存成自己習慣的格式，欄位名稱換了，下一個人的工具打不開。內容還在，交接已經斷了。所以契約裡要寫格式，也要寫路徑，兩項一起留。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>誰簽名：責任要有名字</h2>
+      </div>
+      <p>簽名是一個具名的人，對一個特定版本說：這版可以讓下一個人接下去。名字可以是負責這項工作的工程師，也可以是這次討論裡被指定收尾的人。重點是事後問得著人。</p>
+      <p>模型可以起草、列點，也可以依檢查表做一份自評。簽名要由看過產物的人寫下，並附上日期與版本。自評全部打勾之後，仍要有人打開檔案本身看過，再把名字寫上。有了名字，下次問「這版誰點過頭」，答案就在檔案上。</p>
+      <p>簽名也幫團隊把「還在討論」和「已經交出去」分開。討論中的分歧留在過程紀錄，標成待確認。簽過名的那一版，才進入下一個步驟。兩種文件可以同時存在。交接以簽過名的那份為準。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="驗收標準、檔案形態、誰簽名，三項齊了才是可交接的產出">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--accent)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">驗收標準：怎樣算做完</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">檔案形態：格式、路徑、版本</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">誰簽名：具名的人與日期</text>
+        </svg>
+        <div class="cap">三項都在，這份東西才離得開對話。</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>快遞要離櫃，箱子上要有內容說明、打得開的包裝，以及寄件人的名字。少一個章，這箱就繼續留在桌上。聊天再熱鬧，也代替不了櫃檯要看的那三樣。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-chat-without-handoff/02-notes-vs-signed-artifact.png" alt="左側是仍標著待確認的過程紀錄與便利貼，右側是寫有驗收標準、規格檔案、簽名與審核通過章的確認單。" width="1280" height="720" loading="lazy">
+        <figcaption>過程紀錄可以停在待確認。驗得過的產出，要有標準、檔案與簽名。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 標準、形態、簽名</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>最小交接包長什麼樣子</h2>
+      </div>
+      <p>把一次對話收成交接包，不必先做一套大系統。最小的一份放在同一個檔案裡，五個標題就夠：</p>
+      <p><b>這次要交什麼。</b>一句話，讓沒參加對話的人知道這是哪一件工作。<b>怎樣算做完。</b>三到七條可勾選的驗收標準。<b>檔案在哪、什麼格式。</b>路徑、檔名、版本。<b>誰簽名、日期。</b>具名的人，對應這個版本。<b>還沒決定的事。</b>另列。寫進這一欄的，就維持未定；沒寫進已完成段落的，也不要假裝已經定案。</p>
+      <p>模型很適合依這五欄把對話草稿填進去。人負責刪掉聽起來完整、其實還沒核對的句子，再簽名。包要小，是為了讓它真的會被寫完。一次聊天若想同時交出完整規格、測試計畫和時程，常常每一項都停在「先這樣」。先讓一份小包離得開桌面，其餘項目明寫成下一步。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>先寫終點，再讓對話往終點走</h2>
+      </div>
+      <p>順序值得固定。先寫「怎樣算做完」，再開始長對話；若對話已經變長，就在下一輪補上這一段，並從那一輪起照著收。終點先在，後面的來回才知道哪些句子要收進檔案，哪些只是過程。</p>
+      <p>實務上可以這樣做。開聊的第一則，或你自己筆記的最上端，先放檢查表。每輪有新結論，就問這句話能不能對上某一條標準。對得上，就改檔案。對不上，就放進「還沒決定」。對話結束時，檢查表要全數勾完，或明確列出沒勾的原因。</p>
+      <p>這樣做會讓有些對話變短。變短是因為終點到了。若標準在結束後才補，團隊容易用已經發生的對話，回頭把標準寫成「反正就是這樣」。標準就失去核對的作用，只剩下事後說明。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>固定輸出路徑，讓草稿離開氣泡</h2>
+      </div>
+      <p>選一個團隊打得開的位置，當作這類工作的輸出路徑。可以是儲存庫裡的一個資料夾、共用文件裡的一個固定頁，或工單上的一個附件欄。沒參加這次聊天的人，憑路徑就找得到最新一版。</p>
+      <p>路徑上最好同時放兩樣東西，並且分開。過程紀錄保存對話摘要或會議筆記，標題寫明它是過程。交接包是另一份檔案，標題寫明版本與簽名狀態。過程可以很長。交接包保持可核對。</p>
+      <p>請模型輸出時，把路徑寫進指示：起草後寫入這個檔案，沿用這幾個標題。若工具暫時寫不進路徑，就由人在同一輪把文字存進去，再在對話裡貼上路徑。留下路徑，下一位就不必重播整段聊天。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>爐邊可以聊得很熱鬧，菜名、火候、誰負責哪一步都講過。裝盒、貼上標籤、寫上寄件人，這盒才出得了廚房。下一位拿到的是盒子，裡頭有清單和名字。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-chat-without-handoff/03-three-stamps-handoff.png" alt="桌面上三個章：驗收標準、檔案形態、誰簽名。標語寫著三個章都蓋齊了，交接包才可以離開桌面。" width="1280" height="720" loading="lazy">
+        <figcaption>三個章都蓋齊，交接包才離得開桌面。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>把判斷放進會重複執行的流程，和把一次聊天收成別人接得走的檔案，是兩件工作。流程裡做判斷 ≠ 聊天有產物。可以接著看<a href="jev-decisions-for-software.html?v=takeaways-1&amp;start=1">《Jev：讓 AI 在流程裡做判斷》</a>。</p>
+      </aside>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>交接包若寫了「這樣算對」，還要讓下一個人核對得了。怎樣知道一次判斷選對，可以接著看<a href="how-do-we-know-ai-decisions-work.html?v=takeaways-1&amp;start=1">《AI 選了往左，誰知道它選對了？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 模板、終點、路徑</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>輸出契約先寫路徑、格式與必備欄位，再開始長對話。</b>契約放在任務的固定位置：這次主檔放哪、用什麼格式、哪些欄位缺一不可。模型的起草依這份契約走，最好的段落寫進檔案，回覆裡再附上路徑。</p>
+      <p><b>驗收檢查表跟產物放在一起，結束時逐項勾。</b>每一條都要讓另一個人看著檔案判斷有或沒有。勾不了的項目留在「還沒決定」，維持未完成的狀態，並寫明還缺什麼。</p>
+      <p><b>對話到產物分成兩條路徑。</b>過程摘要可以留在聊天匯出或筆記。可交接的那一份寫入約定路徑，檔名帶版本。除錯時先打開路徑上的檔案，再決定要不要回看對話。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一個仍停在聊天視窗裡的工作，依五欄最小模板收成一份檔案：這次要交什麼、怎樣算做完、檔案路徑與格式、誰簽名、還沒決定的事。驗收方式：請一位同事只打開這份檔案，指出怎樣算做完、檔案路徑與格式、簽名是誰。三項都指得出來，這份才算本週的交接包；有任一項指不出來，就把它標成未完成。這是初步試驗，用來檢查這條管線走不走得通。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>每次聊天或會議結束前，指定誰簽名。</b>名字要是這次工作裡實際看過產物的人。沒有名字，這次討論就還停在過程，先不要排進下一步。</p>
+      <p><b>把「交得出去」定義成團隊看得到的三項：驗收標準、檔案形態、誰簽名。</b>三項寫在同一處。缺任何一項，狀態維持未完成。這個定義用在你帶的討論即可。</p>
+      <p><b>要求討論留下一份打得開的檔案，並說好放在哪。</b>過程紀錄可以留，交接以那份檔案為準。下一次有人說「我們上次聊過了」，先請他把路徑與簽名版本指給大家看。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一次即將結束的討論，結束前當場寫下三個答案：怎樣算做完、檔案放在哪裡以及什麼格式、誰簽名。驗收方式：三個答案出現在同一份團隊看得到的紀錄；答不出來的那一項標成未完成，這次維持未交接。紀錄留在團隊下次討論前找得到的地方。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>別人接得走的，是寫明怎樣算做完、放在固定路徑、並且有人簽名的那一份。</h3>
+        <p>聊天可以繼續。交接從那一份檔案離開桌面開始。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯根據常見工程實務整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。文中不引用未查核的市場數字或產品保證。延伸閱讀連回本站姊妹篇，供對照模型換代、流程裡的判斷，以及怎樣核對判斷。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話科技 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_chat_without_handoff_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_chat_without_handoff_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
