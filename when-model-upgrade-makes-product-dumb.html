@@ -1,0 +1,489 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>模型換代時，產品為什麼會突然變笨？</title>
+<link rel="stylesheet" href="mobile-article.css?v=model-drift-1">
+<script defer src="mobile-article.js?v=model-drift-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 模型版本與產品回歸</span>
+    <h1 class="title">模型換代時，產品為什麼會突然變笨？</h1>
+    <p class="lede">同一句提示、同一條工作流，某天開始答得不一樣。使用者先怪產品「變笨」，工程師把呼叫紀錄翻開，才發現模型或預設被換了。排行榜上的新款可以很亮；真正決定這條路還走不走得通的，是你的流程還認不認得路。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 120" role="img" aria-label="排行榜分數可以變高，同一句提示走同一條工作流時，產品是否還認路要另外檢查">
+        <path d="M188 60H226 M414 60H452" stroke="var(--accent)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="24" width="180" height="72" rx="10"/>
+          <rect x="230" y="24" width="180" height="72" rx="10" stroke="var(--accent)"/>
+          <rect x="452" y="24" width="180" height="72" rx="10"/>
+        </g>
+        <g text-anchor="middle" font-family="Noto Sans TC" fill="var(--ink)">
+          <text x="98" y="56" font-size="16">排行榜分數</text>
+          <text x="98" y="78" font-size="13" fill="var(--ink-soft)">可以變高</text>
+          <text x="320" y="56" font-size="16">同一句提示</text>
+          <text x="320" y="78" font-size="13" fill="var(--accent)">同一條工作流</text>
+          <text x="542" y="56" font-size="16">產品還認不認路</text>
+          <text x="542" y="78" font-size="13" fill="var(--ink-soft)">要另外檢查</text>
+        </g>
+      </svg>
+      <div class="cap">分數上升，和線上流程是否仍照舊做事，是兩件要分開看的事。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見工程實務整理的科普短文，非整理自單一節目或供應商白皮書；文中不引用未查核的市場數字或產品保證。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">同一句提示變了</button>
+      <button class="tab" type="button" data-goto="2">三層原因</button>
+      <button class="tab" type="button" data-goto="3">換代怎麼擋</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>排行榜變強，不等於你的產品變好</h2>
+      </div>
+      <p>公開評測把許多模型放在同一套題目上比較。分數變高，通常表示它在那套題上答得更好，或答得更穩。你的產品面對的是另一套題：固定欄位、固定工具、固定語氣，以及使用者已經習慣的失敗方式。</p>
+      <p>新模型可能更會寫長文、更會處理開放式問題，卻在你的工單分類裡把「退款」和「換貨」對調，或在摘要時漏掉必須原樣保留的訂單編號。對排行榜，這可能只是眾多題目裡的一小格；對這條工作流，這就是使用者覺得產品變笨的那一天。</p>
+      <p>兩件事可以同時成立：<b>模型在公開題上更強，你的流程卻變差。</b>比較之前要先寫清楚，產品依賴的是哪一種行為。是守住格式、叫對工具、拒絕編造，還是寫得更流暢。沒有這句話，團隊很容易拿別人的名次，解釋自己線上的故障。</p>
+      <p>使用者也很少先看到版本號。他們看到的是：昨天這句話會查出正確狀態，今天同一句話開始道歉、打岔，或給一個聽起來完整、其實對不上資料的答案。工程排查要從「哪一個呼叫、打到哪一個版本、帶了哪些設定」開始，而不是從「是不是模型變笨了」開始。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>店名沒換，菜單也沒改。後場換了主廚，同一道湯的鹹度、火候和擺盤都變了。客人只記得這家店，不會先去查主廚換屆；他們只會說，今天的味道不對。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/when-model-upgrade-makes-product-dumb/01-leaderboard-vs-workflow.png" alt="左側是分數很高的排行榜新車，右側是要在巷弄裡完成配送的工作流，對比公開名次與實際路線。" width="1280" height="720" loading="lazy">
+        <figcaption>排行榜新款很漂亮；你的工作流，走的是巷弄。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 排行榜與工作流</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>模型版本或供應商預設換了</h2>
+      </div>
+      <p>產品呼叫模型，常常不是寫下一個完整版本，而是寫一個「最新」，或沿用供應商介面上的預設。供應商把別名指到新的權重、帳號被調到新的部署，或某次發布改了預設模型，線上行為就會在沒有產品改版說明的情況下改變。</p>
+      <p>別名本身是為了方便。風險在於，產品把「方便跟著最新」當成「行為維持不變」。版本一換，推理方式、拒答尺度、工具呼叫的格式都可能一起動。使用者看到的是答案變了，不是版本號變了。</p>
+      <p>事後要能對上的紀錄至少包括三項：<b>實際打到的模型名稱與版本、呼叫時間、這次是人為發布還是供應商側變更。</b>少了任何一項，團隊就很難分辨是程式改了、設定改了，還是模型換了。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>系統提示、工具與溫度跟著變，或被重置</h2>
+      </div>
+      <p>就算模型版本沒動，包在外面的設定也可能被換掉。系統提示被整理過、工具清單少了一支、溫度或輸出長度在介面上被重置、安全過濾從寬改嚴，輸出都會不一樣。這些設定常常散在程式、設定檔和供應商控制台，沒有被收成同一份變更。</p>
+      <p>溫度只是其中一個旋鈕。任何會改變抽樣、工具選擇或指示優先順序的參數，都該和模型版本放在同一份紀錄裡。只鎖定模型名稱、不鎖定這些設定，生產路徑仍然會在無人審核的情況下改道。</p>
+      <p>重置特別容易發生在「先在介面上試一個新預設，再回到程式」的時候。試用當下覺得回答更順，正式環境卻沿用了較高的溫度、較短的輸出上限，或少掛了一個查詢工具。同一句提示因此走出另一條路。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>資料、評測與成功定義沒跟著跑</h2>
+      </div>
+      <p>模型或設定換了，用來判斷「這次算成功」的東西如果還停在舊印象，團隊就只能等客訴。常見的落差有三種：評測題仍是較早的展示題，沒有覆蓋現在最常被抱怨的流程；成功只留一個平均分，不留失敗長什麼樣子；公司累積的範例、修正和禁則還停在某次對話裡，沒有放進可以重跑的案例。</p>
+      <p>成功定義要寫得能核對。例如：訂單編號必須原樣保留、不得自行承諾退款天數、工具查無資料時要明講，而不是補一個聽起來合理的答案。這些句子比「回答要有幫助」更能在換代時當尺。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="模型版本、執行設定、以及資料與評測，是換代時要一起看的三層">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--accent)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">模型版本／供應商預設</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">系統提示、工具、溫度等設定</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">資料、評測與成功定義</text>
+        </svg>
+        <div class="cap">上面兩層一動，下面這把尺沒有跟著更新，差異就會先出現在使用者身上。</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>配方從第三版換成第四版，鹽、火候和出菜順序都改了，菜單上仍寫同一道湯。湯端上桌，看起來像同一道菜，喝一口才知道不是。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/when-model-upgrade-makes-product-dumb/02-chef-recipe-version.png" alt="菜單名稱沒有改，廚房配方從舊版換成新版，客人仍以為端上來的是同一道菜。" width="1280" height="720" loading="lazy">
+        <figcaption>菜單沒改，配方換了；客人以為是同一道菜。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>模型可以換，公司累積的判斷不該只鎖在某一顆模型裡。記憶、評測和替換權要留在產品這一側，可以接著看<a href="dont-rent-your-ai-brain.html?v=rent-meme-1&amp;start=1">《別把公司的記憶租給一顆模型》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 版本、設定與評測</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>把版本釘死，當成變更管理的一部分</h2>
+      </div>
+      <p>釘版本，是讓生產路徑明確寫下要用哪一個模型版本，以及哪一組關鍵設定，而不是沿用供應商當下標成最新的預設。它和軟體鎖定依賴版本是同一類動作。它不表示永遠不升級，而是把升級變成一次可審核的變更：誰提出、影響哪幾條流程、用什麼案例看過、誰核准。</p>
+      <p>新模型可以先在旁邊跑同一批案例，確認你在意的失敗類型沒有增加，再決定是否切換。沒有這一步，釘版本只是把意外延後，生產路徑仍可能在下一次「順便更新」時改道。</p>
+      <p>審核時要看的是實際會被呼叫的那一組值，包含模型版本、系統提示版本、工具清單，以及會改變輸出的參數。介面上顯示的產品名稱，不足以代表這次線上會怎麼回答。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>回歸評測集：固定案例，記失敗類型，不只記分數</h2>
+      </div>
+      <p>準備一小批不會每次重抽的案例。案例來自真實抱怨或真實工單的脫敏版本，並寫下當時可接受的輸出長什麼樣、不可接受的輸出長什麼樣。每次模型或設定變更，都重跑這一批。</p>
+      <p>平均分可以上升，同時某一類失敗變多。紀錄至少分成幾欄：案例編號、預期要守住的要點、這次是否守住、失敗屬於哪一類。常見類型包括漏欄位、編造、工具沒用、語氣越界、拒答過度。分數是摘要，失敗類型才是修得到的線索。</p>
+      <p>這份表不需要一開始就覆蓋全部產品。先覆蓋最常被抱怨、而且結果能由人判讀的那一條流程。案例集本身也要有人維護：流程改了，預期輸出和失敗類型要一起改，否則表會漸漸量到已經不存在的工作。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>換代流程要有說明、回滾與退化門檻</h2>
+      </div>
+      <p>換代前寫短說明：從哪一組版本與設定，換成哪一組；影響哪些功能；哪些失敗類型若增加就不放行。換代後保留回到上一組已知良好設定的做法，而且要在出問題時用得上，不是只寫在文件裡。</p>
+      <p>事先約定什麼叫可接受的退化。例如某一類漏欄位從原本守住，變成多次守不住，就先退回，而不是等客訴累積。也約定什麼情況改由人接手：模型拒答、工具失敗，或案例集顯示這條流程已超出門檻。門檻用自己的案例來寫，不借用公開排行榜的名次。</p>
+      <p>回滾要回到整組已知良好的設定，而不是只把模型名稱改回去、把溫度或工具清單留在新的狀態。否則團隊會以為已經恢復，線上仍走著另一條路。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>廚房牆上的金牌很亮，說明這道菜曾經在比賽裡贏過。每天出餐前，還是得看回歸表：這批湯的鹹度、溫度、有沒有漏料，表上有沒有打叉。獎盃不能代替那張表。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/when-model-upgrade-makes-product-dumb/03-regression-not-leaderboard.png" alt="左側是發亮的排行榜金牌，右側是廚房回歸表上打了叉的檢查項目，對比獎項與每天要守住的失敗。" width="1280" height="720" loading="lazy">
+        <figcaption>排行榜金牌很亮；回歸表上的叉叉，才關你的產品痛處。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>回歸表能指出這次哪裡倒了。若判斷要放進會重複執行的流程，而且每次都能核對，可以接著看<a href="jev-decisions-for-software.html?v=jev-meme-1&amp;start=1">《Jev：讓 AI 在流程裡做判斷》</a>。</p>
+      </aside>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>流程選了往左之後，還要問你怎麼知道它選對。固定案例與失敗類型，就是把「怎麼知道它選對」寫成可以重跑的檢查。可以接著看<a href="how-do-we-know-ai-decisions-work.html?v=takeaways-1&amp;start=1">《AI 選了往左，誰知道它選對了？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 釘版本與回歸</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>生產路徑釘死模型版本與關鍵設定，變更走審核。</b>把線上實際呼叫的模型版本、系統提示版本、工具清單，以及會改變輸出的參數，收成同一份可審核的設定。變更要有人看過影響範圍再上，避免由介面上的預設直接換成新的一組。</p>
+      <p><b>維護小型回歸集，記錄失敗類型，不只記錄平均分。</b>為最在意的流程留下固定案例，每次變更重跑，並把失敗分成可命名的類型。平均分只作摘要，不拿來代替失敗清單。</p>
+      <p><b>換代時保留回到上一組已知良好設定的做法。</b>上一組模型版本與關鍵設定要能在短時間內恢復，而且恢復的是整組，不是只改回模型名稱。回滾屬於變更流程，要在放行前確認它真的能執行。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>挑一條最常被抱怨的流程，固定提示與工具，對舊預設與新預設各跑約 20 筆。約 20 筆是建議的試驗規模，不是測量出來的必要樣本數。輸出一張失敗類型表。驗收方式：每一筆都有案例編號、是否守住要點、失敗類型；你能用這張表向同事說明差異，而不是只報一個平均分。這是初步試驗，不能推廣成所有產品的結論。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>把模型換代當成產品變更，先問影響範圍與負責人。</b>升級不是順手換成一個分數更高的模型。先問會碰到哪些線上功能、誰負責看案例、誰有權核准。沒有負責人的變更，先不要進生產路徑。</p>
+      <p><b>事先約定可接受的品質退化門檻，以及改由人接手的條件。</b>和負責這條流程的工程師一起寫下：哪一類失敗變多就要停下，什麼情況改由人處理。門檻用自己的流程語言寫，不借用排行榜名次。</p>
+      <p><b>要求示範附帶版本、日期與案例集，才算完整報告。</b>只看一段順暢的回答，看不出換代之後還穩不穩。完整報告要能指出當時的模型版本與關鍵設定、執行日期，以及用了哪一批案例。缺任一項，先補齊再決定要不要擴大。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一個已經在線上的 AI 功能，問三件事：目前模型版本誰能改、上週是否有人在未經說明的情況下變更、出問題時誰收尾。驗收方式：三個問題都有具名回答，或被明確記成「目前沒有人負責」。把回答留在團隊看得到的地方，供下一次換代前對照。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>模型會換代；產品要記得自己的路怎麼走。</h3>
+        <p>排行榜可以更新。生產路徑上的版本、設定、案例與回滾，要留在團隊自己核對得到的地方。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯依常見工程實務整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。文中不引用未查核的市場數字或產品保證。延伸閱讀連回本站姊妹篇，供對照記憶、流程判斷與決策驗證。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話科技 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('model_upgrade_drift_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('model_upgrade_drift_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
