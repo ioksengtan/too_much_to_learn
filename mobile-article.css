@@ -1,3 +1,63 @@
+/* Shared explainer cards. Other articles can reuse these classes.
+   Colors come from each page's existing tokens, including dark mode. */
+figure.meme-panel{
+  margin:22px 0 18px;
+  padding:12px 12px 14px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+}
+figure.meme-panel img{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  border-radius:10px;
+  background:var(--surface-2);
+}
+figure.meme-panel figcaption{
+  margin:12px 4px 0;
+  color:var(--ink);
+  font-size:0.95rem;
+  font-weight:500;
+  line-height:1.7;
+}
+figure.meme-panel p.meme-credit{
+  margin:6px 4px 0;
+  color:var(--ink-faint);
+  font-size:0.78rem;
+  font-weight:400;
+  line-height:1.55;
+}
+aside.related-read{
+  margin:20px 0 6px;
+  padding:14px 16px;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-left:3px solid var(--accent);
+  border-radius:0 12px 12px 0;
+  box-shadow:var(--shadow);
+}
+.wrap > aside.related-read:first-child{ margin-top:36px; }
+aside.related-read p{
+  margin:0;
+  color:var(--ink-soft);
+  font-size:0.95rem;
+  font-weight:500;
+  line-height:1.75;
+}
+aside.related-read p.related-read-label{
+  margin:0 0 6px;
+  color:var(--accent);
+  font-family:"IBM Plex Mono", ui-monospace, monospace;
+  font-size:0.72rem;
+  font-weight:600;
+  letter-spacing:0.08em;
+  line-height:1.4;
+}
+aside.related-read a{ font-weight:700; }
+
 @media (max-width: 600px) {
   html { font-size: 18px; }
   body { font-size: 1rem; -webkit-text-size-adjust: 100%; overscroll-behavior-y: none; }
@@ -40,4 +100,11 @@
   .mid { max-width: 32%; font-size: .72rem !important; }
   .closing, .closing-panel { padding: 24px 20px !important; }
   .source, .source-note, footer { font-size: 16px !important; }
+  figure.meme-panel { margin: 20px 0 16px !important; padding: 12px 12px 14px !important; }
+  figure.meme-panel figcaption { margin: 12px 2px 0 !important; font-size: 17px !important; font-weight: 500 !important; line-height: 1.65 !important; }
+  figure.meme-panel p.meme-credit { margin: 6px 2px 0 !important; color: var(--ink-faint) !important; font-size: 14px !important; font-weight: 400 !important; line-height: 1.5 !important; }
+  aside.related-read { margin: 18px 0 4px !important; padding: 16px !important; }
+  .wrap > aside.related-read:first-child { margin-top: 28px !important; }
+  aside.related-read p { margin: 0 !important; color: var(--ink) !important; font-size: 18px !important; font-weight: 500 !important; line-height: 1.7 !important; }
+  aside.related-read p.related-read-label { margin: 0 0 6px !important; color: var(--accent) !important; font-size: 0.78rem !important; font-weight: 600 !important; letter-spacing: 0.08em !important; line-height: 1.4 !important; }
 }
