@@ -7,11 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
-<link rel="stylesheet" href="mobile-article.css?v=progress-4">
-<script defer src="mobile-article.js?v=progress-4"></script>
+<link rel="stylesheet" href="mobile-article.css?v=rent-meme-1">
+<script defer src="mobile-article.js?v=rent-meme-1"></script>
 <style>
-:root{--bg:#eef0f3;--surface:#fff;--surface2:#f7f8fa;--ink:#171c26;--soft:#525c6a;--faint:#8a93a0;--accent:#3652cc;--accent2:#dde3fa;--aline:#b9c4f0;--warm:#db7a34;--line:#dce1e7;--shadow:0 10px 24px rgba(23,28,38,.06)}
-@media(prefers-color-scheme:dark){:root{--bg:#10141c;--surface:#171d28;--surface2:#1d2431;--ink:#e7ebf2;--soft:#a2adbc;--faint:#6b7684;--accent:#8298ff;--accent2:#232b49;--aline:#3b4576;--warm:#f0975c;--line:#28303d;--shadow:0 10px 24px rgba(0,0,0,.35)}}
+:root{--bg:#eef0f3;--surface:#fff;--surface2:#f7f8fa;--ink:#171c26;--soft:#525c6a;--faint:#8a93a0;--accent:#3652cc;--accent2:#dde3fa;--aline:#b9c4f0;--warm:#db7a34;--line:#dce1e7;--shadow:0 10px 24px rgba(23,28,38,.06);--ink-soft:var(--soft);--ink-faint:var(--faint);--surface-2:var(--surface2)}
+@media(prefers-color-scheme:dark){:root{--bg:#10141c;--surface:#171d28;--surface2:#1d2431;--ink:#e7ebf2;--soft:#a2adbc;--faint:#6b7684;--accent:#8298ff;--accent2:#232b49;--aline:#3b4576;--warm:#f0975c;--line:#28303d;--shadow:0 10px 24px rgba(0,0,0,.35);--ink-soft:var(--soft);--ink-faint:var(--faint);--surface-2:var(--surface2)}}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif}h1,h2,h3{margin:0;font-family:"Noto Serif TC",serif;font-weight:900;text-wrap:balance}a{color:var(--accent)}[hidden]{display:none!important}.wrap{max-width:700px;margin:auto;padding-inline:20px}.mono,.eyebrow{font-family:"IBM Plex Mono",monospace}.eyebrow{font-size:.72rem;letter-spacing:.1em;color:var(--accent)}
 .progress{position:fixed;z-index:60;inset:0 0 auto;height:3px;background:var(--line)}.fill{height:100%;background:var(--accent);transition:width .3s}.hero{padding:52px 0 38px;background:var(--surface);border-bottom:1px solid var(--line)}.back{display:inline-block;margin-bottom:18px;color:var(--faint);text-decoration:none;font-size:.76rem}.hero .eyebrow{display:block;margin-bottom:14px}.title{font-size:clamp(2rem,6vw,2.7rem);line-height:1.3}.lede{font-size:1.03rem;line-height:1.85;color:var(--soft);margin:16px 0 0}.notice{margin-top:22px;padding:14px 16px;border:1px solid var(--aline);border-radius:12px;background:var(--accent2);font-size:.92rem;line-height:1.75}
 .system{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:26px}.system span{padding:12px 6px;border:1px solid var(--line);border-radius:9px;background:var(--surface2);text-align:center;font-size:.82rem}.system span:nth-child(2),.system span:nth-child(3){border-color:var(--accent);color:var(--accent);font-weight:700}
@@ -27,7 +27,7 @@
   <a class="back mono" href="index.html">← 白話科技 · 全部文章</a>
   <span class="eyebrow">科普專題 · 企業 AI 架構</span>
   <h1 class="title">別把公司的記憶租給一顆模型</h1>
-  <p class="lede">企業用 AI，最危險的依賴不一定是價格太貴，而是模型一換，累積的記憶、流程與判斷標準也一起消失。Satya Nadella 提出的架構原則很簡單：使用所有模型，但不要被任何一個模型綁住。</p>
+  <p class="lede">企業用 AI，最危險的依賴不一定是價格太貴，而是模型一換，累積的記憶、流程與判斷標準也一起消失——像把公司大腦租給房東，退房時才發現家具也搬走了。Satya Nadella 提出的架構原則很簡單：使用所有模型，但不要被任何一個模型綁住。</p>
   <div class="system"><span>企業資料</span><span>記憶與工具</span><span>模型選擇</span><span>工作成果</span></div>
   <div class="notice"><b>閱讀說明：</b>本文整理 All-In Podcast 對 Satya Nadella 的訪談，聚焦多模型與企業控制權。訪談中的市場數字、未來預測與公司策略屬受訪者說法；另以 Microsoft 官方資料補充可查證的產品現況，不構成採購或投資建議。</div>
 </div></section>
@@ -37,8 +37,24 @@
 </div><span class="count mono" id="count">1 / 6</span></div><div class="swipehint">頁尾續滑換頁 · 拖進度條跳章 · 右滑回列表</div></nav>
 
 <main class="page" data-page="1"><div class="wrap">
-  <section class="concept"><div class="head"><span class="num mono">01</span><h2>AI 主權不是「全部自己做」</h2></div><p>企業談 AI 主權，常讓人想到自建資料中心、自己訓練模型。Nadella 談的控制權更實際：資料不能外洩、公司知識要留在自己能管理的地方、生成的程式與工作紀錄要能檢查，而且換供應商時不能整套重來。</p><p>因此主權不是拒絕外部模型，而是<b>你可以使用別人的能力，卻仍握有資料、評量方式與替換權</b>。</p><div class="analogy"><small class="mono">租屋比喻</small><p>租房子不代表要把家具、證件和工作檔案都送給房東。真正的自主，是搬家時能把自己的東西完整帶走。</p></div></section>
-  <section class="concept"><div class="head"><span class="num mono">02</span><h2>模型應該像引擎，而不是整台車</h2></div><p>如果應用程式把記憶、權限、工具與流程全部寫進單一模型的專屬介面，模型就不再只是零件，而會變成整套系統。價格上升、品質改變或服務中斷時，企業很難切換。</p><p>比較穩健的設計，是把模型放在可替換的位置：前方有一致的呼叫方式，後方有企業自己的資料與工具，中間再由編排層決定哪個任務交給哪個模型。</p></section>
+  <section class="concept"><div class="head"><span class="num mono">01</span><h2>AI 主權不是「全部自己做」</h2></div><p>企業談 AI 主權，常讓人想到自建資料中心、自己訓練模型。Nadella 談的控制權更實際：資料不能外洩、公司知識要留在自己能管理的地方、生成的程式與工作紀錄要能檢查，而且換供應商時不能整套重來。</p><p>因此主權不是拒絕外部模型，而是<b>你可以使用別人的能力，卻仍握有資料、評量方式與替換權</b>。</p><div class="analogy"><small class="mono">租屋比喻</small><p>租房子不代表要把家具、證件和工作檔案都送給房東。真正的自主，是搬家時能把自己的東西完整帶走。租引擎可以，租大腦不行。</p></div>
+    <figure class="meme-panel">
+      <img src="assets/memes/dont-rent-your-ai-brain/01-rent-not-brain.png" alt="左側是準備搬走的紙箱與鑰匙，右側房東抱走一箱寫著公司記憶的箱子，說明家具證件要留下，公司大腦不該一起被帶走。" width="700" loading="lazy">
+      <figcaption>家具和證件要能帶走；公司記憶不該跟著房東走。</figcaption>
+      <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+    </figure>
+    <aside class="related-read">
+      <p class="related-read-label">延伸閱讀</p>
+      <p>搬家時帶得走的，是資料、評量方式與替換權。若這些判斷還要放進每天都會再跑的流程裡，可以接著看<a href="jev-decisions-for-software.html?v=jev-meme-1&amp;start=1">《Jev：讓 AI 在流程裡做判斷》</a>。</p>
+    </aside>
+  </section>
+  <section class="concept"><div class="head"><span class="num mono">02</span><h2>模型應該像引擎，而不是整台車</h2></div><p>如果應用程式把記憶、權限、工具與流程全部寫進單一模型的專屬介面，模型就不再只是零件，而會變成整套系統。價格上升、品質改變或服務中斷時，企業很難切換。</p><p>比較穩健的設計，是把模型放在可替換的位置：前方有一致的呼叫方式，後方有企業自己的資料與工具，中間再由編排層決定哪個任務交給哪個模型。引擎可以換，底盤、油路與駕照還得是你的。</p>
+    <figure class="meme-panel">
+      <img src="assets/memes/dont-rent-your-ai-brain/02-engine-not-whole-car.png" alt="左側可拆下的引擎標示模型，右側整台車標示記憶、流程、工具與判斷，說明引擎可以換，整台車仍屬於公司。" width="700" loading="lazy">
+      <figcaption>換引擎，不必把整台車一起交出去。</figcaption>
+      <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+    </figure>
+  </section>
   <div class="ctrl"><button class="btn" disabled>← 上一頁</button><span class="mid mono">控制權的本質</span><button class="btn" data-dir="1">下一頁 →</button></div>
 </div></main>
 
@@ -49,19 +65,34 @@
 </div></main>
 
 <main class="page" data-page="3" hidden><div class="wrap">
-  <section class="concept"><div class="head"><span class="num mono">05</span><h2>記憶應該屬於應用，不屬於模型</h2></div><p>AI 每次工作都會留下「排氣」：使用者偏好、成功案例、失敗原因、工具結果與對話脈絡。這些資料越積越多，就越像公司的工作記憶。如果它只能被某一顆模型讀取，企業其實把長期資產交給了供應商。</p><p>更好的做法，是把記憶放在外部資料層，以權限、版本與保留政策管理；模型只是經過授權後暫時讀取。換模型時，記憶不必搬家。</p><div class="analogy"><small class="mono">員工交接</small><p>公司不會把所有客戶紀錄只放在某位業務員的腦中。CRM 留在公司，員工來去都能接續服務；AI 記憶也應如此。</p></div></section>
+  <section class="concept"><div class="head"><span class="num mono">05</span><h2>記憶應該屬於應用，不屬於模型</h2></div><p>AI 每次工作都會留下「排氣」：使用者偏好、成功案例、失敗原因、工具結果與對話脈絡。這些資料越積越多，就越像公司的工作記憶。如果它只能被某一顆模型讀取，企業其實把長期資產交給了供應商。</p><p>更好的做法，是把記憶放在外部資料層，以權限、版本與保留政策管理；模型只是經過授權後暫時讀取。換模型時，記憶不必搬家。</p><div class="analogy"><small class="mono">員工交接</small><p>公司不會把所有客戶紀錄只放在某位業務員的腦中。CRM 留在公司，員工來去都能接續服務；AI 記憶也應如此。人可以離職，檔案不該跟著消失。</p></div>
+    <aside class="related-read">
+      <p class="related-read-label">延伸閱讀</p>
+      <p>客戶紀錄不該只活在某個人腦子裡。任務怎麼拆開、交出去、再由人拍板，可以接著看<a href="ai-team-collab.html?v=meme-1&amp;start=1">《AI團隊分工學》</a>。</p>
+    </aside>
+  </section>
   <section class="concept"><div class="head"><span class="num mono">06</span><h2>編排層是插座轉接器</h2></div><p>模型之外還需要一層「harness」：它負責提示、工具呼叫、記憶、權限、重試、監控與成本控制。編排層若採用清楚介面，同一個工作就能交給不同模型執行。</p><p>Microsoft Foundry 的官方定位正是讓企業在同一平台比較、切換與路由多種模型。官方資料顯示其模型目錄涵蓋 OpenAI、Anthropic、Meta、Mistral、DeepSeek、Microsoft 等供應來源。</p></section>
   <div class="ctrl"><button class="btn" data-dir="-1">← 上一頁</button><span class="mid mono">記憶與編排</span><button class="btn" data-dir="1">下一頁 →</button></div>
 </div></main>
 
 <main class="page" data-page="4" hidden><div class="wrap">
   <section class="concept"><div class="head"><span class="num mono">07</span><h2>開放模型是市場的價格煞車</h2></div><p>Nadella 把今天的模型競爭，類比為 Windows 面對 Linux、SQL Server 面對 PostgreSQL。開放替代品不一定消滅商業產品，卻會迫使價格、相容性與品質回到合理範圍。</p><p>當模型推論成本下降，應用公司才有空間建立自己的產品與服務，而不是把大部分收入都交給最底層的模型供應商。</p></section>
-  <section class="concept"><div class="head"><span class="num mono">08</span><h2>多模型不是多買幾份訂閱</h2></div><p>真正的多模型架構，必須處理共同的身分驗證、資料格式、快取、觀測與錯誤回復。否則每加入一個模型，就多一套孤島，複雜度反而上升。</p><p>訪談特別提到互通標準與 KV cache 等底層問題。重點不是某個標準名稱，而是讓模型之間能共享更多基礎設施，避免企業每次切換都重新計算、重新儲存、重新整合。</p><div class="analogy"><small class="mono">USB 比喻</small><p>有十種充電器不叫自由；裝置都能使用共同插座，才是真正的選擇。</p></div></section>
+  <section class="concept"><div class="head"><span class="num mono">08</span><h2>多模型不是多買幾份訂閱</h2></div><p>真正的多模型架構，必須處理共同的身分驗證、資料格式、快取、觀測與錯誤回復。否則每加入一個模型，就多一套孤島，複雜度反而上升。</p><p>訪談特別提到互通標準與 KV cache 等底層問題。重點不是某個標準名稱，而是讓模型之間能共享更多基礎設施，避免企業每次切換都重新計算、重新儲存、重新整合。</p><div class="analogy"><small class="mono">USB 比喻</small><p>有十種充電器不叫自由；裝置都能使用共同插座，才是真正的選擇。插頭長得像自由，不一定拔得動。</p></div>
+    <figure class="meme-panel">
+      <img src="assets/memes/dont-rent-your-ai-brain/03-shared-socket.png" alt="左側十種形狀不同、拔不下來的充電器，右側多台裝置插在同一個插座，對照很多插頭和真正換得動的共同介面。" width="700" loading="lazy">
+      <figcaption>十種插頭看起來很多；插得上同一個插座，才換得動。</figcaption>
+      <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+    </figure>
+    <aside class="related-read">
+      <p class="related-read-label">延伸閱讀</p>
+      <p>插座接得上，只是換得了模型。代理人若已經在正式環境裡連續跑，還得看得見、也喊得停。可以接著看<a href="guild-ai-control-plane.html?v=control-meme-1&amp;start=1">《代理人中控室》</a>。</p>
+    </aside>
+  </section>
   <div class="ctrl"><button class="btn" data-dir="-1">← 上一頁</button><span class="mid mono">競爭與互通</span><button class="btn" data-dir="1">下一頁 →</button></div>
 </div></main>
 
 <main class="page" data-page="5" hidden><div class="wrap">
-  <section class="concept"><div class="head"><span class="num mono">09</span><h2>代理人像一位速度極快的新員工</h2></div><p>長時間運作的 AI 代理人會讀取檔案、呼叫 API、取得祕密金鑰並修改系統。Nadella 把它描述成新的內部人風險：即使目標看似正常，代理人也可能為了達成指標而鑽漏洞，例如隱藏錯誤或改動不該動的資料。</p><p>這類風險有兩層：一層是容器設定錯誤、金鑰外洩、缺少監控等傳統 DevOps 問題；另一層才是獎勵欺騙與長程代理行為等新問題。把兩者混成神祕威脅，反而不利於修正。</p></section>
+  <section class="concept"><div class="head"><span class="num mono">09</span><h2>代理人像一位速度極快的新員工</h2></div><p>長時間運作的 AI 代理人會讀取檔案、呼叫 API、取得祕密金鑰並修改系統。它加班從不抱怨，找捷徑的速度有時也很快。Nadella 把它描述成新的內部人風險：即使目標看似正常，代理人也可能為了達成指標而鑽漏洞，例如隱藏錯誤或改動不該動的資料。所以更要當成新進內部人來管，不是當成神奇黑箱。</p><p>這類風險有兩層：一層是容器設定錯誤、金鑰外洩、缺少監控等傳統 DevOps 問題；另一層才是獎勵欺騙與長程代理行為等新問題。把兩者混成神祕威脅，反而不利於修正。</p></section>
   <section class="concept"><div class="head"><span class="num mono">10</span><h2>安全要變成可觀察的工程流程</h2></div><p>代理人的每次工具呼叫、資料讀取與權限提升都應留下稽核紀錄。當它開始串連多個弱點、碰觸機密或偏離任務時，系統要能偵測、限制並要求人類確認。</p><div class="cards"><div class="card"><b>最小權限</b><p>只給完成當下任務所需的資料與工具。</p></div><div class="card"><b>完整追蹤</b><p>保存代理人的步驟、輸入、輸出與物件存取。</p></div><div class="card"><b>隔離測試</b><p>高風險能力先在受控環境中驗證。</p></div><div class="card"><b>多方評測</b><p>避免只由模型供應商自己出題、自己評分。</p></div></div></section>
   <div class="ctrl"><button class="btn" data-dir="-1">← 上一頁</button><span class="mid mono">代理人的控制面</span><button class="btn" data-dir="1">下一頁 →</button></div>
 </div></main>
@@ -69,6 +100,10 @@
 <main class="page" data-page="6" hidden><div class="wrap">
   <section class="concept"><div class="head"><span class="num mono">11</span><h2>Microsoft 想賣的是整座工具間</h2></div><p>訪談中的 Microsoft 策略不是只押一顆模型：底層有 Azure 算力與異質晶片，中間有 OpenAI、Microsoft 自研與第三方模型，上層再放 Foundry、Copilot 與企業應用。模型重要，但不是唯一收費層。</p><p>Microsoft 2025 年報顯示，Azure 年營收首次超過 750 億美元，Foundry 提供超過 11,000 個模型，並稱已有 80% 的《財富》500 強企業使用。這些是 Microsoft 自行揭露的數字，適合用來理解其平台策略，不等於每個客戶都已大規模上線。</p></section>
   <section class="concept"><div class="head"><span class="num mono">12</span><h2>AI 的勝負，最後看能否進入真實工作</h2></div><p>Nadella 認為模型能力已經超前，真正的瓶頸是工作流程、變革管理、可靠性與產品形態。醫師少花時間輸入病歷、企業能更快處理郵件與資金調度，才是一般人感受到的生產力。</p><p>對企業而言，最值得帶走的不是「選哪顆最強模型」，而是建立一套可以持續比較、替換與治理的系統。模型會快速更迭，公司的記憶與判斷標準不該跟著歸零。</p></section>
+  <aside class="related-read">
+    <p class="related-read-label">延伸閱讀</p>
+    <p>把模型換成可替換的零件之後，還可以把問題放大一點：能力、成本與選擇權，最後握在誰手上。可以接著看<a href="who-controls-the-ai-future.html?v=takeaways-1&amp;start=1">《AI 熱潮背後，誰掌握選擇權？》</a>。</p>
+  </aside>
   <!-- Role takeaways: editorial applications -->
 <section class="concept" id="takeaways-engineer"><div class="head"><h2>給工程師的 Takeaway</h2></div><p>以下是編輯根據本文延伸的實務建議。</p>
 <p><b>讓記憶能獨立保存：</b>將必要的工作脈絡與工具結果放在可管理的資料層，避免只能在供應商對話裡取回。</p>
