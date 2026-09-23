@@ -1,0 +1,488 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 功能按次收費，為什麼常常算錯帳？</title>
+<link rel="stylesheet" href="mobile-article.css?v=billing-miscount-1">
+<script defer src="mobile-article.js?v=billing-miscount-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--warm);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="business.html">← 白話商業 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 定價與成本單位</span>
+    <h1 class="title">AI 功能按次收費，為什麼常常算錯帳？</h1>
+    <p class="lede">使用者以為自己在買一次回答。公司實際在賣的，是一段長度不固定、中間還可能重試的算力。功能上線時很好講；月底帳單比預期多一截時，問題常常不在模型夠不夠強，而在「一次」這個字，兩邊根本不是同一把尺。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 120" role="img" aria-label="一次按鈕、實際算力長度，以及重試與工具迴圈，是三件要分開看的事">
+        <path d="M188 60H226 M414 60H452" stroke="var(--warm)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="24" width="180" height="72" rx="10"/>
+          <rect x="230" y="24" width="180" height="72" rx="10" stroke="var(--warm)"/>
+          <rect x="452" y="24" width="180" height="72" rx="10"/>
+        </g>
+        <g text-anchor="middle" font-family="Noto Sans TC" fill="var(--ink)">
+          <text x="98" y="56" font-size="16">一次按鈕</text>
+          <text x="98" y="78" font-size="13" fill="var(--ink-soft)">使用者看見的</text>
+          <text x="320" y="56" font-size="16">算力長度</text>
+          <text x="320" y="78" font-size="13" fill="var(--warm)">可長可短</text>
+          <text x="542" y="56" font-size="16">重試與工具</text>
+          <text x="542" y="78" font-size="13" fill="var(--ink-soft)">可能再跑一圈</text>
+        </g>
+      </svg>
+      <div class="cap">按鈕按了一次，不表示這次任務只燒了一段固定的算力。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見產品定價與成本實務整理的科普短文，非整理自單一節目或供應商白皮書；文中不引用未查核的市場數字或產品保證。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">按次卻嚇一跳</button>
+      <button class="tab" type="button" data-goto="2">三本帳對不齊</button>
+      <button class="tab" type="button" data-goto="3">怎麼少算錯</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>按次看起來公平，帳單卻嚇一跳</h2>
+      </div>
+      <p>功能上線的時候，團隊通常忙著看示範順不順、按鈕好不好按。定價也好講：一次多少，或這個月先送一段次數。熱鬧退下去，月底帳單比預期多一截。第一個被叫來的解釋，常常是模型不夠強，或使用者太會問。比較常先失準的，是計價單位。</p>
+      <p>使用者心裡的商品是一次回答。他按送出，等一個能用的結果，並覺得這次的價錢應該跟別人的一次差不多。公司賣出去的，卻是一段長度不固定的算力：上下文可長可短，失敗可以重試，工具可以連著叫，代理人還可以自己再跑一圈。這些都不一定會再請使用者按第二次。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>自助餐收一人一票，聽起來很公平。票根一樣多，廚房卻發現有人只夾了一盤沙拉，有人把整桌熱食、甜點和湯都端回座位，還回去補了第二輪。票是按人收的，菜是按桌消失的。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-per-use-billing-miscounts/01-buffet-ticket-vs-table.png" alt="左側自助餐櫃檯收一人一票，右側有人把整桌菜端走，對比票根與實際取用量。" width="1280" height="720" loading="lazy">
+        <figcaption>一人一票很整齊；整桌被夾走，廚房的帳就不整齊。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <p>所以票根對得上人數，對不上廚房少掉的菜。按次收費若只數按鈕，也會遇到同一種月底：次數看起來正常，成本卻比次數長。</p>
+      <p>把「一次」拆開看，顧客、供應商和模型用的常常不是同一單位。對顧客，一次是一個完成的意圖：問完、查完，或產出一份能用的東西。對供應商，帳單上的一行可能是請求、token、工具呼叫或算力時間，而且一次按鈕可以對上好幾行。對模型那一側，長度來自它這次讀進去多少、生成多少，以及中間被叫起來幾次。</p>
+      <p>四種加長，都可能發生在使用者以為只有一次的那段時間裡。<b>重試</b>是第一次格式不對、逾時或被判斷為失敗，程式自動再問。<b>工具呼叫</b>是為了完成一件事，去查資料、做計算、再把結果寫回來，每一步都可能再打一次模型。<b>長上下文</b>是同樣的問題，有人只帶一句話，有人把整段對話或整份文件塞進來，按鈕次數一樣，讀進去的長度不一樣。<b>代理人迴圈</b>是目標還沒完成，它就繼續規劃、執行、檢查；圈數跟著任務走，不跟著按鈕走。</p>
+      <p>這四件事可以疊在一起。一次重試裡又呼叫工具，工具回傳的內容再被塞進下一輪上下文。使用者看到的仍是一個等待中的按鈕。帳上增加的是長度。</p>
+      <p><b>按次看起來公平，說的是分帳方式好懂，不是成本真的跟按鈕一樣齊。</b>顧客的一次、供應商的一次、模型跑過的一次，若沒有被寫成同一件事，帳單就會在沒有人覺得自己多點了一份的時候變長。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 計價單位</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>報價用趟，成本用跳表</h2>
+      </div>
+      <p>單位先錯了，後面的帳就會各算各的。對外說的是一次，對供應商付的是另一種長度，中間若沒有人把這次任務實際跑了多遠記下來，月底會覺得是模型或帳單壞了。很多時候兩邊都沒壞，是報價單位和付費單位從一開始就不是同一個。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>計程車跳表，卻用「一趟」跟乘客報價。市區繞兩條街和跨城趕路，都可以叫一趟。乘客記得的是趟；錶上記的是里程、等候，有時還包括繞錯路又繞回來的那段。乘客沒有要求繞路，錶還是在走。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-per-use-billing-miscounts/02-meter-vs-one-trip.png" alt="左側乘客以為是一趟固定價錢，右側計程車跳表持續累計里程與等候，對比按趟報價和按量表計費。" width="1280" height="720" loading="lazy">
+        <figcaption>乘客買的是一趟；錶上記的是里程、等候，和沒寫進報價的重試。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>三本帳各算各的</h2>
+      </div>
+      <p>公司裡通常同時存在三本帳。第一本面對使用者：按次、按席位，或每月一段免費額度。使用者用這本帳決定要不要按，也用這本帳記憶「我沒有多用」。它好講，是因為單位粗、好記。</p>
+      <p>第二本面對供應商。供應商不一定認識你的「一次功能」。它認得的是請求、用量、工具、算力時間，或這些單位的組合。產品裡按了一次，在這本帳上可以是一整段明細。若沒有人把明細歸回哪一次成功任務，第二本只會說這個月變長了，不會說長在哪一種任務。</p>
+      <p>第三本留在內部。自動重試、失敗後再跑、人工檢查才算做完、客服把沒完成的任務補上，這些都不一定出現在使用者的收據，也不一定被歸到同一個功能。沒有歸屬時，它沉在公司總帳裡，下次檢討容易變成一句「AI 變貴了」，卻指不出是哪條路徑變長。</p>
+      <p>三種錯位很常見，而且都不是模型突然變弱造成的。</p>
+      <p><b>按次，但一次裡面含多輪工具。</b>報價數的是按鈕或任務次數，成本數的是工具鏈。次數可以很穩，明細可以很長。使用者沒有多按，供應商那一側已經多了好幾行。</p>
+      <p><b>免費額度拿來當行銷，卻沒有尖峰閘門。</b>額度的用意是讓人試用。短時間內的大量試用若沒有上限，算力會先被拉高。額度數字看起來還有剩餘時，供應商那本帳可能已經先厚了一截。閘門不是為了趕走試用，是為了讓試用的長度和這段推廣要承擔的成本，用同一種語言說話。</p>
+      <p><b>席位制很好算，重度使用者卻會把全體拖長。</b>一個人一個位子，價錢也好比較。位子裡若有人持續跑很長的代理人任務，成本會由全體席位一起承擔。輕度使用者付的價錢裡，混進別人的長度。單價看起來整齊，交付成本並不整齊。</p>
+      <p>三本帳要對上，先把三句話寫出來：對使用者報價的單位是什麼，對供應商付費的單位是什麼，重試和人工收尾目前算在哪個功能、哪個人。寫不出來的那一句，就是帳單會嚇一跳的位置。</p>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-per-use-billing-miscounts/03-three-ledgers-mismatch.png" alt="三本並排的帳本對不齊，分別是向使用者按次報價、向供應商按用量付費，以及內部重試與人工收尾尚未歸屬。" width="1280" height="720" loading="lazy">
+        <figcaption>三本帳各寫各的：對外按次、供應商按量、內部重試還沒人認領。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>代理人跑起來之後，耗掉的算力不等於它交出的結果。成本要被看見、被歸到任務上，可以接著看<a href="guild-ai-control-plane.html?v=progress-4&amp;start=1">《代理人中控室》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 三本帳</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>先量一次成功，再決定怎麼報價</h2>
+      </div>
+      <p>少算錯，從測量開始，不從標價開始。先看「成功完成一項任務」在你們自己的紀錄裡，成本大概落在什麼長度，再決定對外用什麼單位報價。這裡說的中位，是把你們量到的成功任務按成本排起來，看中間那一次有多長。它是你們自己的紀錄，不是市場行情，也不是別人的帳單。還沒量之前，標價再好講，也只是在猜單位。</p>
+      <p>成功要先定義，否則中間那一次沒有資格被叫做成本。成功不是送出鍵被按過，是這項任務完成：該查到的查到了，不該答應的沒有答應，該交給人的真的交出去。失敗後的重跑、工具空轉、最後由人收尾，都算進這一次任務的成本組成。它們沒有讓使用者多按一次，卻讓這次任務變長。</p>
+      <p>量的時候可以先不寫真實金額。同一段時間裡，用相對單位記下：幾次模型呼叫、幾次工具、上下文大概是短還是長、有沒有重試、有沒有人接手。能分開，就已經比只有一個「次」更接近帳。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>廚房若先印菜單價格，再猜每道菜用了多少料，月底就會和進貨單吵架。先稱一稱真正賣出去的那一盤用了什麼，再決定這一盤怎麼標價。</p>
+      </div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="先定義成功任務，再量出含重試與工具的成本組成，然後才決定報價單位、上限與對帳">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--warm)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">成功完成一項任務</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">量出成本組成，含重試與工具</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">再決定報價單位、上限與對帳</text>
+        </svg>
+        <div class="cap">標價放在最後一層。上面兩層還沒寫清楚，單位就還是猜的。</div>
+      </div>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>單位、歸屬、上限，以及兩本帳怎麼對</h2>
+      </div>
+      <p>單位寫清之後，還要寫歸屬、上限和對帳。歸屬是這次用量算在哪個功能、哪一條路徑。上限是這條路徑允許燒到哪裡，超過時誰收到異常告警。對帳是把產品計到的「次」，和供應商帳單上的請求或用量，放在同一段時間裡比。</p>
+      <p>對不上的差額，要能說出更像重試、工具、長上下文，還是代理人多跑的圈。說不出來，就還缺紀錄，不是缺一個新的價錢。產品計次若只在按鈕被按下時計一筆，供應商帳單卻把背後的呼叫拆開，兩本帳會穩定地對不起來。這不是偶發的算錯，是兩本帳從一開始就在數不同的東西。</p>
+      <p>告警要指向一條路徑和一種異常，例如重試次數超過這條路徑事先寫下的上限、工具呼叫停不下來、或同一項任務的上下文突然變得很長。只有「這個月變貴了」的告警，團隊仍不知道該去看哪一次任務。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>上限、降級、人工接手，要連到成功結果</h2>
+      </div>
+      <p>上限、降級和人工接手要寫進路徑，而不是寫進月底的檢討。超過上限時，可以改走較短的流程、停掉自動重試，或改由人接手。規則要在任務還在跑的時候用得上。否則告警只是通知大家帳單已經長出去了。</p>
+      <p>降級要事先講好會少掉什麼。少掉自動重試、少掉某一輪工具，或改回較短的上下文，都是一種降級。沒有寫明的降級，線上會在壓力出現時臨時決定，事後很難對回「這次為什麼變短，以及變短之後任務有沒有完成」。</p>
+      <p>成本還要連到成功結果。同樣燒了一段算力，完成任務和空轉失敗不該在報告裡收成同一個用量。用量回答「燒了多少」，成功結果回答「這次燒完有沒有交付」。兩欄分開，定價才有機會對上一次成功，而不是對上一次按鈕。</p>
+      <p>人工接手也是成本的一部分。人把沒做完的任務補完，這次交付才算數；補完所花的時間若沒有歸到同一個任務，第三本帳會繼續消失，前兩本帳卻看起來已經對過了。</p>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>報價單位站得住，還要看成本結構能不能跟著產品一起變。從晶片到產品的垂直整合如何改寫成本，可以接著看<a href="ai-full-stack-moat.html?v=takeaways-1&amp;start=1">《AI 護城河不是一座牆》</a>。</p>
+      </aside>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>用量、重試規則和成功定義若只放在供應商那一側，對帳時會少一把自己的尺。記憶與替換權要留在產品這一側，可以接著看<a href="dont-rent-your-ai-brain.html?v=rent-meme-1&amp;start=1">《別把公司的記憶租給一顆模型》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 少算錯</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>把重試、工具呼叫與 token 用量計進成本觀測與歸因。</b>一次按鈕背後的每一次模型呼叫、工具呼叫、重試和上下文長度，都要能歸到同一個任務。只有按鈕次數的觀測，看不出帳單為什麼變長。</p>
+      <p><b>讓產品的「一次」事件和供應商帳單對得起來。</b>同一段時間裡，產品計到的次，要能對上供應商帳單上的請求或用量。對不上的差額，要能指出更像重試、工具、長上下文，還是代理人多跑的圈。</p>
+      <p><b>把上限、降級和人工接手寫進路徑。</b>超過上限時，路徑要知道是縮短流程、停掉自動重試，還是改由人接手。規則要在任務還在跑的時候執行，並把結果記在這次任務上。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>挑一項付費功能，記錄 20 次「使用者以為的一次」背後的實際呼叫次數，以及大致的成本結構。20 次是這週試驗的規模，不是測量出來的必要樣本數。沒有真實金額時，用相對單位即可，例如呼叫次數、有沒有重試、有沒有工具、有沒有人接手。驗收方式：你能畫出一次成功任務的成本組成，並向同事指出按鈕次數和實際呼叫差在哪裡。這是初步試驗，不能推廣成所有功能的結論。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>定價前先定義「一次成功任務」和計價單位。</b>先和負責這條路徑的人寫下：怎樣才算成功，對外報價數的是按鈕、任務、席位還是額度。單位沒寫清之前，先不要用「按次很公平」當作定價已經完成。</p>
+      <p><b>約定帳單異常誰接手，以及上限多久檢討一次。</b>異常出現時要有具名的人收，上限也要有下一次檢討的時間。沒有人接手的告警，只會在月底變成一筆對不齊的帳。</p>
+      <p><b>比較的是整體交付成本，不是單次標價好不好看。</b>標價好講，不表示重試、工具、長任務和人工收尾已經被算進去。看一項功能時，把完成任務的成本組成放在標價旁邊一起看。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>找產品與工程各一人，一起寫下三件事：目前對外報價的單位、對供應商付費的單位，以及團隊目前認為成本最高的三個失敗情境。沒有發票金額時，用相對單位排序即可，不要補上未經查核的數字。驗收方式：對使用者的帳、對供應商的帳、內部重試與人工收尾這三本帳，各有一位具名負責人；寫不出負責人的那一本，標成「目前沒有人負責」。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>按次收費要對得上「一次成功」，而不是對得上「按了一次按鈕」。</h3>
+        <p>按鈕可以只按一次。算力的長度、重試和收尾要能在帳上被看見，價錢才有機會和任務對上。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯依常見產品定價與成本實務整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。文中不引用未查核的市場數字或產品保證。延伸閱讀連回本站姊妹篇，供對照成本監控、成本結構與模型記憶的歸屬。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話商業 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_per_use_billing_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_per_use_billing_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
