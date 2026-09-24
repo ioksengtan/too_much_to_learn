@@ -1,0 +1,500 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>標榜「有 AI」之後，為什麼點兩次就沒人用？</title>
+<link rel="stylesheet" href="mobile-article.css?v=has-ai-drop-1">
+<script defer src="mobile-article.js?v=has-ai-drop-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--warm);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="business.html">← 白話商業 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 採用與新奇斷崖</span>
+    <h1 class="title">標榜「有 AI」之後，為什麼點兩次就沒人用？</h1>
+    <p class="lede">走廊口貼了一張新告示，上面寫著「有 AI」。第一次經過的人會停下來，也願意推門進去看。第二次若還是得走回自己的座位，把同一份週報按舊步驟做完，告示就開始只負責佔著牆面。標題裡的「點兩次就沒人用」，是很多團隊形容這種落差時的口語。本文把它當成示意場景，沒有查核行業用量。要看的是三次點擊各自在問什麼：第一次有沒有人進來，第二次少了哪一步，第三次有沒有寫進每週工作流。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 148" role="img" aria-label="三次點擊：第一次是有 AI 的驚喜，第二次要少做一步真實工作，第三次才進每週工作流">
+        <path d="M188 74H214" stroke="var(--warm)" stroke-width="2"/>
+        <path d="M410 74H436" stroke="var(--line)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="16" width="180" height="112" rx="10"/>
+          <rect x="436" y="16" width="196" height="112" rx="10"/>
+        </g>
+        <rect x="214" y="16" width="196" height="112" rx="10" fill="var(--surface)" stroke="var(--warm)"/>
+        <g font-family="Noto Sans TC" fill="var(--ink)" text-anchor="middle">
+          <text x="98" y="48" font-size="16">第一次點擊</text>
+          <text x="98" y="76" font-size="14" fill="var(--ink-soft)">牌子寫著有 AI</text>
+          <text x="98" y="100" font-size="14" fill="var(--ink-soft)">驚喜、示範、哇</text>
+          <text x="312" y="48" font-size="16">第二次點擊</text>
+          <text x="312" y="76" font-size="14" fill="var(--warm)">少了哪一步</text>
+          <text x="312" y="100" font-size="14" fill="var(--warm)">真實工作</text>
+          <text x="534" y="48" font-size="16">第三次</text>
+          <text x="534" y="76" font-size="14" fill="var(--ink-soft)">寫進例行節奏</text>
+          <text x="534" y="100" font-size="14" fill="var(--ink-soft)">每週工作流</text>
+        </g>
+      </svg>
+      <div class="cap">牌子負責第一次。第二次要少做一步真實工作，第三次才有機會進每週工作流。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見產品上線與採用實務整理的科普短文，非整理自單一節目或供應商白皮書。「點兩次就沒人用」是常見痛點的示意場景，不是已查核的用量統計。文中不引用未查核的市場數字，也不保證採用結果。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">第一次驚喜</button>
+      <button class="tab" type="button" data-goto="2">採用斷崖</button>
+      <button class="tab" type="button" data-goto="3">跨過斷崖</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>標榜「有 AI」帶來第一次驚喜</h2>
+      </div>
+      <p>牌子做得到的事很具體。它告訴經過的人：這裡有一個新功能，而且跟人工智慧有關。第一次點擊通常就這樣發生。有人打開，有人看完一段示範，有人在群組留一句「這個可以」。這些紀錄都是真的。它們回答的是：牌子有人看見，而且有人願意試一次。</p>
+      <p>發布當天的紀錄通常很好看。訊息有人轉發，示範有人點開，牌子旁邊的按鈕有人按。團隊容易把這一天收成「功能已經被用起來」。被用起來的是第一次。下一個工作週期還沒有發生。</p>
+      <p>第二次空掉，常常是因為人回來了，真實工作卻還在原地。以每週要交的客服週報作示意：原本的步驟是從三張表抄上週數字、寫例外說明、送給主管。頁面上新掛了「有 AI」。第一次，負責週報的同事點開示範，覺得摘要寫得順。第二次是下一個週一。示範裡的範例數字還在，三張表還是得自己抄。抄完，週報交出去，這個功能沒有參加這一次的工作。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>捷徑的牌子立在走廊口。第一天大家會繞過去看。這條路若沒有少走原本那條走廊，第二天就沒有人特地再來讀牌子。牌子還在，通勤路線沒有改。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-has-ai-two-clicks-dropoff/01-has-ai-banner-vs-empty.png" alt="左側是第一次點擊，兩個人在「有 AI」的展示台前驚喜鼓掌；右側是點過兩次之後，同一塊牌子孤零零放在空桌上，對話框寫著好像沒人用。" width="1280" height="720" loading="lazy">
+        <figcaption>左邊是第一次的驚喜，右邊是點過之後空下來的現場。這張圖在對比兩種日子。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <p>所以第一次的驚喜可以留下來。它說明發布有沒有被注意到。第二次要另問一句：這件每週都在做的工作，少了哪一個步驟。這一句若是空的，第三次不會自己出現在週一的清單上。標題那種「點兩次就沒人用」的口語，往往就是從這句空話來的。</p>
+      <p><b>第一次點擊在確認牌子。第二次點擊在確認工作有沒有少一步。</b>少的那一步寫不出來，人會回到原來的做法，功能就停在第一次的驚喜。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 第一次與第二次</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>新奇指標在數第一次</h2>
+      </div>
+      <p>新奇指標很好數，因為它發生在發布當天，而且當下就有訊號。第一次打開、看完示範、留一句「哇」、在新頁面停留，都屬於這一側。它們適合回答：牌子有沒有被看見、哪一種示範最容易讓人停下來、發布訊息有沒有送到會做這件工作的人眼前。</p>
+      <p>這些紀錄升高，代表注意發生了。注意是採用的起點，值得留著。它還沒有變成工作流裡的一步。那一步要能指出三件事：哪一件重複發生的工作、哪一個原本會做的動作、這次改由功能接手或縮短。三件事對得上，第二次才有東西可以檢驗。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>採用斷崖出現在新奇與例行之間</h2>
+      </div>
+      <p>採用斷崖，指的是這段落差：第一次來的人很多，願意把功能留在每週做法裡的人很少，中間還沒有一座接得上的橋。斷崖的一側是新奇。另一側是例行。例行要有三樣東西同時在：一件每週會再出現的工作、一個已經在做這件工作的人、一個被寫進既有節奏的步驟。</p>
+      <p>第二次是檢驗。第一次，人還願意為了新鮮多看幾眼。第二次，形狀已經看過。形狀若沒有少做那一步，人會在同一個週一回到舊做法。舊做法一旦把這次週報做完，日曆上就沒有理由再排第三次。第三次進不了每週工作流，常常是因為第二次沒有改到任何一個既有步驟。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>觀景台的人潮，是為了看一次風景。山腳下還在趕週報的人，要的是少打一次同樣的段落。人潮說明風景有人看。少打的那一段，才決定下週還會不會走上這條路。</p>
+      </div>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 132" role="img" aria-label="新奇指標記第一次打開、示範與哇；每週工作流要記同一件工作、少掉的步驟，以及下一次例行還在不在">
+          <path d="M196 66H248" stroke="var(--warm)" stroke-width="2"/>
+          <g fill="var(--surface)" stroke="var(--line)">
+            <rect x="8" y="16" width="188" height="100" rx="10"/>
+            <rect x="252" y="16" width="380" height="100" rx="10" stroke="var(--warm)"/>
+          </g>
+          <g font-family="Noto Sans TC" fill="var(--ink)" text-anchor="middle">
+            <text x="102" y="48" font-size="16">新奇指標</text>
+            <text x="102" y="74" font-size="13" fill="var(--ink-soft)">第一次打開</text>
+            <text x="102" y="96" font-size="13" fill="var(--ink-soft)">示範、哇、停留</text>
+            <text x="442" y="48" font-size="16">每週工作流的一步</text>
+            <text x="442" y="74" font-size="13" fill="var(--warm)">同一件重複的工作</text>
+            <text x="442" y="96" font-size="13" fill="var(--warm)">少掉的步驟 · 下一次例行還在</text>
+          </g>
+        </svg>
+        <div class="cap">左邊在數注意。右邊在問這件工作的下一步，有沒有真的改道。</div>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-has-ai-two-clicks-dropoff/02-novelty-adoption-cliff.png" alt="山頭上擠滿來看「新奇」牌子的人，崖壁標著第一次點擊的驚喜與第二次點擊的猶豫，崖下少數人在「採用斷崖」的牌子旁用電腦做真實工作。" width="1280" height="720" loading="lazy">
+        <figcaption>山頭是新奇，崖下是還在做真實工作的人。圖上的字是示意，不是查核過的採用人數。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>試用區為什麼熱鬧、轉正付費為什麼安靜，問的是好奇怎麼接到付費決定。可以接著看<a href="ai-trial-to-paid-dropoff.html?v=trial-paid-1&amp;start=1">《AI 試用很熱絡，為什麼轉正付費常常掉一半？》</a>。本文停在功能上線之後：第二次有沒有少做一步真實工作，第三次有沒有進每週工作流。</p>
+      </aside>
+      <p><b>新奇指標回答牌子有沒有人看。每週工作流回答同一件工作少了哪一步。</b>兩份答案都值得留。把它們收成同一個「有 AI 很受歡迎」的總分，斷崖就會變成一句說不清的「後來沒人用」。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 新奇與工作流</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>上線前先指定一件真實工作</h2>
+      </div>
+      <p>跨過斷崖的第一件事，發生在牌子掛上去之前。先寫下一件真實工作的名字，以及每週已經在做它的人。客服週報、週會前的議題整理、每週的錯誤分類，都可以。工作要是這個團隊下週還會再做的那種。只在發布當天出現一次的示範，還停在新奇。</p>
+      <p>所有者要叫得出名字。這個人就是下個週一會打開那三張表的同事。找不到這個人，上線說明裡就寫「目前還沒有每週工作的所有者」。先補這一行，再談牌子要怎麼寫。公司要不要為這個功能另立年度目標，不是這一步的前提。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>第二次要省的那一步，寫在功能旁邊</h2>
+      </div>
+      <p>第二件事是把「省哪一步」寫成一句話，放在功能旁邊，也放進上線說明。句子要短到負責人看得懂。例如：上週數字由這裡帶入，人只改例外說明。被省下的動作要是原本真的會做的動作。「看起來更聰明」「摘要更完整」，都還沒有指出少了哪一步。</p>
+      <p>第二次點擊的成功，就是這句話發生了：同一個人回到這件工作，而且那一步是在這個功能裡完成的。再看一次示範、再點一次牌子，都還是第一次的形狀。成功定義寫在事件旁邊，之後才知道第二次有沒有跨過斷崖。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>把第三次寫進已經存在的例行節奏</h2>
+      </div>
+      <p>第三件事是時間與位置。第三次要出現在本來就有的清單上。週一交週報的清單若本來就有「抄上週數字」，現在多一行「由這個功能帶入，人改例外」。看這一行有沒有發生的人，也放在本來就有的檢視裡：週會、既有的週報回顧，或負責人自己的週一檢查。這件事沿用已經在走的節奏，不必另開一場只談人工智慧的會。</p>
+      <p>這樣斷崖就有了位置。它變成三件事裡哪一件還沒寫下來：工作與所有者、第二次要省的步驟、例行裡的第三次。缺的那一件還看得到。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="跨過採用斷崖的三件事：指定真實工作與所有者、寫下第二次要省的步驟、把第三次放進既有例行節奏">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--warm)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">指定一件真實工作，以及每週在做的人</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">第二次要省的那一步，寫在功能旁邊</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">第三次放進已經存在的例行節奏</text>
+        </svg>
+        <div class="cap">三件事都要在下一個工作週期到來之前寫好。</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>公車時刻表上的站，才是每週會到的地方。新站牌若沒有寫進時刻表，第三次不會自己出現在路線上。站牌可以很醒目。醒目負責第一次有人回頭。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-has-ai-two-clicks-dropoff/03-three-steps-to-habit.png" alt="三個相連的平台：第一次驚喜是大家打開箱子看見星星；第二次是清單箭頭指向一個打勾，問還能省哪一步；第三次是釘在牆上的每週工作流卡片，寫著每週二上午十點的例行處理與檢視。" width="1280" height="720" loading="lazy">
+        <figcaption>第一次是驚喜，第二次要指出省下的步驟，第三次寫進每週已經在走的節奏。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>這一步若已經每週發生，一次完成要怎麼跟價錢單位對上，可以接著看<a href="ai-per-use-billing-miscounts.html?v=billing-miscount-1&amp;start=1">《AI 功能按次收費，為什麼常常算錯帳？》</a>。本文先停在這一步有沒有進工作流。</p>
+      </aside>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>要確認那一步真的被做完，可以看工作有沒有留下能檢查的紀錄。可以接著看<a href="guild-ai-control-plane.html?v=progress-4&amp;start=1">《代理人中控室》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 三步跨斷崖</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>為第二次點擊寫下成功定義。</b>成功是：同一個人回到這件具名的每週工作，並在功能裡完成原本要省下的那一步。再點一次按鈕、再看一次示範，都還停在新奇。定義寫在事件旁邊，之後才知道第二次有沒有發生。</p>
+      <p><b>把功能掛進工作已經開始的地方。</b>入口放在那件工作原本的頁面或清單，跟既有步驟排在一起，讓人從每週工作進入這一步。</p>
+      <p><b>分開觀測第一次打開與之後的回訪。</b>第一次打開歸在新奇。七天內回到同一件工作、下一次例行節奏裡那一步被完成，各自留欄。只看第一次打開的看板，看不見斷崖。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一個已經上線、頁面上有「有 AI」的功能。寫下一句第二次成功：哪一件每週工作、省下哪一步、完成時要留下哪個事件。再列出三個事件名稱：第一次打開、七天內回到同一件工作、下一次例行節奏裡這一步被完成。驗收方式：同事能指著同一份清單，說出哪一個事件只代表新奇、哪一個事件代表那一步被省下來。這是這週的事件清單試驗，不能推成採用率。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>上線前指定真實工作的所有者。</b>所有者是每週已經在做這件工作的人，姓名寫在上線說明裡。找不到人，就標成「目前還沒有每週工作的所有者」。這一步先於牌子文案。</p>
+      <p><b>採用證據看第二次有沒有少做那一步。</b>「有 AI」標籤與第一次點擊，說明牌子被看見。它們不代替採用證據。採用證據是：具名的工作、被省下的步驟、以及這件事有沒有在下一次例行裡發生。</p>
+      <p><b>在既有例行節奏裡指定誰看第二次與第三次。</b>這個人在已經存在的週會或檢視裡看這兩次紀錄，並說出缺的是工作、步驟，還是節奏。不必為了這件事新開一場會，也不必假定團隊能決定公司級的工具採購。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>為一個準備上線或已經上線的功能寫四行：真實工作名稱、所有者姓名或「目前還沒有」、第二次要省的那一步、誰在哪一個既有例行裡看第二次與第三次。驗收方式：四行都在上線說明裡；所有者要麼是已經在做這件工作的具名同事，要麼明確標成尚未找到；檢視的人與場合是既有節奏。這四行不補未經查核的採用比例或節省時數。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>「有 AI」負責第一次點擊。第二次要少做一步真實工作，第三次才進得了每週工作流。</h3>
+        <p>新奇可以是真的。斷崖出現時，先看第二次省了哪一步、第三次有沒有寫進例行節奏。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯依常見產品上線與採用實務整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。「點兩次就沒人用」是常見痛點的示意場景，不是已查核的用量統計。文中不引用未查核的市場數字或採用率。延伸閱讀連回本站姊妹篇，供對照試用與付費、計價單位，以及怎麼看見工作有沒有被做完。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話商業 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_has_ai_dropoff_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_has_ai_dropoff_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
