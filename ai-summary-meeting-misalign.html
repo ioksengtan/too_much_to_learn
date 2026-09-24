@@ -1,0 +1,484 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 摘要很完整，為什麼開會還是對不齊？</title>
+<link rel="stylesheet" href="mobile-article.css?v=summary-align-1">
+<script defer src="mobile-article.js?v=summary-align-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 會議與對齊</span>
+    <h1 class="title">AI 摘要很完整，為什麼開會還是對不齊？</h1>
+    <p class="lede">人人都有一份完整摘要。重點清楚、結構整齊，看完會覺得這場會已經被好好記住。真正坐下來對「決議是哪一句、待辦有哪些、誰負責到什麼時候」，三個人卻翻出三個版本。摘要把話收齊了。對齊還沒開始。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 148" role="img" aria-label="各讀一份完整摘要之後，要收成同一張共用卡，上面寫決議一句話、待辦清單、誰負責與期限，會上才指得齊">
+        <path d="M188 74H226 M414 74H452" stroke="var(--accent)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="28" width="180" height="92" rx="10"/>
+          <rect x="230" y="18" width="180" height="112" rx="10" stroke="var(--accent)"/>
+          <rect x="452" y="28" width="180" height="92" rx="10"/>
+        </g>
+        <g text-anchor="middle" font-family="Noto Sans TC" fill="var(--ink)">
+          <text x="98" y="68" font-size="15">各讀一份完整摘要</text>
+          <text x="98" y="92" font-size="13" fill="var(--ink-soft)">重點都在</text>
+          <text x="320" y="52" font-size="15">決議一句話</text>
+          <text x="320" y="76" font-size="15">待辦清單</text>
+          <text x="320" y="100" font-size="15" fill="var(--accent)">誰負責＋期限</text>
+          <text x="542" y="68" font-size="15">會上指得齊</text>
+          <text x="542" y="92" font-size="13" fill="var(--ink-soft)">同一張共用卡</text>
+        </g>
+      </svg>
+      <div class="cap">摘要可以把話收齊。會上指得齊的，是同一張卡上的那三行。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見會議與摘要實務整理的科普短文，非整理自單一節目或供應商白皮書；文中不引用未查核的市場數字或產品保證。場景為示意。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">摘要很完整</button>
+      <button class="tab" type="button" data-goto="2">缺的是錨點</button>
+      <button class="tab" type="button" data-goto="3">釘住共用卡</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>人人各讀一份完整稿，會上仍各說各話</h2>
+      </div>
+      <p>會議前，模型把錄音或逐字稿收成摘要。欄位看起來很齊：會議重點、決議事項、待辦事項、負責人與時程。三個人各拿一份，都覺得這份寫得清楚，結構完整，一次就能看到全貌。</p>
+      <p>進了會議室，第一個問題就岔開。這場會在談一個產品要不要進入設計階段。甲指著自己摘要裡的決議：「進入設計，範圍維持原訂。」乙翻開自己的那份：「我這裡寫的是先補一輪使用者訪談。」兩句都在逐字稿裡出現過。兩份摘要都沒有把它們漏掉。它們只是被收在不同段落，被不同的人當成「這次的結論」。</p>
+      <p>待辦也對不上。甲的清單有三項，是會上有人明確答應要做的事。乙的清單有七項，因為模型把「也可以考慮」的猜想一起列進去了。負責人更卡。摘要寫「設計組會跟進」，會上沒有人知道跟進的是誰，也沒有人說得出跟到哪一天。</p>
+      <p>完整摘要做的是把說過的話收齊。對齊要的是同一句話被大家指著。收齊可以各做各的。指著，必須是同一張卡。<b>人人都有一份完整摘要，會上仍可能對決議、待辦、誰負責各說各話。</b>完整，沒有自動變成對齊。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>三個人各抱一本很厚的旅遊手冊，景點、餐廳、交通都寫到了。走到路口，一個人要左轉去博物館，一個人堅持先吃午餐，一個人以為今天自由活動。手冊沒有漏頁。漏的是出發前一起用筆圈起來的那一行：今天只去這一站，幾點集合，誰拿票。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-summary-meeting-misalign/01-full-summaries-misaligned.png" alt="左側三人各拿一份標成完整版的會議摘要，覺得重點清楚；右側三人看著決議、待辦、誰負責三張打叉的卡片，對不上同一句話。" width="1280" height="720" loading="lazy">
+        <figcaption>摘要都可以很完整。會上對不齊的，是決議、待辦，和誰負責。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>聊天結束後有沒有一份別人接得走的產物，是另一篇的題目。這篇談的是：大家已經各有一份完整摘要，會上仍然缺少共享決策錨點。交接產物 ≠ 會上共享決策錨點。可以接著看<a href="ai-chat-without-handoff.html?v=handoff-gap-1&amp;start=1">《跟 AI 聊完了，為什麼還是交不出可交接的東西？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 完整卻對不齊</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>再長一點的摘要，補不上對不齊</h2>
+      </div>
+      <p>摘要變長，通常是把更多句子收回來：誰先發言、哪段有爭議、哪些做法被提過。這些對事後回看有用。會上對不齊的時候，缺的是那三行還沒被一起指過。多收一段原文，三行仍可能是空的。</p>
+      <p>對不齊發生在三個位置。決議沒有收成大家能一起複述的一句話。待辦沒有收成同一份清單，討論中的想法和已經答應要做的事混在一起。負責人沒有寫到人，期限沒有寫到日子，於是「有人會處理」變成會後各自的猜測。</p>
+      <p>把摘要再加兩頁，這三個位置仍可能是空的。模型很會把討論寫得像已經有結論。條理讓人放心。放心的人進了會議室，才發現隔壁那份同樣有條理的摘要，把另一句當成了結論。讀的人各取所需，各自覺得自己讀到的那版就是共識。</p>
+      <p>所以下一步是把那三行單獨抽出來，寫到大家同時看得到的地方。摘要可以繼續當閱讀材料。對齊看的是那三行有沒有被一起確認。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>共享決策錨點，就是大家一起指的那三行</h2>
+      </div>
+      <p>共享決策錨點是會議裡大家一起指著的那幾行。它要寫在同一張共用卡上，短到能被一起讀、一起改、一起複述。</p>
+      <p><b>決議一句話。</b>散會前用一句話寫下這次決定了什麼。一句話容不下兩個方向。若還有分歧，這一行就寫「尚未決議」，並列出還在爭的點。兩段都很完整的摘要，代替不了這一句。</p>
+      <p><b>待辦清單。</b>只列下一步要做的事。討論過、但沒有人答應要做的，另列成「提到、尚未承諾」。清單的用處，是讓每一個人對得上同一組下一步。</p>
+      <p><b>誰負責＋期限。</b>每一項待辦寫一個具名的人，和一個看得到的日期。小組名稱、部門名稱，不能代替人名。「盡快」會在會後被理解成不同的天。寫不出人名或日期，這一項就先留在尚未承諾。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="共享決策錨點的三行：決議一句話、待辦清單、誰負責與期限">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--accent)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">決議一句話：這次決定了什麼</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">待辦清單：下一步，和尚未承諾的分開</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">誰負責＋期限：具名的人，看得到的日期</text>
+        </svg>
+        <div class="cap">三行都在同一張卡上，這場會才有可以一起指的錨點。</div>
+      </div>
+      <p>會前傳出去的投影片、報告、模型整理的長摘要，是共讀材料。大家收到同一批檔案，只代表有機會讀到相同的句子。讀到，和指著同一句說「就是這句」，是兩件事。共同錨點是會上被確認過的那三行。缺了它們，桌上可以堆滿相同的閱讀材料，會議仍難有同一句共識。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>菜單可以印得很完整，每一道都有說明。點餐時仍要有人把「這桌今天吃什麼、誰去結帳、幾點要離開」寫在同一張單上。菜單是共讀材料。那張單才是大家離席時指著的錨點。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-summary-meeting-misalign/02-missing-decision-anchors.png" alt="會議桌上方飄著許多標成共讀資料的文件，桌沿放著決議一句話、待辦清單、誰負責加期限三張卡片。" width="1280" height="720" loading="lazy">
+        <figcaption>傳了同一批共讀資料，桌上仍可能沒有共同的決策錨點。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 三個決策錨點</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>會前：先擺一張幾乎空白的共用卡</h2>
+      </div>
+      <p>會前仍可以把摘要發出去，讓大家帶著完整稿進門。同時在共用位置放一張幾乎空白的卡，只印三個標題：決議一句話、待辦清單、誰負責＋期限。空白是故意的。它提醒這三行還沒被這場會議確認。</p>
+      <p>摘要裡已經出現的句子，可以先貼到卡上當草稿，並標成「尚未確認」。草稿幫助開會時少重講一遍。標成尚未確認，是為了避免有人把模型寫的那句，當成已經通過的決議。自己那份很完整的摘要可以留著。進門之後，大家改的是同一張卡。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>會中：分歧寫回同一張卡</h2>
+      </div>
+      <p>會上有人說「我的摘要不是這樣寫」，就是錨點該出場的時候。請他把自己摘要裡的那句，和共用卡上的那句，放在一起看。兩句若指向不同行動，就在卡上改到只留一句，或明確寫成尚未決議。改完之後，這次的結論以卡上那一句為準。私人摘要裡互相矛盾的句子，留在各自的閱讀材料裡。</p>
+      <p>待辦也在會上收。多出來的項目，問一句：這是下一步，還是討論中提到的想法？下一步留在清單。想法移到「提到、尚未承諾」。負責人當場填人名和日期。填不出人名，這項就還不是待辦。</p>
+      <p><b>一份共用卡勝過三份完整摘要</b>，是因為會上只能有一個被一起指著的版本。三份摘要可以各自把重點寫齊，它們記錄的是各自讀到的句子。卡上記錄的是這次一起確認過的行動。散會前把三行念出來。在場的人聽到不對，就在這一刻改，改完才離開。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>會後：先讓人看見那張卡</h2>
+      </div>
+      <p>散會後，模型可以再出一版長摘要，也可以保留逐字稿。那是回看用的材料。寄給沒有出席的人時，第一眼該看到的是那張已經確認的共用卡：決議一句話、待辦清單、誰負責＋期限。</p>
+      <p>長摘要放在卡的後面，或放在連結裡。順序反過來，沒有出席的人又會從長文裡各抽一句，回到會上對不齊的起點。逐字稿可以忠實到每一聲回應。忠實把過程留住。沒有出席的人從第三分鐘讀到第四十分鐘，仍可能各自抽出一句，當成這次的決議。</p>
+      <p>卡上若有空白，就保持空白，並寫明尚未確認。逐字稿再完整，也只是把空白蓋住。下一場會從空白的那一行接著問，問到有一句話、一份清單、一組人名和日期為止。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>會後有人把整段逐字稿寄進群組，像把三小時的行車錄音傳給沒有同行的人。沒有同行的人要的是一張小卡：明天改走哪條路、誰去訂房、幾點前回覆。錄音可以留著查。小卡要先讓人一眼看完。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-summary-meeting-misalign/03-transcript-to-shared-card.png" alt="左側是會後一長串逐字稿，同事看完不知道下一步；右側是一張會議共用卡，寫著決議、待辦、負責人與期限。" width="1280" height="720" loading="lazy">
+        <figcaption>會後先看那張共用卡。逐字稿留著回查，不拿來代替三行錨點。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>把分類放進會重複執行的流程，和讓一場會議對上同一句決議，是兩種工作。流程裡的判斷元件 ≠ 會上的共享決策錨點。可以接著看<a href="jev-decisions-for-software.html?v=takeaways-1&amp;start=1">《Jev：讓 AI 在流程裡做判斷》</a>。</p>
+      </aside>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>錨點寫下來之後，還要有辦法事後核對這次決議有沒有做對。怎樣用看得到的結果檢查一次判斷，可以接著看<a href="how-do-we-know-ai-decisions-work.html?v=takeaways-1&amp;start=1">《AI 選了往左，誰知道它選對了？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 會前、會中、會後</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>摘要的輸出結構要強制三個欄位：決議一句話、待辦清單、負責人與期限。</b>這組欄位就是輸出結構（schema）裡不能省略的部分。欄位可以是空的，空的時候必須寫成「尚未決議」或「尚未指定」。會議重點的長段落再完整，也不能把空欄看起來補滿。三個人會從長段落裡各抽一句；強制欄位讓缺的錨點露出來。</p>
+      <p><b>確認後的錨點寫入大家同時打得開的同一處。</b>同一份共用文件、同一個頁面，或團隊已經在用的那個固定欄位都可以。個人摘要、逐字稿、模型的長稿另存，標題標明它們是閱讀材料。對齊以共用處那一張卡為準，會上改的也是這一張。</p>
+      <p><b>加上一項對齊檢查，再把摘要標成可以外寄。</b>檢查三件事：決議是不是只有一句，或明確標成尚未決議；待辦有沒有和「提到、尚未承諾」分開；每一項待辦是不是都有一個具名的人與一個日期。檢查不通過，共用卡維持未確認。模型很會把討論寫成已經有結論，檢查是為了讓未確認留在未確認。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一次會產生摘要的會議。在輸出結構加上決議一句話、待辦清單、負責人與期限，並把結果寫進團隊已有的一個共用頁面，先標成尚未確認。驗收方式：請一位沒有改過這份輸出的同事，只打開共用頁，讀出決議一句話、列出待辦、指出每一項的負責人與期限。三項都指得出來，這週的檢查才算通過。任一項指不出來，就把該欄維持尚未確認。這是初步試驗，用來檢查這條輸出能不能被另一個人指認。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>散會前問三句，而且寫在同一張大家看得到的卡上。</b>決議是哪一句。待辦有哪些。誰負責到什麼時候。三句有一句答不出來，那一項就標成尚未確認，這場會先不要當成已經對齊。對齊發生在一起回答的時候。</p>
+      <p><b>指定一個人在會中確認錨點。</b>這個人把會上改過的句子寫回共用卡，散會前念出三行，讓在場的人修正或點頭。沒有這個人，卡上的字就還是草稿。摘要可以自動產生。確認需要一個會把大家的修正收進同一張卡的人。這個人可以是你，也可以是這次討論裡被指定收尾的同事。</p>
+      <p><b>收到「都有摘要了」，仍回到那三句。</b>材料到了，只代表大家有機會讀到相同的段落。對齊要看共用卡上的三行是否已被確認。用「都有摘要了」收場，會把各讀一份完整稿，留在各說各話的狀態。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一場由你主持、人不多的會。散會前留出時間，把三句的答案寫在大家看得到的同一張卡上，請在場的人當場修正。驗收方式：會後把這張卡傳給一位沒有出席的同事，請他用自己的話回覆決議、一項待辦，以及負責人與期限。回覆和卡上一致，這次對齊才算留下紀錄。不一致，就在下一場會把那一項標成尚未確認，並請確認錨點的人重念一次。這個試驗只檢查你帶的這一場會。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>完整摘要可以把話收齊。對齊要的是同一張卡上的三行。</h3>
+        <p>決議一句話、待辦清單、誰負責＋期限。三行被一起確認過，這場會才算對齊。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯根據常見會議與摘要實務整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。文中不引用未查核的市場數字或產品保證。文末兩則 Takeaway 是編輯依本文延伸的實務建議。延伸閱讀連回本站姊妹篇，供對照可交接的產物、流程裡的判斷，以及怎樣核對一次判斷。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話科技 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_summary_meeting_align_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_summary_meeting_align_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
