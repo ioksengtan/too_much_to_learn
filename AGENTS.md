@@ -16,3 +16,13 @@
 - 回覆提供修改結果的網站連結，文章網址以 `https://ioksengtan.github.io/too_much_to_learn/` 為基底；不可用本機連結代替已推送文章的網址。
 - 推送失敗時明確說明，不能聲稱已發布；未確認部署完成時，區分 Git 推送成功與 GitHub Pages 更新完成。
 - 此交付規則優先於 `.claude/agents/content-writer.md` 中不提交、不發布的舊流程。首頁調整仍依使用者要求的範圍處理。
+
+## 上架快取檢查
+
+新文章上架時，頁首 `mobile-article.css?v=` 與 `mobile-article.js?v=` 使用同一個、這篇專屬的 TOKEN。所有指向該篇、且已帶 `?v=` 的站內連結都用這個 TOKEN；`start=1` 等其他參數保留。
+
+- 新文章自己的 `?v=`：css 與 js 相同，且只屬於這一篇。
+- 首頁 `index.html` 目錄卡的 `?v=` 等於該篇 TOKEN。
+- 若也列在 `business.html`，那邊的目錄卡 `?v=` 一併對齊。
+- 延伸閱讀（`aside.related-read`）以及其他帶 `?v=` 的站內文章連結，用的是目標文章目前的 TOKEN。
+- 閱讀進度的 `localStorage` key 必須是這篇專屬的名字，不能跟其他文章共用。
