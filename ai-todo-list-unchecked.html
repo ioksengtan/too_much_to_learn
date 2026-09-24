@@ -1,0 +1,519 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 寫的待辦清單很齊，為什麼一週後還是沒人勾？</title>
+<link rel="stylesheet" href="mobile-article.css?v=todo-loop-1">
+<script defer src="mobile-article.js?v=todo-loop-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 待辦與責任</span>
+    <h1 class="title">AI 寫的待辦清單很齊，為什麼一週後還是沒人勾？</h1>
+    <p class="lede">週一，模型交來一張待辦清單。項目平行、動詞整齊，勾選框排成一列，看起來這週的工作已經被安排好了。下一週的同一天打開同一張清單，勾選框還是全空。清單沒有變少。沒有人勾。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 148" role="img" aria-label="整齊的清單要補上誰負責、何時做完、何時回頭看，掛進每週節奏之後，勾選框才可勾">
+        <path d="M188 74H226 M414 74H452" stroke="var(--accent)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="28" width="180" height="92" rx="10"/>
+          <rect x="230" y="18" width="180" height="112" rx="10" stroke="var(--accent)"/>
+          <rect x="452" y="28" width="180" height="92" rx="10"/>
+        </g>
+        <g text-anchor="middle" font-family="Noto Sans TC" fill="var(--ink)">
+          <text x="98" y="68" font-size="15">清單可以很齊</text>
+          <text x="98" y="92" font-size="13" fill="var(--ink-soft)">勾選框先空著</text>
+          <text x="320" y="52" font-size="15">誰負責</text>
+          <text x="320" y="76" font-size="15">何時做完</text>
+          <text x="320" y="100" font-size="15" fill="var(--accent)">何時回頭看</text>
+          <text x="542" y="68" font-size="15">這時才可勾</text>
+          <text x="542" y="92" font-size="13" fill="var(--ink-soft)">空框有人看</text>
+        </g>
+      </svg>
+      <div class="cap">整齊是產出。勾選框要等責任閉環走完，才代表完成或取消。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見待辦與追蹤實務整理的科普短文，非整理自單一節目或供應商白皮書；文中不引用未查核的市場數字或產品保證。場景為示意。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">清單很齊</button>
+      <button class="tab" type="button" data-goto="2">缺的三件</button>
+      <button class="tab" type="button" data-goto="3">責任閉環</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>清單很齊的那一天，勾選框還不該被當成進度</h2>
+      </div>
+      <p>週一，有人請模型把這週的工作列成清單。出來的項目很齊：整理常見問題、補上說明文件、對一下下週要問的人。每一項都是一句完整的話，勾選框也在。團隊把連結貼進頻道，有人回「這張清單不錯」。</p>
+      <p>下一週再打開，同一張清單還在。勾選框一個都沒有被勾。沒有人留一句「這項取消了」，也沒有人改過日期。清單仍舊整齊。整齊停在產出的那一刻。</p>
+      <p>這不是模型不會寫。寫清單，它做得好。空框來自清單寫完之後沒有接上責任。項目在，負責人的名字不在，做完的日子不在，每週回頭看的時間也不在。三件缺著，勾選框沒有人覺得是自己的，也沒有一個固定的時間會被打開。</p>
+      <p>責任要繞回來，才算有人接住。項目先說成一句話，寫上一個問得著的名字、一個看得到的日子，再掛進每週會打開的節奏。有人在那個時間看過這一項，勾選才代表完成或取消。這一段繞回來的過程，這裡稱為<b>責任閉環</b>。</p>
+      <p><b>清單很齊，只說明產出完成。一週後勾選框仍全空，是責任閉環還沒開始。</b>把這兩件事看成同一件事，團隊會用「清單已經有了」來回報進度。進度看的是有沒有人、有沒有期限、有沒有人在固定時間打開那些空框。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>冰箱門上貼著一張採買清單，分類清楚，字也工整。一週後打開冰箱，該買的還是沒有。清單沒有寫錯。沒有人的名字在上面，沒有「週三前買完」，也沒有人在固定的晚上問這張紙。紙還貼著。菜沒有進門。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-todo-list-unchecked/01-ai-todo-pretty-vs-unchecked.png" alt="左側是現在的待辦清單，項目排得整整齊齊；右側是一週後的同一張清單，勾選框仍然全空。" width="1280" height="720" loading="lazy">
+        <figcaption>產出當下，清單可以整整齊齊。一週後打開，勾選框仍可能全空。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>會上把決議收成同一句、把待辦寫上誰負責，是另一篇的題目。那篇處理的是大家各讀一份摘要，進了會議室仍對不齊。這篇從清單已經寫出來之後開始：勾選框為什麼一週後還是空的。會上的決策錨點 ≠ 清單寫完之後的責任閉環。可以接著看<a href="ai-summary-meeting-misalign.html?v=summary-align-1&amp;start=1">《AI 摘要很完整，為什麼開會還是對不齊？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 整齊與空框</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>誰負責：沒有具名的人，勾選框就不屬於任何人</h2>
+      </div>
+      <p>負責人是一個問得著的名字。問「這項現在到哪了」，要有一個人會答。清單上常見的寫法是「設計組」「大家」「後續跟進」。這些詞把工作放在一群人身上。一群人不會在週五打開勾選框。</p>
+      <p>模型很會把責任寫得平順。它會寫「由相關同事協作完成」，讀起來像已經安排好。協作可以發生。問進度的時候，仍要有第一個被點名的人。沒有這個名字，每個看到清單的人都有理由以為別人會勾。</p>
+      <p>項目寫「整理常見問題」。會上有人點頭，清單就把它收進去了。負責人欄是空的，或寫著「客服相關」。一週後，客服以為產品會整理，產品以為客服已經在做。勾選框維持空白。空白不是偷懶的證據。空白是這一項還沒有主人。</p>
+      <p><b>寫不出一個名字，這一項就先不要算進這週可勾的清單。</b>它可以留在「尚未指定」。留在那一欄，是為了讓空著被看見，而不是用部門名稱把空欄蓋住。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>何時做完：期限空白，每一個人心裡的日子都不一樣</h2>
+      </div>
+      <p>期限是一個看得到的日子。日子讓下一個人知道，檢查的時候要對的是哪一天。「盡快」「下個版本」「有空再做」在清單上很常見，因為它們不跟任何人衝突。不衝突的代價是，每個人把日子理解成不同的天。</p>
+      <p>沒有日子，勾選就沒有時間感。工作可以一直停在「還在進行」。這樣放很久之後，清單仍舊整齊，因為沒有一個日期會把空白變成該被打開的問題。</p>
+      <p>日子可以改。改的時候寫下新的日子，並讓下一次檢查看得到這個改動。改期是閉環的一種。期限若繼續空白，項目卻留在「這週要做」裡，大家會以為它還沒開始。它的狀態其實是尚未排期。</p>
+      <p><b>寫不出日子，這一項的狀態是尚未排期。</b>尚未排期可以誠實地留在清單上。它這週不該被期待打勾。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>何時回頭看：沒有每週節奏，名字和日子也會被放著過期</h2>
+      </div>
+      <p>名字和日子都在，仍可能一週後全空。沒有人在固定的時間打開這張清單。日期過了，項目還在，勾選框還空著，沒有人把過期說出來。</p>
+      <p>每週節奏是一個會重複的檢查。時間短到真的排得進既有的週會，或既有的看板檢視。打開的是同一份清單。看的是還沒勾的項目。問的是三句：這項還要不要做、負責人還是不是這個人、下一次檢查是哪一天。</p>
+      <p>三種結果都算回頭看過。做完了，就勾。還要做，就留下下一次檢查點。不做了，就標成取消，並寫一句原因。放著過期、勾選框繼續空著、也沒有下一檢查點，這一次回頭看就還沒有發生。</p>
+      <p><b>沒有每週節奏，清單會變成裝飾。</b>它掛在頻道最上面，每個人都知道它存在。存在不是追蹤。追蹤是有人在固定時間把空框打開。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="漂亮清單缺的三件：誰負責、何時做完、何時回頭看">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--accent)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">誰負責：一個問得著的名字</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">何時做完：一個看得到的日子</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">何時回頭看：每週固定打開這張清單</text>
+        </svg>
+        <div class="cap">三件有一件是空的，勾選框就還沒有進入可勾的狀態。</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>三張卡片可以排得很漂亮。第一張沒有簽名，第二張沒有到期日，第三張的日曆上沒有圈起來的那一天。排版完成的時候，工作看起來已經被整理過。一週後卡片還在桌上，事情沒有被問過。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-todo-list-unchecked/02-todo-missing-owner-deadline-rhythm.png" alt="三張卡片並排：誰負責，下面是問號與沒有具名的人；何時做完，下面是空方框與期限是空白；何時回頭看，下面是圓圈與沒有每週節奏。" width="1280" height="720" loading="lazy">
+        <figcaption>漂亮清單常缺三件：誰負責、何時做完、何時回頭看。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 人、期限、節奏</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>先把項目收成一句話</h2>
+      </div>
+      <p>閉環的第一步不是多寫幾項，是把已經出現的項目收成一句話：要交出什麼，怎樣算這一項做完。一句話讓勾選有對象。對象模糊的時候，名字和日子會掛在一團工作上，一週後沒有人知道勾的是哪一件。</p>
+      <p>「把說明文件處理一下」容得下很多種完成。改成「把登入失敗的三種情況寫進說明文件，並放到團隊已經在用的說明頁」，勾的時候才有東西可對。句子仍要短。短是為了讓每週回頭看的人一眼讀完。</p>
+      <p>這一小步容易和另一件事混在一起。可交接的產物，是一份別人接得走、放在固定地方、有人簽名的檔案。這裡的一句話只劃出待辦的邊界，讓後面的名字、期限和節奏有地方掛。<b>項目一句話 ≠ 一份可交接的產物。</b></p>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>聊天結束後有沒有一份別人接得走的檔案，是另一篇的題目。這篇處理的是清單上的每一項，要有人、有期限、有每週回頭看，才變成可勾的待辦。可以接著看<a href="ai-chat-without-handoff.html?v=handoff-gap-1&amp;start=1">《跟 AI 聊完了，為什麼還是交不出可交接的東西？》</a>。</p>
+      </aside>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>寫上一個名字，再寫上一個日子</h2>
+      </div>
+      <p>名字寫一個人。工作可以由兩個人一起做，負責人仍是問進度時第一個找的那個。清單上寫「大家負責」，讀起來像公平。一週後公平會變成沒有人負責，因為每個人都把勾選留給另一個人。</p>
+      <p>日子寫在名字旁邊。看得到的日期，讓執行有一個對照。日期若會變，變的時候改清單上的那一格，而不是在聊天裡說一聲。聊天裡的新日期，沒有打開清單的人看不到。</p>
+      <p>模型可以起草這兩格。起草出來是空白，就保持空白，標成尚未指定、尚未排期。不要為了讓清單看起來齊，填上部門名稱或「盡快」。看起來齊，會把缺的那兩格藏起來。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>掛進每週會被打開的那個地方</h2>
+      </div>
+      <p>名字和日子寫好之後，這一項要出現在團隊每週本來就會打開的工具裡。既有的看板、既有的工單、既有的週會清單都可以。另開一個頁面把清單排得很漂亮，若這個頁面沒有被排進每週，它就是裝飾清單。</p>
+      <p>掛進去的時候，多寫一個下次檢查點。檢查點是下一次有人會打開這一項的日子，通常落在每週那個固定的檢視裡。期限回答何時做完。檢查點回答何時回頭看。兩個日子可以是同一天，也可以檢查點早於期限。兩個都空白，這一項還沒有掛進節奏。</p>
+      <p>每週檢視只做一件事：把還沒勾的項目走一遍。做完的勾上。還要做的，更新負責人、期限或下次檢查點。取消的標成取消。檢視結束時，不該留下「空框、而且沒有下一次檢查點」的項目還被當成這週的進度。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">08</span>
+        <h2>閉環走完，勾選才代表完成</h2>
+      </div>
+      <p>可勾，指的是這一項已經走完前面幾步：一句話、負責人、期限、每週節奏。勾選發生在工作完成，或明確取消的時候。產出清單的那一刻，勾選框空著，是誠實的。那時還沒有人做完，也不該用勾選來表示「清單已經寫好」。</p>
+      <p>所以要把兩個事件拆開。<b>產出清單</b>，是項目被寫下來。<b>勾選完成</b>，是閉環之後的狀態。工具若把這兩件事記成同一個動作，團隊會在清單產生的那一天，以為進度已經開始被追蹤。追蹤要等有人在檢查點打開它。</p>
+      <p><b>這一勾不是把清單變整齊的儀式。勾，是責任落地之後的紀錄。</b>一週後若仍全空，先問這張清單上的每一項，有沒有名字、有沒有日子、有沒有被掛進每週會打開的地方。三項裡有缺的，空框是預期的結果。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 248" role="img" aria-label="責任閉環五步：項目一句話、負責人姓名、期限、每週追蹤節奏，然後才可勾">
+          <rect x="40" y="8" width="560" height="36" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="32" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">1　項目一句話：要交出什麼、怎樣算做完</text>
+          <rect x="40" y="52" width="560" height="36" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="76" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">2　負責人姓名：問進度時第一個找的人</text>
+          <rect x="40" y="96" width="560" height="36" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="120" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">3　期限：一個看得到的日子</text>
+          <rect x="40" y="140" width="560" height="36" rx="8" fill="var(--surface)" stroke="var(--accent)"/>
+          <text x="320" y="164" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">4　掛進每週追蹤：下次檢查點寫在同一份清單</text>
+          <rect x="40" y="184" width="560" height="36" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="208" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">5　這時才可勾：完成或取消，都留下紀錄</text>
+        </svg>
+        <div class="cap">前面四步接上，第五步的勾選才有意義。</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>種子包裝袋上印著品種、數量和季節，說明可以很齊。要結果，還得有人種下去、有採收的日子、有人每週去田裡看一次。少了後面這幾步，包裝再完整，也容易只開花，不結果。袋子是產出。結果要閉環。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-todo-list-unchecked/03-todo-responsibility-loop.png" alt="五步流程：項目一句話、寫上負責人姓名、寫上期限、掛進每週追蹤節奏，最後才變成可勾的待辦。" width="1280" height="720" loading="lazy">
+        <figcaption>一句話、負責人、期限、每週節奏都接上，這一項才變成可勾的待辦。</figcaption>
+        <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>把分類放進會重複執行的流程，和把待辦掛進每週追蹤，是兩種工作。流程裡的判斷元件回答的是某一格該分到哪一類。責任閉環回答的是這一項誰負責、何時做完、何時有人回頭看。流程裡做判斷 ≠ 待辦可勾。可以接著看<a href="jev-decisions-for-software.html?v=jev-meme-1&amp;start=1">《Jev：讓 AI 在流程裡做判斷》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 走完才可勾</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>待辦的欄位最少要有負責人、期限、下次檢查點。</b>欄位可以空。空的時候，狀態要寫成尚未指定、尚未排期，或尚未排入每週檢視。項目句子寫得再完整，也不能把這三格看起來補滿。三格露出來，空框才有人知道該補哪裡。</p>
+      <p><b>把「產出清單」和「勾選完成」拆成不同事件。</b>產出清單只記錄項目被寫下。時間點停在清單出現的那一刻，勾選框維持未勾。勾選完成要等負責人、期限、下次檢查點都在，並且有人在檢查點把狀態改成完成或取消。兩個事件若共用同一個時間，事後會分不出「清單寫好了」和「工作做完了」。</p>
+      <p><b>入口掛在團隊已經在用的工作工具，而不是另開一個裝飾頁。</b>看板、工單或共用表上加上這三欄，並讓每週檢視打開的就是這個入口。新頁面可以很整齊。沒有被每週打開，它就不會產生勾選。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一份團隊已經在用的待辦清單。加上負責人、期限、下次檢查點三欄。若工具允許，把「清單已建立」和「項目已勾選」分成兩個狀態，或兩筆紀錄。驗收方式：請一位沒有寫這份清單的同事，只打開這個既有工具，任選一項，說出負責人、期限與下次檢查點。三項都說得出來，這一項才留在可勾的狀態。有任一項說不出來，這一項維持未勾，並標成尚未補齊。這是初步試驗，用來檢查這三欄在既有工具裡看不看得見。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>開會產出的待辦，當場補齊三欄。</b>散會前看每一項：誰負責、何時做完、何時回頭看。補不出來的，不要算進這週要勾的清單，標成尚未指定或尚未排期。當場補，是因為散會之後，每個人對「誰會處理」的記憶會不一樣。</p>
+      <p><b>指定誰看每週的空框。</b>指定一個人，在固定的每週時間打開同一份清單，把仍然全空、或已過期卻沒有下一檢查點的項目念出來。這個人可以是你，也可以是這次被指定收尾的同事。沒有這個人，空框會繼續被當成還沒開始。</p>
+      <p><b>不要用「清單很齊」代替進度。</b>有人回報清單已經整理好，先問三欄在不在、上一次檢查有沒有人打開。進度看勾選，以及沒勾的項目有沒有下一次檢查點。排版整齊只說明產出完成。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一場由你主持、會產出待辦的會。散會前在團隊已經使用的那份清單上補齊三欄，並指定下一週由誰看空框。驗收方式：一週後，被指定的人能對每一項指出兩種結果之一：已經勾選，或寫著下一次檢查點。仍有項目是空框，而且沒有負責人、期限或檢查點，那些項目維持未完成。這個試驗只檢查你帶的這一場會，與下一週的那一次回頭看。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>清單可以很齊。可勾的待辦，要有負責人、有期限、有人每週回頭看。</h3>
+        <p>空框可以誠實地空著。空著又沒有下一次檢查，那一項就還沒進入責任閉環。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯根據常見待辦與追蹤實務整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。文中不引用未查核的市場數字或產品保證。文末兩則 Takeaway 是編輯依本文延伸的實務建議。延伸閱讀連回本站姊妹篇，供對照會上的決策錨點、可交接的產物，以及流程裡的判斷。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話科技 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_todo_unchecked_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_todo_unchecked_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
