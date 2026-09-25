@@ -1,0 +1,499 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 客服回得很快，為什麼客訴反而變多？</title>
+<link rel="stylesheet" href="mobile-article.css?v=support-complaint-1">
+<script defer src="mobile-article.js?v=support-complaint-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--warm);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="business.html">← 白話商業 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 客服／解決率</span>
+    <h1 class="title">AI 客服回得很快，為什麼客訴反而變多？</h1>
+    <p class="lede">「對不起，已收到您的問題。」這句話有時來得比顧客打完字還快。訂單上的盒子仍是裂的。顧客看著這段很有禮貌的回覆，像看著一張蓋得很快的收據：字在，東西沒換。回覆速度和問題解決率是兩件事。本文沒有查核任何市場數字。要看的是三個缺口：制式回覆有沒有碰到真正的問題、轉接真人客服時前情提要有沒有帶過去、這張工單最後有沒有人負責到結案。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 148" role="img" aria-label="回覆速度記第一則回覆何時送出，問題解決率問那件事後來有沒有做完">
+        <path d="M300 74H340" stroke="var(--warm)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="16" y="16" width="270" height="112" rx="10"/>
+        </g>
+        <rect x="354" y="16" width="270" height="112" rx="10" fill="var(--surface)" stroke="var(--warm)"/>
+        <g font-family="Noto Sans TC" fill="var(--ink)" text-anchor="middle">
+          <text x="151" y="52" font-size="16">回覆速度</text>
+          <text x="151" y="80" font-size="14" fill="var(--ink-soft)">第一則回覆</text>
+          <text x="151" y="104" font-size="14" fill="var(--ink-soft)">何時送出</text>
+          <text x="489" y="52" font-size="16">問題解決率</text>
+          <text x="489" y="80" font-size="14" fill="var(--warm)">那件事後來</text>
+          <text x="489" y="104" font-size="14" fill="var(--warm)">有沒有做完</text>
+        </g>
+      </svg>
+      <div class="cap">左邊在記第一句話。右邊在問顧客要處理的事，後來做完了沒有。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文為編輯依常見客服作業整理的科普短文，非整理自單一節目或供應商白皮書。文中不引用未查核的市場數字、客訴比例或研究結果。圖中的秒數與天數是示意畫面，非查核數據。也不保證改了結案方式之後，客訴就會下降。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">回得快</button>
+      <button class="tab" type="button" data-goto="2">轉接斷點</button>
+      <button class="tab" type="button" data-goto="3">結案三關</button>
+      <button class="tab" type="button" data-goto="4">兩種角色的行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>回覆速度記的是第一句話</h2>
+      </div>
+      <p>人工智慧客服可以在顧客還沒把話說完時，先送出一段回覆。這段話常常很完整：已收到、正在處理、請提供訂單編號。計時從顧客送出，到第一則回覆出現。它回答的是：有沒有人，或有沒有系統，先開口。</p>
+      <p>問題解決率問的是另一句。顧客當初進來要處理的那件事，後來有沒有做完。訂單還是壞的、退款還沒到、地址沒改成，問題就還在。第一則回覆再快，也還沒碰到這一題。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>診所叫號可以叫得很快。叫到名字，只代表輪到了。片子還沒看，病不會因為叫號而好。叫號像回覆。把病看好，才像解決。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-support-fast-more-complaints/01-fast-reply-slow-solve.png" alt="左邊機器人舉著碼表，對話框寫著 0.5 秒回覆；右邊顧客拿著裂開的訂單，想著問題還在，日曆從第一天排到第三天。標題寫回得快不等於解決了。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          左邊在計第一則回覆有多快，右邊的訂單問題仍在。回得快，和問題解決，是兩件分開的事。圖中的秒數與天數是示意畫面，非查核數據。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+      <p><b>回覆速度回答第一句話何時出現。問題解決率回答那件事後來有沒有做完。</b>兩份紀錄都值得留。收成同一個「客服很快」的總分，還沒解決的工單就會被蓋住。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>制式回覆常常停在問題旁邊</h2>
+      </div>
+      <p>制式回覆的形狀很固定。它確認收到、請補充資料、附上一則說明連結。這些句子對得上「我們有回」。它們對不上「盒子為什麼裂了、下一步誰去換」。</p>
+      <p>顧客再追問一次，常常收到同一段話的另一個版本。問題還在，所以同一件事被再開成下一張客訴。這裡的下一次、再下一次，是口語說法，非查核數據，只在說同一件事被重複打開。</p>
+      <p>客訴變多，有時就是這樣來的。不是因為沒有人回，而是因為每一次回覆都讓顧客確認：問題還在，所以得再來一次。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 回覆與解決</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>轉接真人客服時，前情提要掉在半路</h2>
+      </div>
+      <p>顧客跟人工智慧客服講過訂單編號、試過重新登入，也說過照片在哪。系統顯示已為您轉接。真人客服打開的工單幾乎是空的，第一句往往是：請問發生什麼事。顧客得從頭再說一次。</p>
+      <p>這中間缺的是前情提要：到目前為止的對話紀錄，以及已經試過的步驟。沒有這兩樣，轉接只完成了換人，沒有完成交接。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>接力賽的棒子，裝的是已經跑過的那一段。棒子掉在兩座平台中間，下一棒就得從起跑線再跑。觀眾看見人換了。距離沒有累積。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-support-fast-more-complaints/02-handoff-gap-to-human.png" alt="人工智慧客服與真人客服中間的橋斷開，標著轉真人斷點。一張寫著前情提要的紙掉下去，顧客問又要從頭說一次。人工智慧客服說已為您轉接，真人客服問請問發生什麼事。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          轉接真人客服時，橋中間斷開，前情提要沒有跟著過去。顧客只好把同一件事再講一遍。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>一次對話結束後，有沒有一份別人接得走的產出，是另一篇的題目。本文停在客服轉接：真人接手時，對話紀錄和已試過的步驟有沒有一起交出去。可以接著看<a href="ai-chat-without-handoff.html?v=handoff-gap-1&amp;start=1">《跟 AI 聊完了，為什麼還是交不出可交接的東西？》</a>。</p>
+      </aside>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>沒有人負責到結案，同一件事會再來</h2>
+      </div>
+      <p>一張工單上可能留著人工智慧客服的回覆、一筆轉接，以及一位看過一眼的真人。結案有時發生在回覆送出之後，或對話安靜了一陣之後。顧客要處理的那件事，沒有被交到一個名字上。</p>
+      <p>沒有負責人，就沒有人在約定的時間回訪：退款到了沒有、換貨寄出沒有、地址改好沒有。顧客等不到下文，就再開一張客訴。系統裡多出來的是新單號。內容仍是同一件事。這裡說的第二次、第三次客訴，是口語說法，非查核數據，只在說同一件事被重複打開。</p>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>本文只處理一張客服工單：結案前找不找得到負責人，回訪有沒有被記下來。責任如何被留下、事後如何追查，可以接著看<a href="guild-ai-control-plane.html?v=control-meme-1&amp;start=1">《代理人中控室》</a>。</p>
+      </aside>
+      <p><b>轉接要連同對話紀錄與已試過的步驟一起交出去。結案前要找得到誰負責。</b>兩件裡有一件沒做，顧客就得把同一件事再講一次，或再開一張。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 斷點與負責</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>結案標準改成解決，不是回覆</h2>
+      </div>
+      <p>一張工單可以結案，要能回答：顧客進來要處理的那件事，做完了沒有。做完的證據寫在工單上，例如退款編號、換貨單號，或顧客確認問題已排除。只有已回覆，或已轉接，還停在過程。</p>
+      <p>回覆時間可以繼續記。它說明第一句話有沒有送出。它不代替結案。結案看的是問題解決，不是句子出現得早。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>轉接時交出對話紀錄與已試過的步驟</h2>
+      </div>
+      <p>轉接真人客服的同一刻，附上兩樣東西。一是到目前為止的對話紀錄。二是已經試過的步驟，以及每一步的結果。真人的第一句就可以接在這些步驟之後，而不是請顧客重講。</p>
+      <p>兩樣裡缺了一樣，轉接狀態就寫成前情提要不完整。這張工單先不要當成已經交接完成。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>每張工單有負責人，並且追蹤回訪</h2>
+      </div>
+      <p>負責人是一個叫得出名字的人，或一個明確的班次。回訪寫明時間：什麼時候確認事情做完。找不到人，工單維持未結案，並標成尚未指定。</p>
+      <p>回訪要看的是那件事的結果，不是再送一次制式回覆。退款到了、換貨寄出了、地址改好了，才算這一次回訪有著落。公司要不要因此增加整組人力，不是這一張工單的前提。</p>
+      <div class="diagram-box">
+        <svg viewBox="0 0 640 168" role="img" aria-label="結案前三關：問題是否做完、轉接時有沒有前情提要、誰負責到回訪">
+          <rect x="40" y="12" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--warm)"/>
+          <text x="320" y="38" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">問題真的解決了嗎</text>
+          <rect x="40" y="64" width="560" height="40" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+          <text x="320" y="90" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">轉接時有沒有帶前情提要</text>
+          <rect x="40" y="116" width="560" height="40" rx="8" fill="var(--warm-soft)" stroke="var(--warm)"/>
+          <text x="320" y="142" text-anchor="middle" font-family="Noto Sans TC" font-size="15" fill="var(--ink)">這件事誰負責到回訪</text>
+        </svg>
+        <div class="cap">三關都過，才進入可以結案。缺一關，維持未結案。</div>
+      </div>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>櫃檯可以很快蓋上已回覆。箱子裡的裂痕還在，這張單仍不算做完。印章要等事情做完、前情交出去、名字寫上，才蓋得下去。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/ai-support-fast-more-complaints/03-three-checks-before-close.png" alt="客服工單結案檢查卡，三關都打勾：問題真的解決了嗎、轉真人時有帶前情提要嗎、這件事誰負責到底。旁邊蓋著可以結案的印章，下方寫三關都過才蓋章。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          三關都過，才蓋上可以結案：問題是否解決、轉接時有沒有前情提要、誰負責到底。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>功能上線之後，第二次還有沒有人來用，是另一篇的題目。本文假設客服管道已經有人在用，看的是用了之後，結案有沒有對上解決。可以接著看<a href="ai-has-ai-two-clicks-dropoff.html?v=has-ai-drop-1&amp;start=1">《標榜「有 AI」之後，為什麼點兩次就沒人用？》</a>。</p>
+      </aside>
+    </section>
+    <section class="concept" id="risks">
+      <div class="concept-head">
+        <span class="concept-num mono">08</span>
+        <h2>這樣做時要留意的邊界</h2>
+      </div>
+      <p>把每一張工單都改成必須轉接真人客服，會把原本可以靠常見問答處理的量，堆到人身上。人力若沒有跟著排班，等待會變長，回覆與處理一起變慢。轉接適合用在制式回覆碰不到問題，或顧客明確要求找人的時候。</p>
+      <p>保存對話紀錄與已試過的步驟，會碰到個人資料。訂單編號、地址、付款片段、對話裡的姓名，都可能在裡頭。保存多久、誰可以看、轉接時哪些欄位要遮住，要先沿用既有的權限與保存規則。沒有這些規則就把全文交給下一個人，追查會變容易，不該看到的人也可能看到。</p>
+      <p>只看回覆時間，會把團隊帶向更快的第一句話。第一句話可以變快，問題仍未解決，客訴仍會再開。回覆時間可以留下，用來觀察第一句有沒有送出。結案另看問題有沒有做完、有沒有負責人、有沒有回訪。分欄之後，一個很快的數字就不會蓋過還沒解決的工單。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 三關與邊界</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯延伸建議。編輯根據本文整理的實務做法，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>把第一則回覆已送出，和問題已解決，分成兩個事件。</b>前者只記回覆有沒有送出。後者要等工單上寫了解決證據，才允許進入結案。兩個事件若共用同一個時間，事後會分不出「有回」和「做完」。</p>
+      <p><b>轉接介面把對話紀錄、已試過的步驟設成必填。</b>缺了就完成不了轉接，或把狀態寫成前情提要不完整。真人打開工單時，這兩欄要在同一張畫面上，不必再回人工智慧客服的對話視窗翻找。</p>
+      <p><b>工單留下負責人與下一次回訪時間。</b>兩欄有空，結案不可用，狀態維持未結案。回訪時間到了，用既有的工單畫面打開它，而不是另做一個只展示回覆速度的頁面。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>選一條已經上線的客服轉接。列出轉接後真人看得到的欄位，對照對話紀錄與已試過的步驟是否都在。驗收方式：請一位同事只看轉接後的那張工單，說出顧客已經試過什麼、哪一件事還沒做完。兩項都說得出來，這條轉接才算帶了前情提要。有任一項說不出來，標成前情提要不完整，本週不把它當成可結案。這是編輯延伸建議下的初步試驗，不能推成客訴是否下降。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯延伸建議。編輯根據本文整理的實務做法，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>把結案標準寫成團隊這週就用得到的一句話。</b>怎樣的紀錄才算問題做完，寫進現有的工單說明。回覆已送出不算結案。這一步先於口號。不必另立公司級的指標專案。</p>
+      <p><b>未結案的工單要有負責人。</b>找不到人，標成尚未指定，放進下一次既有的班次檢視。指定誰在那個檢視裡把尚未指定的工單念出來。不要為了這件事新開一場只談人工智慧的會，也不必假定你能決定加聘。</p>
+      <p><b>回覆時間和問題解決分開看。</b>在已經存在的週會裡同時看三欄：第一則回覆有沒有送出、未結案有沒有負責人與回訪、同一件事有沒有被再開。不要只用回覆時間評這一週的客服。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>從本週已結案的工單裡抽出幾張，由你帶的班次來對。請當班同事對每一張指出：問題做完的證據、轉接時的前情提要在不在、負責人是誰。三項都指得出來，這張才維持結案。有任一項指不出來，改回未結案或標成待補。這個試驗只檢查你抽到的這幾張，不推成全公司的客訴變化。這是編輯延伸建議。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>回覆可以很快。結案要等問題做完、前情提要交得出去、並且有人負責到回訪。</h3>
+        <p>第一句話可以繼續記。它不代替解決，也不代替負責人。</p>
+      </div>
+    </section>
+    <p class="source-note">本文為編輯依常見客服作業整理的科普短文，非整理自單一節目或供應商白皮書，也不冒充研究結論。本文沒有查核任何市場數字、客訴比例或研究結果，觀點屬編輯整理。圖中出現的秒數與天數是示意畫面，不是已查核的回覆時間或處理天數。文中「下一次」「第二次」「第三次」客訴，是口語說法，非查核數據，指的是同一件事被重複打開的情境。文末兩則 Takeaway 是編輯延伸建議。延伸閱讀連回本站姊妹篇，供對照交接產出、責任歸屬與可追查，以及功能上線後的採用，正文不重講那些題目的論點。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 行動與來源</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話商業 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('ai_support_complaint_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('ai_support_complaint_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
