@@ -1,0 +1,524 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>從核子工程師到 Intel 執行長：陳立武的轉彎，教我們怎麼看半導體？</title>
+<link rel="stylesheet" href="mobile-article.css?v=lipbu-career-1">
+<script defer src="mobile-article.js?v=lipbu-career-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+  .source-note a{ font-weight:700; }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 半導體與人物</span>
+    <h1 class="title">從核子工程師到 Intel 執行長：陳立武的轉彎，教我們怎麼看半導體？</h1>
+    <p class="lede">最小的孩子不用練琴，於是去養了一百多條鬥魚，還每天幫牠們排名次。幾十年後，這個人是 Intel 的執行長。路線看起來拐了很多次。把每一站對上半導體產業鏈，會發現他是在同一條鏈上往前走：先學會用數字證明一件事站得住，再去押注新創、做所有晶片設計都要用的工具，最後走進一家同時做設計與製造的公司。</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 640 128" role="img" aria-label="五站連成一條線：核子工程、能源新創、創投、設計軟體、Intel">
+        <path d="M118 58H132 M230 58H244 M342 58H356 M454 58H468" stroke="var(--accent)" stroke-width="2"/>
+        <g fill="var(--surface)" stroke="var(--line)">
+          <rect x="8" y="22" width="110" height="72" rx="10"/>
+          <rect x="134" y="22" width="110" height="72" rx="10"/>
+          <rect x="260" y="22" width="110" height="72" rx="10"/>
+          <rect x="386" y="22" width="110" height="72" rx="10"/>
+          <rect x="512" y="22" width="118" height="72" rx="10" stroke="var(--warm)"/>
+        </g>
+        <g text-anchor="middle" font-family="Noto Sans TC" fill="var(--ink)" font-size="14">
+          <text x="63" y="54">核子工程</text>
+          <text x="63" y="76" font-size="12" fill="var(--ink-soft)">會算風險</text>
+          <text x="189" y="54">能源新創</text>
+          <text x="189" y="76" font-size="12" fill="var(--ink-soft)">兼管帳</text>
+          <text x="315" y="54">創投</text>
+          <text x="315" y="76" font-size="12" fill="var(--ink-soft)">挑人挑問題</text>
+          <text x="441" y="54">設計軟體</text>
+          <text x="441" y="76" font-size="12" fill="var(--ink-soft)">產業繪圖工具</text>
+          <text x="571" y="54">Intel</text>
+          <text x="571" y="76" font-size="12" fill="var(--ink-soft)">設計加製造</text>
+        </g>
+      </svg>
+      <div class="cap">五個站在同一條產業鏈上。細節、出處與哪些數字尚未查核，分頁裡分開寫。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文整理自 2026 年 9 月 25 日（台北時間）播出的訪談。受訪者陳立武（Lip-Bu Tan）現任 Intel 執行長，說法有他的位置與利益。Intel 轉型成敗尚未有定論。下文把「他本人的話」和「外部查得到的紀錄」分開標。英文單集名見文末來源。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">核子工程</button>
+      <button class="tab" type="button" data-goto="2">創投挑人</button>
+      <button class="tab" type="button" data-goto="3">設計工具</button>
+      <button class="tab" type="button" data-goto="4">Intel 與行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 4</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>一個不想活在哥哥影子下的核子工程師</h2>
+      </div>
+      <p>節目裡，陳立武說自己在家排行最小。哥哥是心臟外科醫師，姊姊是教授。哥哥姊姊要練琴、拿獎、功課全拿高分。最小的這個，他說媽媽後來累了，就讓他做自己想做的事。鬥魚是其中一件。一百多條，每條有名字，每天排名次。這段是他的自述，用來說明他從小就在同時顧很多件小事。</p>
+      <p>轉彎發生在大學。他記得教授說過：「你很好，但你哥更好。」他不想一直被拿來跟哥哥比，於是去美國，選一條跟醫學完全不同的路。他當時認為「能源是更大的問題」（energy is a bigger problem），所以念核子工程，並自嘲這一步「早了三十年」（30 years ahead of schedule）。兩句都是他在節目裡的話。</p>
+      <p>麻省理工學院碩士期間，他說自己同時有三份收入：一份是論文指導，一份是教授因他數學還不錯而給的計畫工作，一份是新加坡的獎學金。學校出納一度問，為什麼別人一張支票、他有三張。他說自己就是在那裡學會同時處理多件事。博士沒有念完。這些是節目自述，本站未向學校查核。</p>
+      <p>外部紀錄對得上的是學歷與成長地，對不上的細節就停在他的自述。<a href="https://technews.tw/2025/03/14/intel-new-ceo-tan-lip-bu/">科技新報</a>寫他在馬來西亞出生、在新加坡長大。中文名「陳立武」亦見<a href="https://www.cw.com.tw/article/5134425">天下雜誌</a>與該則科技新報。<a href="https://www.intc.com/news-events/press-releases/detail/1730/intel-announces-lip-bu-tan-as-chief-executive-officer">Intel 2025 年 3 月 12 日新聞稿</a>列出的學位是：新加坡南洋理工大學物理學士、麻省理工學院核子工程碩士、舊金山大學企管碩士。新聞稿學校名是 Nanyang Technological University。公開文章有時寫「南洋大學」，本文的校名跟這則新聞稿對齊。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>核子工程要交的作業，核心是證明這個設計安全。安全不能只靠「我覺得沒問題」。他在節目裡說，第一份工作花了六個月做統計分析，把設計正確這件事用數字證明給人看。後來挑公司、做決定，他仍把「先把數字攤開」當成習慣。這是他自己的連結。</p>
+      </div>
+      <p><b>用數字說服人，是後面創投與經營的底子。</b>這一頁先記住這件事。下一頁他開始拿別人的錢去押新創，看的仍是：這個人講的話，數字和背景對不對得上。</p>
+      <figure class="meme-panel">
+        <img src="assets/memes/lip-bu-tan-career-intel/lbt-route-map.png" alt="路線圖：核子工程、能源新創、創投（華登國際，1987 年創立）、設計軟體（益華電腦執行長 2009–2021）、Intel 執行長（2025 年 3 月起）五站相連。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          五站相連：核子工程、能源新創、創投、設計軟體、Intel。華登國際 1987 年創立、益華電腦執行長 2009 至 2021 年、Intel 執行長 2025 年 3 月起，是外部查核的年份。其餘站名依他在節目裡的說法整理。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 另一條路</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>創投，其實是在挑人和挑問題</h2>
+      </div>
+      <p>核子工程的第一份工作之後，他說有人找他去做能源新創。同行多半五十歲上下，他二十出頭，於是被指派當財務長。他說自己當時不知道帳要怎麼平，對方就送他去舊金山大學讀夜間企管碩士，白天當財務長，晚上上課。公司後來賣掉。公司名稱與交易條件是他的自述，本站未查核。</p>
+      <p>賣掉之後他去找創投的工作。他說大約談了 12 家，沒有一家給職位。最後他提出「不用付我薪水」，只要一個位子。起步的錢來自親友與岳父，他說大約 300 萬美元。這兩筆數字都是節目裡他的說法。</p>
+      <p>外部查得到的是公司本身。<a href="https://www.waldenintl.com.sg/">華登國際</a>（Walden International）官網寫，公司於 1987 年創立。<a href="https://www.waldenintl.com.sg/team.html">團隊頁</a>寫他是創辦人兼董事長，並寫他同時是 Walden Catalyst Ventures 的創始管理合夥人。Intel 新聞稿也寫他是華登國際董事長。他在節目裡說，管理規模後來做到「五、六十億美元」。這句只標示為他的說法。外部來源的數字並不一致，本站未查核。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>先看人，再看是不是十倍</h2>
+      </div>
+      <p>他挑公司的順序，用他自己的話整理是這樣。先看人：誠實、聽得進話、身邊有沒有團隊。他把資訊分成「訊號與雜訊」（signal and noise）。訊號是這個人夠不夠誠實、聽不聽得進話、遇到幾乎做不下去的時候還能不能繼續，以及身邊有沒有團隊。雜訊是只反覆講自己多強、把弱點蓋住。市場要夠大，才有機會變成領先者。技術至少要有十倍的改進；他說若只是兩倍，就先不必為了它花時間。最後要找得到願意付錢的客戶。半導體投資裡，他還會看大型雲端公司是否真的需要這項技術。以上都是他在節目裡描述的方法。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>創投的報酬可以想成一疊帳單。投入 1 元，失敗最多賠掉這 1 元。成功的那幾張，可能變成 10 元或 100 元。所以挑的時候，看的是有沒有機會變成那少數幾張大贏家。這段是編輯用來說明報酬結構的比喻。</p>
+      </div>
+      <p>他接著說，自己賠掉的公司不到一成。這句是他本人的成績單，本站未查核，也不把它當成產業平均。</p>
+      <p>這段經歷為什麼會讓他懂半導體：主持人提到，曾有一段時間幾乎沒有人投資半導體新創。他說自己後來專注半導體，是因為報酬最好。兩句都留在節目的說法裡。下一頁他走進的公司，就是這條鏈上幾乎每家設計公司都要用的那層工具。</p>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 挑人與十倍</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>設計工具公司：整個產業的繪圖軟體</h2>
+      </div>
+      <p>2009 年至 2021 年，他擔任益華電腦（Cadence Design Systems）執行長；2021 年至 2023 年任執行主席；2004 年起任董事。這段任期寫在 Intel 2025 年 3 月 12 日的任命新聞稿裡。</p>
+      <p>他自己的版本是：接任時沒有當執行長的經驗，也不懂電子設計自動化軟體，於是請員工教他。全員會議上他說自己是第一次當執行長，請大家寄點子。他說每天收到數百封信，每一封都回，有些還親自去找寫信的人。人事部門先給了他入門書。這些是節目自述。</p>
+      <p>有一位導師告訴他：「如果你七成的決定是對的，你就是很好的執行長。」他說這句話讓他敢做決定，錯了可以再修。英文原話裡有一句口頭的強調，這裡只留中文意思。這是他轉述的建議，是給當時那位新執行長的標準，不是事後成績單。</p>
+      <p>Intel 新聞稿另寫，他任益華電腦執行長期間，公司營收翻倍以上，股價上漲超過 3,200%。<b>這是 Intel 新聞稿的說法，本站未獨立驗證財務數字。</b>本文也不用這組數字推論 Intel 的股價。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>三段分工：畫圖的軟體、畫圖的公司、把晶片做出來的工廠</h2>
+      </div>
+      <p>電子設計自動化軟體，可以想成建築師用的繪圖軟體。晶片很複雜，設計公司要用這套軟體把電路畫出來、把規則檢查過。畫圖的公司很多是無晶圓廠設計公司：只畫設計圖，自己不蓋工廠。晶圓代工廠照著圖把晶片做出來。真實的產業鏈還有封裝測試、設備與材料。下面這張圖只留三段，方便對上他待過的位置。</p>
+      <figure class="meme-panel">
+        <img src="assets/memes/lip-bu-tan-career-intel/lbt-chip-chain.png" alt="示意圖：晶片產業三段——設計工具（電子設計自動化軟體）、晶片設計（無晶圓廠設計公司）、晶圓製造（晶圓代工廠），並標示他各時期所在位置。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          三段是簡化示意：設計工具、晶片設計、晶圓製造。橘色標籤是他各時期所在的位置。益華電腦執行長時期在設計工具，創投時期押注的主力在晶片設計，Intel 正想做大的是晶圓製造。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+      <p>他在節目裡對台積電創辦人張忠謀表示敬意，並說：「如果每家無晶圓廠設計公司都得自己蓋晶圓廠，誰也賺不到錢。」這句話點出晶圓代工分工的理由。工廠極貴，設計公司若每家都自建，固定成本會把利潤吃掉。代工廠把施工集中起來，設計公司付製造的費用，兩邊才有各自的生意。</p>
+      <p>他也說，Intel 目前仍是台積電的前十大客戶，而且會繼續合作。前十大這句是他本人的說法，本站未查核客戶排名。Intel 的難處放在下一頁：同一家公司既要做自己的設計，又要把晶圓代工做大到能服務外部客戶。</p>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>晶片是人工智慧五層系統的第一層。這篇把設計工具、晶片設計、晶圓製造拆開，方便看出人站在哪一段。下一篇看這一層怎麼接到上面的產品與成本。可以接著看<a href="ai-full-stack-moat.html?v=progress-4&amp;start=1">《AI 護城河不是一座牆》</a>。</p>
+      </aside>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>他說每家設計公司都自己蓋廠，誰也賺不到錢。仍有公司想把製造握在自己手裡，理由常常卡在物理與產能。可以接著看<a href="physics-is-the-law.html?v=progress-4&amp;start=1">《物理定律不接受簡報》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 產業的繪圖軟體</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>Intel：一家同時做設計與製造的公司，為什麼難轉身</h2>
+      </div>
+      <p>時間線先對外部紀錄。Intel 新聞稿寫，他於 2024 年 8 月卸下 Intel 董事，2025 年 3 月 12 日宣布任命、3 月 18 日生效出任執行長，並回到董事會。節目裡他的版本是：當董事時「知道問題卻無能為力」，信與訊息很多，睡不好，太太建議他辭去董事，否則對身體不好。辭職的月份對得上新聞稿。睡不好與家人建議是他的自述。</p>
+      <p>他說五年前曾是 Intel 執行長的最終人選之一，當時因家庭因素婉拒。後來一位朋友傳訊，大意是：以你在益華電腦的成績，Intel 對產業、對美國都很重要，「退休前，救救 Intel」（Before you retire, save Intel）。他說這句話讓他放在心上。婉拒、家庭、這則傳訊，都是他的說法。</p>
+      <p>2025 年 8 月 7 日，美國總統川普在 Truth Social 要求他立即辭職。<a href="https://www.reuters.com/world/china/trump-demands-highly-conflicted-intel-ceo-resign-over-china-ties-2025-08-07/">Reuters</a> 報導，理由是他與中國企業的關聯構成「高度利益衝突」，並報導他曾投資中國的晶片與先進製造公司。<a href="https://www.networkworld.com/article/4038379/trump-meets-with-intel-ceo-after-calling-for-his-resignation.html">Network World</a> 報導，8 月 11 日兩人在白宮會面後，川普的態度轉變。他在節目裡的說法是：自己投資全球，以色列、台灣、新加坡、印度、中國都有；當時很多創投都投中國，後來中國被看成競爭對手，衝突才被提出來。他說自己向總統說明在新加坡長大、並未在中國住過，並表示轉型需要兩年。會面裡的對話是他的轉述，本站未查核。兩邊的公開說法都放在這裡，本文不做判斷。</p>
+      <p>2025 年 8 月 22 日，<a href="https://www.intc.com/news-events/press-releases/detail/1748/intel-and-trump-administration-reach-historic-agreement-to">Intel 新聞稿</a>宣布，美國政府以 89 億美元購入 4.333 億股普通股，約 9.9% 股權，為被動持股，沒有董事席次。他在節目裡用台灣政府早期入股台積電當例子，主張政府持股晶片製造屬於基礎建設，並提到新加坡、日本也有政府持股的晶片製造。他口述了一個台灣政府的持股比例，該數字未經本站查核，本文不引用。</p>
+      <p>2025 年 9 月 18 日，<a href="https://newsroom.intel.com/artificial-intelligence/intel-and-nvidia-to-jointly-develop-ai-infrastructure-and-personal-computing-products">Intel 新聞室</a>寫，輝達（NVIDIA）宣布以每股 23.28 美元投資 Intel 普通股 50 億美元，並共同開發資料中心與個人電腦產品。新聞稿寫這筆投資尚待慣例成交條件。本文只記錄這則宣布，不評論價格或該不該買。</p>
+      <p>難處可以收成一句話。<b>Intel 要同時做自己的晶片設計，又要把晶圓代工做大到能服務外部客戶，而且要追先進製程。</b>前兩段在產業裡常常拆開：無晶圓廠設計公司不養工廠，晶圓代工廠替很多客戶施工。綁在同一家公司，設計部門與代工部門要搶同一批資源，外部客戶還會問：把圖交給你，會不會幫到你自己的產品。他在節目裡強調夥伴，點名輝達、超微、台積電，說自己不把這些公司只當成對手。對想接外部代工的生意來說，這也是一種取得信任的做法。信任有沒有換成訂單，轉型有沒有完成，本文不下結論。</p>
+      <figure class="meme-panel">
+        <img src="assets/memes/lip-bu-tan-career-intel/lbt-turnaround.png" alt="概念圖：大公司轉身先排三件事——先做功課、聽客戶說、找夥伴；下方註明七成決定做對的提醒。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          三件事依他在節目裡描述的做法整理：開會前先讀資料，重大決定「讓我想一晚」；他說客戶希望你成功，是最大的鼓勵；分工比把每個人都當對手走得遠。七成做對，是益華時期導師的提醒。圖下註明這些整理不代表轉型已經成功。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+      <p>「讓我想一晚」是他的短句。他補了一句：那一晚其實是在做功課，隔天再做決定，並設法讓相關的人接受。客戶希望 Intel 成功，是他說自己現在最被鼓舞的地方，其中也包括他稱為競爭者的公司。這些句子記錄的是他的做法與感受。訂單、製程與財務進度，本文未另做查核。</p>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>政府入股、資源與選擇權，是另一篇的題目。這篇只記下 2025 年 8 月美國政府入股 Intel 的新聞稿事實，停在紀錄，不延伸成投資判斷。可以接著看<a href="who-controls-the-ai-future.html?v=who-meme-1&amp;start=1">《AI 熱潮背後，誰掌握選擇權？》</a>。</p>
+      </aside>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>限制與不確定</h2>
+      </div>
+      <p><b>1.</b> 這是一集友好訪談。主持人 Jodi Shelton 是全球半導體聯盟（Global Semiconductor Alliance）共同創辦人暨執行長，與他相識二十多年。他曾任這個聯盟的董事，出任 Intel 執行長後再次出任。節目有贊助商。內容多為他本人回顧，沒有反方觀點。</p>
+      <p><b>2.</b> 他的職涯數字，包括管理資產規模、投資虧損比例、首次公開發行家數，都是本人說法，本站未查核。</p>
+      <p><b>3.</b> 中國投資爭議：Reuters 報導他曾投資中國晶片與先進製造公司，這是川普要求辭職的背景。他在節目中的說法是自己投資全球，當時很多創投都投中國。兩邊說法都呈現，不做判斷。</p>
+      <p><b>4.</b> Intel 轉型尚未完成。本文不評論股價，也不提供投資建議。公司財務數字除上文已標明的新聞稿外，均未查核。主持人提到的「連續七季超越預期」「十五年來最佳成長」，是口頭說法，本文不寫進事實敘事。</p>
+      <p><b>5.</b> 逐字稿為機器轉錄，引句已對照音檔時間點，但仍可能有辨識誤差。人名在機器稿裡有誤聽，本文使用外部紀錄上的名稱：華登國際、益華電腦、陳立武。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">08</span>
+        <h2>重點整理</h2>
+      </div>
+      <p><b>職涯的站，對得上產業鏈的段。</b>核子工程訓練他用數字證明設計站得住。能源新創讓他兼管財務。創投讓他挑人、挑問題。益華電腦是設計工具。Intel 同時做設計與製造。</p>
+      <p><b>創投看四件事。</b>人是否誠實、聽得進話、有沒有團隊；市場夠不夠大；技術有沒有十倍等級的改進；客戶願不願意付錢。投入 1 元，失敗最多賠 1 元，成功可能是 10 倍或 100 倍。管理規模「五、六十億美元」與虧損不到一成，是他的說法，未查核。</p>
+      <p><b>設計與製造常常拆開。</b>電子設計自動化軟體是共用的繪圖工具。無晶圓廠設計公司畫圖。晶圓代工廠施工。他說，若每家設計公司都自己蓋晶圓廠，誰也賺不到錢。</p>
+      <p><b>Intel 的難處是兩段綁在一起。</b>自己的晶片設計、服務外部客戶的晶圓代工、先進製程，要在同一家公司裡同時推進。2025 年 3 月 18 日他出任執行長。同年 8 月 22 日美國政府入股約 9.9%。9 月 18 日輝達宣布 50 億美元投資。日期與金額來自新聞稿。</p>
+      <p><b>這是他的回顧，加上查得到的公開紀錄。</b>轉型尚未完成。本文不評論股價，也不提供投資建議。</p>
+    </section>
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>把「證明設計正確」當成交付的一部分。</b>他的第一份工作，花了六個月用統計把設計證明給人看。對到工程實作，就是為一個關鍵模組補上可重現的驗證：測試、統計、邊界條件。功能做出來而驗證補不回去，下一個人只能聽你說它是對的。</p>
+      <p><b>畫出自己的產品在供應鏈哪一段。</b>列出上游工具與下游客戶，標出一個上游變動會影響你的地方。設計工具改版、代工產能變緊、客戶規格改寫，影響的位置不同。先知道自己站在哪一段，才知道該問誰。</p>
+      <p><b>用「十倍而不是兩倍」寫評估。</b>提案新工具或重構時，寫出可量化的改善倍數，以及量測方法。倍數與量法都寫在提案上，別人才看得到你準備優化哪一個數。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>挑一個你負責的功能，寫一頁「上游依賴 → 我 → 下游使用者」，並附一個量測指標。驗收方式：這頁圖讓一位不熟的同事在 5 分鐘內說得出你的上游與下游各一個，且指標有實際數字。說不出來，或指標還沒有數字，這一頁就還沒完成。這是初步試驗，用來檢查這張圖能不能被另一個人讀懂。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。範圍停在你帶得動的團隊：一頁紀錄、一次複盤、一次跨組對齊。</p>
+      <p><b>重大決定前先做功課，再寫下來。</b>建立一頁式決策紀錄：背景、選項、預計何時回頭檢查。他說重大決定會先留一晚做功課。對小主管，這一頁的用處是讓兩週後的自己看得到當時知道什麼、選了什麼。</p>
+      <p><b>用七成當心理準備，用複盤當修正機制。</b>導師給他的提醒是，七成決定做對，已經是很好的執行長。編輯延伸成團隊做法：每個決定約定兩週後複盤，錯了就修。七成是提醒容許犯錯，複盤是把修正排進行事曆。</p>
+      <p><b>把相鄰團隊當夥伴。</b>列出一個常被看成在搶資源的團隊，約一次共同目標對齊。問的是兩邊這一季要一起交成什麼，誰先做哪一段。對齊停在兩個團隊的目標與分工。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>挑一個卡住的決定，用一頁式決策紀錄寫下背景、選項與回頭檢查的日子，並排好兩週後的複盤會議。驗收方式：兩週後的複盤會議真的有開，且紀錄上寫明「維持」或「調整」的結論與理由。會議沒開，或紀錄沒有結論，這個試驗就還沒完成。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>上一站學到的驗證、挑人與分工，被他帶進了下一站。</h3>
+        <p>Intel 同時做設計與製造，難處已經寫在產業鏈的結構裡。轉型成敗尚未有定論。</p>
+      </div>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">09</span>
+        <h2>來源</h2>
+      </div>
+      <p><b>A. 來自節目（他本人的說法）。</b>家庭背景、教授拿他與哥哥比較、選擇核子工程的原因、自嘲早了三十年、麻省理工學院期間三份收入、博士沒有念完、第一份工作以六個月統計分析證明設計、能源新創與財務長經歷、夜間企管碩士、大約 12 家創投沒有給職位、約 300 萬美元起步、管理規模五至六十億美元、挑公司時看人與「訊號與雜訊」、十倍與兩倍的標準、願意付錢的客戶、虧損比例不到一成、後來因報酬而專注半導體、益華電腦的學習過程與每封信都回、導師關於七成決定的建議、五年前婉拒 Intel、朋友傳訊「退休前，救救 Intel」、董事期間睡不好並依家人建議辭任、與總統會面的轉述、兩年轉型的說法、台灣政府早期入股台積電被他當成基礎建設的例子、Intel 仍是台積電前十大客戶、客戶希望公司成功是他的鼓勵。節目：A Bit Personal（Substack：A Bit Personal Podcast）。主持人：Jodi Shelton。單集：〈Lip-Bu Tan: From Nuclear Engineer to Intel's CEO〉，2026 年 9 月 25 日台北時間刊出（Substack 標示 2026-09-24 UTC）。<a href="https://abitpersonalpod.substack.com/p/lip-bu-tan-from-nuclear-engineer">單集頁面</a>。</p>
+      <p><b>B. 外部查核。</b></p>
+      <p>Intel 新聞稿（2025-03-12）任命、學歷、益華電腦任期、2024 年 8 月辭董事，以及任內營收與股價的新聞稿說法：<a href="https://www.intc.com/news-events/press-releases/detail/1730/intel-announces-lip-bu-tan-as-chief-executive-officer">Intel Appoints Lip-Bu Tan as Chief Executive Officer</a>。</p>
+      <p>華登國際 1987 年創立，他為創辦人兼董事長：<a href="https://www.waldenintl.com.sg/">waldenintl.com.sg</a>、<a href="https://www.waldenintl.com.sg/team.html">團隊頁</a>。</p>
+      <p>Reuters：川普於 2025-08-07 要求辭職：<a href="https://www.reuters.com/world/china/trump-demands-highly-conflicted-intel-ceo-resign-over-china-ties-2025-08-07/">川普要求 Intel 執行長因中國關聯辭職</a>。</p>
+      <p>Network World：2025-08-11 白宮會面：<a href="https://www.networkworld.com/article/4038379/trump-meets-with-intel-ceo-after-calling-for-his-resignation.html">川普在要求辭職後與 Intel 執行長會面</a>。</p>
+      <p>Intel 新聞稿（2025-08-22）美國政府 89 億美元、4.333 億股、約 9.9%、被動持股、無董事席次：<a href="https://www.intc.com/news-events/press-releases/detail/1748/intel-and-trump-administration-reach-historic-agreement-to">Intel and Trump Administration Reach Historic Agreement</a>。</p>
+      <p>Intel 新聞室（2025-09-18）輝達宣布以每股 23.28 美元投資 50 億美元，並共同開發資料中心與個人電腦產品：<a href="https://newsroom.intel.com/artificial-intelligence/intel-and-nvidia-to-jointly-develop-ai-infrastructure-and-personal-computing-products">Intel and NVIDIA to Jointly Develop AI Infrastructure and Personal Computing Products</a>。</p>
+      <p>中文名「陳立武」、馬來西亞出生與新加坡長大：<a href="https://www.cw.com.tw/article/5134425">天下雜誌</a>、<a href="https://technews.tw/2025/03/14/intel-new-ceo-tan-lip-bu/">科技新報</a>。天下雜誌連結用於中文名；出生地與成長地依科技新報該文。</p>
+      <p>主持人 Jodi Shelton 為全球半導體聯盟共同創辦人暨執行長：<a href="https://kpmg.com/us/en/articles/2026/kpmg-sponsors-bit-personal-podcast-hosted-jodi-shelton.html">KPMG：A Bit Personal podcast hosted by Jodi Shelton</a>。</p>
+      <p><b>C. 未查核。</b>除上述新聞稿中的數字外，本文未查核任何公司財務數字。節目中的管理資產規模、虧損比例、首次公開發行家數、七季超越預期、十五年來最佳成長，均為口頭說法。益華電腦營收翻倍與股價超過 3,200% 只出現在 Intel 新聞稿，本站未另做財務查核。查核日期 2026 年 9 月 29 日。</p>
+    </section>
+    <p class="source-note">內容整理、摘要並改寫自 A Bit Personal 單集，主持人 Jodi Shelton、受訪者陳立武，非逐字紀錄。英文單集名見上方來源。文末兩則 Takeaway 是編輯依本文延伸的實務建議。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 轉身、限制、行動</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話科技 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('lipbu_career_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('lipbu_career_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
