@@ -100,7 +100,7 @@
   .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
 
   .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
-  .progressbar-fill{ height:100%; width:25%; background:var(--accent); transition:width .35s ease; }
+  .progressbar-fill{ height:100%; width:20%; background:var(--accent); transition:width .35s ease; }
   @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
 
   .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
@@ -200,6 +200,42 @@
     color:inherit;
   }
 
+  .role-stack{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    margin:8px 0 4px;
+  }
+  .role-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:14px;
+    padding:16px 16px 6px;
+    box-shadow:var(--shadow);
+  }
+  .role-card h3{
+    font-size:1.28rem;
+    line-height:1.35;
+    margin:0 0 4px;
+    color:var(--ink);
+  }
+  .role-card h4{
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    font-size:0.78rem;
+    font-weight:700;
+    letter-spacing:0.08em;
+    color:var(--accent);
+    margin:16px 0 6px;
+  }
+  .role-card p{
+    font-size:0.96rem;
+    line-height:1.85;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+  }
+  .role-card p b{ color:var(--ink); font-weight:700; }
+
   .closing{ padding-block:36px 8px; }
   .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
   :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
@@ -247,9 +283,10 @@
       <button class="tab" type="button" data-goto="1">可以跑啊</button>
       <button class="tab" type="button" data-goto="2">共用核心</button>
       <button class="tab" type="button" data-goto="3">四個名詞</button>
-      <button class="tab" type="button" data-goto="4">限制與行動</button>
+      <button class="tab" type="button" data-goto="4">三種人</button>
+      <button class="tab" type="button" data-goto="5">限制與行動</button>
     </div>
-    <span class="pagecount mono" id="pagecount">1 / 4</span>
+    <span class="pagecount mono" id="pagecount">1 / 5</span>
   </div>
 </nav>
 
@@ -406,33 +443,58 @@ docker ps -a</code></pre>
     <section class="concept">
       <div class="concept-head">
         <span class="concept-num mono">08</span>
-        <h2>什麼時候有用</h2>
+        <h2>三種人為什麼需要 Docker（也可能不需要）</h2>
       </div>
-      <p>依<a href="https://docs.docker.com/get-started/docker-overview/">官方概觀</a>與<a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/">容器說明</a>，容器幫得上忙的情況大致是這些。</p>
-      <p><b>團隊需要一致的開發環境。</b>新人和舊同事拿到同一份打包方式，比較不會各裝各的。</p>
-      <p><b>持續整合與持續交付要在同樣的環境裡測試。</b>測試用的環境若和開發者筆電各走各的，測過不代表換個地方還成立。</p>
-      <p><b>一個應用程式有好幾個元件。</b>例如使用者看得到的網頁、背後處理事情的程式、存資料的資料庫，可以各自放在自己的容器裡。</p>
-      <p><b>同一份程式要在筆電、資料中心、雲端之間搬動。</b>可攜指的是同一種執行方式搬得走，不是檔案複製貼上就結束。</p>
-      <p><b>想在同樣的硬體上跑更多工作。</b>因為多個容器共用主機核心，不必為每個應用程式各開一整套作業系統。</p>
-    </section>
-    <section class="concept">
-      <div class="concept-head">
-        <span class="concept-num mono">09</span>
-        <h2>什麼時候其實不需要</h2>
+      <p>不是每個人都該為了這口箱子改工作方式。用軟體的人、寫程式的人、做決定的人，卡住的地方不一樣，用不到的時候也不一樣。</p>
+      <p><b>標示：</b>下面每張卡的「Docker 怎麼幫」，技術機制依 <a href="https://docs.docker.com/get-started/docker-overview/">Docker 官方概觀</a>與<a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/">容器說明</a>。三張卡的「其實不需要的情況」，以及經營者這張卡怎麼取捨，是本站編輯觀點，不是官方文件說法。</p>
+      <div class="role-stack">
+        <article class="role-card">
+          <h3>使用者</h3>
+          <h4>痛點</h4>
+          <p>安裝步驟一長串，版本對不上，程式在自己的電腦上壞掉。你要的是它跑起來，不是先搞清楚這台電腦還缺什麼。</p>
+          <h4>Docker 怎麼幫</h4>
+          <p><b>大多數一般使用者不會直接碰到 Docker。</b>好處是間接的。官方文件說明，同一份打包方式可以在不同環境以同樣方式執行。團隊用同一份映像檔做測試與上線，使用者少碰到一點「到正式環境才壞」。</p>
+          <p><b>自己架設開源工具的進階使用者，才比較會直接用到。</b>常可以用一個映像檔把程式、函式庫與設定一起跑起來，不必在自己的電腦上手動裝一長串相依套件。要哪一版，由映像檔的版本標籤固定。</p>
+          <h4>其實不需要的情況</h4>
+          <p>以下是本站編輯判斷。只用網頁服務，或只用手機、桌面應用程式的人，安裝與更新是那些軟體自己的事。Docker 不是一般消費軟體的安裝方式。對非工程背景的人，先安裝 Docker 本身就是多一道門檻。</p>
+        </article>
+        <article class="role-card">
+          <h3>開發者</h3>
+          <h4>痛點</h4>
+          <p>每個人的環境不同。新成員把環境設定起來很耗時。測試與正式環境不一致，就會變成「我這邊可以、上線不行」。不同專案需要的套件版本若裝在同一台電腦，會互相衝突。這對得上官方文件描述的版本不一致，以及跟本機已經裝好的軟體互相衝突。</p>
+          <h4>Docker 怎麼幫</h4>
+          <p><a href="https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/">Dockerfile</a>把建立環境的步驟寫成文字檔，Docker 照它建出映像檔。同一份映像檔可以在筆電、持續整合與持續交付的流程、正式環境裡執行。一個應用程式若有多個元件，例如看得到的網頁、背後的程式、存資料的資料庫，可以各自放在自己的容器。各專案的套件留在各自的容器裡，不會擠在同一組安裝環境裡互相覆蓋。</p>
+          <h4>其實不需要的情況</h4>
+          <p>以下是本站編輯判斷。單一語言的小腳本、一份靜態網站，若大家執行方式都一樣、沒有環境差異，容器要處理的問題還沒出現。平台已經替你管理執行環境的服務，也不必再包一層。容器有學習成本，出問題時除錯會多一層。若要隔開的是完全不信任的程式，不應只靠容器的預設設定，理由在下一頁。</p>
+        </article>
+        <article class="role-card">
+          <h3>經營者</h3>
+          <h4>痛點</h4>
+          <p>交付常常卡在環境：某人的電腦能跑，換一台就停。人員更替之後，沒有人會把環境架起來。想換雲端廠商，或把同一個服務擴充到別的地方時，又擔心被原來的做法綁住。</p>
+          <h4>Docker 怎麼幫</h4>
+          <p>環境可以重現，交接和上線比較能照同一份做法走，流程較可預期。這是編輯把可重現連到經營上的說法。容器可攜：同一種執行方式可以放在筆電、資料中心或雲端，搬遷和擴充因此多一點彈性。多一點，不是完全不綁廠商。資料庫、雲端專屬服務仍可能把資料和流程留在原來的地方。<a href="https://docs.docker.com/get-started/docker-overview/">官方概觀</a>把 Docker 描述為以超管理器為基礎的虛擬機之外、較省資源的做法。這裡只保留這個定性描述。</p>
+          <h4>其實不需要的情況</h4>
+          <p>以下是本站編輯觀點。映像檔和安全設定要有人維護；映像檔不會自己更新，隔離也不該被當成已經做完。學習與維運成本不會因為裝完就消失。大型組織使用 Docker Desktop 需要付費授權，範圍見下一頁，本文不是法律建議。產品若完全使用現成的雲端軟體，自己不把程式裝上去跑，就不必為了容器再做這筆安排。</p>
+        </article>
       </div>
-      <p><b>這段是本站編輯判斷，不是官方文件說法。</b>官方文件說明容器能做什麼。下面列的是：以本文前面的機制來看，哪些情況先不必為了容器再加一套東西。</p>
-      <p><b>你只是在用別人做好的網頁服務或雲端軟體。</b>自己不負責把程式裝上去跑，環境差異不在你這一步。</p>
-      <p><b>大家執行方式都一樣，沒有環境差異。</b>一個小腳本或一份靜態網站，若換一台電腦也不會因為少裝套件而壞，容器解決的那個問題還沒出現。</p>
-      <p><b>團隊沒有人能負責維護映像檔。</b>映像檔不會自己更新。沒有人看著基底映像檔，箱子會慢慢過期。</p>
-      <p><b>你需要把完全不信任的程式隔開。</b>這種情況不應只依賴容器的預設設定。理由在下一節。</p>
       <aside class="related-read">
         <p class="related-read-label">延伸閱讀</p>
         <p>保有「搬得走、換得掉」的能力，跟容器追求的可攜性是同一種思路：工作不要只活在某一台機器、或某一家供應商當下的預設裡。可以接著看<a href="dont-rent-your-ai-brain.html?v=rent-meme-1&amp;start=1">《別把公司的記憶租給一顆模型》</a>。</p>
       </aside>
     </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 三種人</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-5" hidden>
+  <div class="wrap">
     <section class="concept">
       <div class="concept-head">
-        <span class="concept-num mono">10</span>
+        <span class="concept-num mono">09</span>
         <h2>限制與風險</h2>
       </div>
       <p><b>1. 容器不是和虛擬機同等的隔離牆。</b>容器共用主機核心。<a href="https://docs.docker.com/engine/security/">Docker 官方安全性文件</a>說明，執行容器的一個主要風險是：預設給容器的權限與掛載，可能單獨或配合核心漏洞，造成隔離不完整。官方建議只保留行程真正需要的權限，並以非最高權限帳號在容器內執行。最高權限帳號（root）是這台系統裡權限最高的那個帳號。「與虛擬機比較」是本站依官方描述整理的句子，官方文件沒有用這句話。</p>
@@ -443,14 +505,15 @@ docker ps -a</code></pre>
     </section>
     <section class="concept">
       <div class="concept-head">
-        <span class="concept-num mono">11</span>
+        <span class="concept-num mono">10</span>
         <h2>重點整理</h2>
       </div>
       <p><b>1.</b>「我電腦上可以跑」多半是環境不同。容器把程式和它需要的檔案、函式庫、設定一起打包。</p>
       <p><b>2.</b>容器是共用主機核心的隔離行程，靠命名空間（看得到什麼）與控制群組（能用多少）分隔。虛擬機有自己的作業系統與核心，較重。兩者常一起用。</p>
       <p><b>3.</b>Dockerfile 寫步驟，建置出唯讀、分層的映像檔。執行映像檔得到容器，容器的變更寫在自己的可寫層。</p>
       <p><b>4.</b>映像檔倉庫（例如 Docker Hub）負責存放與分享映像檔，用版本標籤區分版本。</p>
-      <p><b>5.</b>不是每個團隊都需要。隔離有限制，資料要放磁碟區，映像檔要有人維護。大型組織使用 Docker Desktop 要注意授權。</p>
+      <p><b>5.</b>使用者、開發者、經營者需要它的理由不同，也各自有不需要的情況。</p>
+      <p><b>6.</b>不是每個團隊都需要。隔離有限制，資料要放磁碟區，映像檔要有人維護。大型組織使用 Docker Desktop 要注意授權。</p>
     </section>
     <section class="concept" id="takeaways-engineer">
       <div class="concept-head">
@@ -487,7 +550,7 @@ docker ps -a</code></pre>
     </section>
     <section class="concept">
       <div class="concept-head">
-        <span class="concept-num mono">12</span>
+        <span class="concept-num mono">11</span>
         <h2>來源</h2>
       </div>
       <p>技術敘述依下列 Docker 官方文件整理，用自己的話改寫，不是整段翻譯。每條後面寫的是它支撐了本文哪些內容。查核日期 2026 年 9 月 29 日。</p>
@@ -504,12 +567,12 @@ docker ps -a</code></pre>
       <p><b>在 Ubuntu 安裝 Docker Engine。</b>支撐：hello-world 會下載測試映像檔、在容器中執行、印出確認訊息後結束。本文只取這段驗證說明，不寫安裝步驟。<a href="https://docs.docker.com/engine/install/ubuntu/">docs.docker.com/engine/install/ubuntu/</a></p>
       <p><b>docker container ls（docker ps）參考。</b>支撐：預設只列出執行中的容器，-a 列出全部。<a href="https://docs.docker.com/reference/cli/docker/container/ls/">docs.docker.com/reference/cli/docker/container/ls/</a></p>
       <p><b>Docker Desktop 授權。</b>支撐：免費與付費的範圍。以該頁為準，本文不是法律建議。<a href="https://docs.docker.com/subscription-billing/desktop-license/">docs.docker.com/subscription-billing/desktop-license/</a></p>
-      <p><b>編輯判斷。</b>「什麼時候其實不需要」、限制第 4 點「映像檔要有人維護」的延伸，以及文末兩則 Takeaway，都是本站編輯依官方文件延伸的建議，不是 Docker 官方說法，也不是已驗證的研究結論。本文未使用任何市場數字或採用率。</p>
+      <p><b>編輯判斷。</b>三種人卡片裡的「其實不需要的情況」、經營者角度的取捨、限制第 4 點「映像檔要有人維護」的延伸，以及文末兩則 Takeaway，都是本站編輯依官方文件延伸的建議，不是 Docker 官方說法，也不是已驗證的研究結論。本文未使用任何市場數字、採用率或映像檔數量，也沒有成本或效益的數字。授權頁的員工人數與營收門檻只出現在限制第 5 點，是官方授權條件。</p>
     </section>
-    <p class="source-note">技術敘述依 Docker 官方文件（docs.docker.com）整理並以白話改寫，非逐字翻譯；比喻與『什麼時候不需要』為本站編輯觀點。文末兩則 Takeaway 是編輯依本文延伸的實務建議。查核日期 2026 年 9 月 29 日。</p>
+    <p class="source-note">技術敘述依 Docker 官方文件（docs.docker.com）整理並以白話改寫，非逐字翻譯；比喻、三種人卡片裡的「其實不需要的情況」，以及經營者角度的取捨，為本站編輯觀點。文末兩則 Takeaway 是編輯依本文延伸的實務建議。查核日期 2026 年 9 月 29 日。</p>
     <div class="pagectrl">
       <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
-      <span class="mid mono">04 · 限制與行動</span>
+      <span class="mid mono">05 · 限制與行動</span>
       <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
     </div>
   </div>
