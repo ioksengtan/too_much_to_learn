@@ -1,0 +1,559 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI 讓聰明變便宜之後，還剩什麼值得驕傲？貝佐斯說：你的選擇</title>
+<link rel="stylesheet" href="mobile-article.css?v=bezos-choice-1">
+<script defer src="mobile-article.js?v=bezos-choice-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:20%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+  .concept p a{ overflow-wrap:anywhere; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{
+    margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7;
+  }
+  .source-note a{ font-weight:700; }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">通勤短文 · 人物與選擇</span>
+    <h1 class="title">AI 讓聰明變便宜之後，還剩什麼值得驕傲？貝佐斯說：你的選擇</h1>
+    <p class="lede">以前，「很會查、很會寫、算得快」是職場上的超能力。現在打開一個對話框，實習生和主管拿到的是同一套超能力。如果大家的出廠配備都被人工智慧補齊了，還有什麼是值得你自己驕傲的？</p>
+    <div class="hero-diagram">
+      <svg viewBox="0 0 680 168" role="img" aria-label="左框是天賦，拿到的，下面寫聰明、快、知道很多。箭頭指向右框，選擇，你按的，下面寫試不試、做不做、怎麼對人。箭頭上方小字是人工智慧補齊了左邊。">
+        <rect x="8" y="46" width="236" height="104" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <rect x="436" y="46" width="236" height="104" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+        <path d="M256 98H412" stroke="var(--accent)" stroke-width="2"/>
+        <path d="M400 86l16 12-16 12" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <text x="340" y="32" text-anchor="middle" font-family="Noto Sans TC" font-size="14" fill="var(--accent)">人工智慧補齊了左邊</text>
+        <g text-anchor="middle" font-family="Noto Sans TC" fill="var(--ink)">
+          <text x="126" y="90" font-size="16">天賦：拿到的</text>
+          <text x="126" y="118" font-size="13" fill="var(--ink-soft)">聰明・快・知道很多</text>
+          <text x="554" y="90" font-size="16">選擇：你按的</text>
+          <text x="554" y="118" font-size="13" fill="var(--ink-soft)">試不試・做不做・怎麼對人</text>
+        </g>
+      </svg>
+      <div class="cap">左邊是拿到的，右邊是自己按的。把兩者接到人工智慧，是本站的延伸，不是 2010 年演講的原題。</div>
+    </div>
+    <div class="callout"><span class="mark">!</span><p><b>閱讀說明：</b>本文引用的是傑夫·貝佐斯（Jeff Bezos）在不同年份、不同場合的原話（英文短句附中文大意），每句都標明原始場次；普林斯頓大學演講中的故事依官方公布的講稿轉述；把這些話接到人工智慧時代，是本站編輯的論點，不是他本人說的。</p></div>
+  </div>
+</section>
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">聰明變便宜</button>
+      <button class="tab" type="button" data-goto="2">那一次選擇</button>
+      <button class="tab" type="button" data-goto="3">酸民或建造者</button>
+      <button class="tab" type="button" data-goto="4">不只一場演講</button>
+      <button class="tab" type="button" data-goto="5">限制與行動</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 5</span>
+  </div>
+</nav>
+
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>一個十歲小孩算對了數學，卻讓祖母哭了</h2>
+      </div>
+      <p>2010 年 5 月 30 日，傑夫·貝佐斯（Jeff Bezos）在<a href="https://www.princeton.edu/news/2010/05/30/2010-baccalaureate-remarks">普林斯頓大學（Princeton University）</a>的 Baccalaureate 典禮演講，題目是 We are What We Choose。<a href="https://www.princeton.edu/news/2010/05/30/choices-shape-lives-bezos-tells-seniors">普林斯頓大學新聞稿</a>寫，這是跨宗教的禮拜儀式，也是該校最古老的傳統之一。它是畢業週給應屆畢業生的祝福典禮，不是畢業典禮本身。</p>
+      <p>演講前段，他講了一個十歲時的故事。依普林斯頓大學官方公布的講稿轉述：他跟祖父母旅行，算出祖母抽菸可能少活幾年，得意地說出來，祖母卻哭了。祖父停車後溫和地告訴他，有一天他會明白，善良比聰明更難。這段見<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=387s">普林斯頓大學官方影片約 06:27–10:58</a>。影片口語措辭與官方講稿略有不同，所以這裡只轉述，不加引號。</p>
+      <p>他接著對畢業生說：<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=653s">「Cleverness is a gift, kindness is a choice.」</a>中文大意是：聰明是天賦，善良是選擇。這句與官方講稿逐字相符，約在 10:53。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>天賦是別人給的，選擇是你自己的</h2>
+      </div>
+      <p>他對台下畢業生說，他們都很聰明，能錄取就是證據。他也說，人類還會擁有很多新能力。這兩句依官方講稿轉述，不是逐字引用。錄取證明的是拿到的那一部分。他真正問下去的，是你準備拿什麼來驕傲。</p>
+      <p>原句是：<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=751s">「And will you take pride in your gifts or pride in your choices?」</a>中文大意是：你要以天賦為傲，還是以選擇為傲？約在 12:53。</p>
+      <p><b>聰明可以是別人給的。要不要善良、要不要動手、要往哪裡走，才是自己的。</b>下一節把這個區分接到今天。那個接法是本站的，不是他當天的講題。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>人工智慧把「天賦」那一格變便宜了</h2>
+      </div>
+      <p><b>這一段是本站編輯的論點。</b>2010 年的演講沒有談人工智慧工具。寫作、查資料、算數、摘要，這些以前靠天賦與長期訓練才顯得突出的能力，現在很多人都能用人工智慧工具拿到接近的結果。實習生和主管若打開同一個對話框，起點會比以前靠近。</p>
+      <p>變便宜之後還留在你這邊的，是選擇：挑哪個問題、要不要試、做到哪裡算完成、結果誰負責、對人是否厚道。工具可以把草稿交出來。要交哪一版、要不要為那一版負責，仍然要有人按下去。</p>
+      <div class="analogy">
+        <span class="tag">白話比喻</span>
+        <p>出廠配備是車子離開工廠時已經裝好的：引擎、煞車、音響。設定是你坐進駕駛座之後自己按的：目的地、要不要超車、遇人時先讓還是按喇叭。人工智慧補齊的是出廠配備那一格。方向盤還在你手上。下面這張圖就是這個對照。</p>
+      </div>
+      <figure class="meme-panel">
+        <img src="assets/memes/bezos-gifts-vs-choices/01-gifts-vs-choices.png" alt="示意圖：標題寫天賦是出廠配備，選擇是你自己按的設定。左邊灰色卡片是出廠配備，也就是天賦，規格表列出聰明的腦袋、反應快、記性好、很會算數，下方寫是拿到的，不是做到的。右邊藍框卡片是設定，也就是選擇，有四個開關：要不要試試看、安穩一點或冒一點險、酸一句或動手做、放棄或再撐一下，下方寫每一個開關，都是你自己按的。底部寫人工智慧工具讓聰明、快、知道很多變得人人都有；設定還是要你自己按。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          天賦像出廠配備，是拿到的；選擇像設定，是自己按的。貝佐斯 2010 年在普林斯頓大學講的是前者與後者的差別；把它接到人工智慧工具，是本站的延伸。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1" disabled>← 上一頁</button>
+      <span class="mid mono">01 · 聰明變便宜</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>1994 年的那個決定</h2>
+      </div>
+      <p>先寫查得到的事實，再寫他自己在演講裡的版本。本文不是亞馬遜（Amazon）的宣傳，本站與其沒有合作。</p>
+      <p>1986 年，他畢業於普林斯頓大學。<a href="https://www.princeton.edu/news/2010/05/30/choices-shape-lives-bezos-tells-seniors">普林斯頓大學新聞稿</a>稱他為 1986 年的校友。<a href="https://www.britannica.com/biography/Jeff-Bezos">大英百科全書（Britannica）</a>寫，他在 1986 年以最優等成績畢業，主修電機工程與電腦科學。</p>
+      <p>1990 年，他進入紐約市的投資公司 D. E. Shaw，很快升任資深副總裁。大英百科全書與 <a href="https://achievement.org/achiever/jeffrey-p-bezos/">Academy of Achievement 人物介紹</a>都寫到這個職位。演講裡說的紐約市一家金融公司，對應的就是這家。這個對應是依這兩份人物介紹，演講本身沒有點名公司。</p>
+      <p>1994 年，他離開 D. E. Shaw，搬到西雅圖一帶，開一家網路書店。大英百科全書的寫法是：1994 年他和妻子離開 D. E. Shaw，搬到華盛頓州西雅圖，去開一家網路書店。Academy of Achievement 的人物介紹寫：雇主不準備做這件事，他知道只能自己創業，這代表放棄在紐約市的穩定職位。</p>
+      <p><a href="https://www.aboutamazon.com/news/workplace/first-amazon-office-jeff-bezos-garage">亞馬遜官方網站</a>寫：他在 1994 年於自家車庫創立公司；1995 年 7 月，Amazon.com 以網路書店的身分，從他在華盛頓州 Bellevue 的住家開張。官方頁沒有寫確切的成立日，本文也不寫。</p>
+      <p>下面是他自己的版本。</p>
+      <p>他說當時剛滿 30 歲、結婚一年。他告訴妻子，想辭職去做一件多半不會成功的瘋狂事，她說去做吧。見<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=805s">官方影片約 13:25–13:50</a>。</p>
+      <p>他小時候是車庫發明家，一直想當發明家。妻子支持他追隨熱情。見<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=833s">約 13:53–14:18</a>。</p>
+      <p>他在紐約市一家金融公司工作，向很欣賞的上司提出要創立網路書店。上司帶他在中央公園散步很久，聽完後說這是好主意，但更適合還沒有好工作的人，並請他想 48 小時再決定。見<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=859s">約 14:19–14:55</a>。</p>
+      <p>以上依普林斯頓大學官方公布的講稿轉述；影片口語措辭與官方講稿略有不同。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>他怎麼想通的</h2>
+      </div>
+      <p>48 小時之後，他這樣說自己怎麼落下決定：<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=907s">「I didn't think I'd regret trying and failing.」</a>中文大意是：他不覺得自己會後悔試了但失敗。句子約在 15:15。</p>
+      <p>緊接的下一句，本文只寫中文大意，不引英文：他懷疑，「完全不試」這個決定會一直糾纏他。約在 15:20。</p>
+      <p>再往下仍只寫中文大意：考慮很久之後，他選了比較不安全的那條路去追自己熱愛的事，並以這個選擇為傲。約在 15:29。這句較長，本文不附英文。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>八十歲檢查：一個做決定前的自我提問</h2>
+      </div>
+      <p><b>這一節是編輯的整理，不是他為這個做法取過的名字。</b>材料只有兩樣。一樣是上一節：他不覺得會後悔試了而失敗，卻懷疑完全不試會一直糾纏他。另一樣是演講結尾的預言，依官方講稿轉述：到了八十歲，安靜回想、只講給自己聽的人生故事裡，最精簡也最有意義的版本，會是你做過的一連串選擇。第 4 頁會再把這段對上結尾原句。</p>
+      <p>放在一起，變成做決定前的兩欄。<b>試了、失敗了：</b>會可惜，會痛一陣子，但你知道答案了，故事裡有這一章。<b>沒試、一直想：</b>「如果當初」隔幾年冒出來一次，答案一直是問號。</p>
+      <p>問自己的句子可以很短：八十歲回頭看，會後悔沒試嗎？還是其實只是怕失敗？它幫你分辨「怕失敗」和「真的不想要」。<b>它不是叫人辭職，也不是叫人承擔承受不起的風險。</b>先把最壞情況限制在自己承受得起的範圍，例如用時間盒、做一輪小規模試驗。這套建議的邊界，第 5 頁寫全。</p>
+      <figure class="meme-panel">
+        <img src="assets/memes/bezos-gifts-vs-choices/02-regret-check-at-80.png" alt="示意圖：標題寫八十歲的自己回頭看，哪一種比較會後悔。上方一條時間箭頭從現在的你指向八十歲的你。左欄綠色是試了，失敗了：會可惜、會痛一陣子，但你知道答案了，故事裡有這一章，後悔程度低。右欄橘色是沒試，一直想：如果當初，每隔幾年冒出來一次，答案永遠是問號，後悔程度一直掛著。底部勾選框寫問自己：八十歲的我，會後悔沒試嗎？還是只是怕失敗？副標寫做決定前的自我檢查，不是叫你明天就辭職。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          編輯把他「不覺得會後悔試了而失敗」的說法整理成一個自我檢查。它幫你分辨怕失敗和真的不想要，不是叫人承擔承受不起的風險；先把最壞情況限制在自己承受得起的範圍。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>另一個人的職涯轉彎，每一站也都是離開原本路線的選擇。可以接著看<a href="lip-bu-tan-career-intel.html?v=lipbu-career-2&amp;start=1">《從核子工程師到 Intel 執行長：陳立武的轉彎，教我們怎麼看半導體？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">02 · 那一次選擇</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>演講結尾那串問題</h2>
+      </div>
+      <p>2010 年那場演講的結尾，是一連串「你要……還是……」。約十題裡，本文只寫三題的中文大意，英文只留兩句。</p>
+      <p>只寫中文、不引英文的一題：你要讓慣性帶著走，還是追隨熱情？</p>
+      <p>英文的第一句：<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=944s">「Will you play it safe, or will you be a little bit swashbuckling?」</a>中文大意是：你要穩穩地走，還是帶一點闖蕩的膽子？約在 16:41。</p>
+      <p>英文的第二句：<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=944s">「Will you be a cynic, or will you be a builder?」</a>中文大意是：你要當酸民，還是當建造者？約在 16:56。這兩句都在官方影片約 15:44–17:18 那一段。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">08</span>
+        <h2>同一張桌上的人工智慧工具</h2>
+      </div>
+      <p><b>這一段是本站編輯的論點。</b>他把問題丟給 2010 年的畢業生。今天很多團隊的桌上，已經放著同一套人工智慧工具。差別不太在誰打得開，而在打開之後做什麼。</p>
+      <p>酸民模式是說「這誰都會用」「反正會出錯」，然後停在那裡。建造者模式是做一個小試驗，把結果拿出來看，好壞都算數。建造者也會批評。差別是批評之後有沒有動手驗證：步驟寫得出來，別人照著能再跑一次，結果好或壞都留在紀錄上。</p>
+      <figure class="meme-panel">
+        <img src="assets/memes/bezos-gifts-vs-choices/03-cynic-vs-builder.png" alt="示意漫畫：一張桌子中間放著一台寫著人工智慧工具的筆電。左邊灰色小人是酸民，泡泡寫這誰都會用，有什麼了不起，括號寫雙手抱胸中，桌上只有一個空杯子。右邊綠色小人是建造者，泡泡寫那我先做一個小的試試看，括號寫已經動手了，桌上疊著幾塊積木。底部寫他在 2010 年的演講裡問畢業生：要當酸民，還是建造者？副標寫工具一樣，差在選擇。" width="1280" height="720" loading="lazy">
+        <figcaption>
+          工具在同一張桌上，差別在拿它做什麼。建造者也會批評，只是批評完會做一個小試驗把結果拿出來。「要當酸民，還是建造者」出自 2010 年普林斯頓大學演講。
+          <p class="meme-credit">插圖：白話科技編輯繪製／AI 輔助，非新聞照片</p>
+        </figcaption>
+      </figure>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">09</span>
+        <h2>當建造者，不等於追熱潮</h2>
+      </div>
+      <p>動手，也不等於去追這週最響的題目。2001 年 5 月 4 日，Academy of Achievement 的訪談（2001 Achievement Summit，American Academy of Achievement）裡，他說：<a href="https://www.youtube.com/watch?v=s7ZvBy1SROE&amp;t=2331s">「Do something you’re very passionate about, and don’t try to chase what is kind of the ‘hot passion’ of the day.」</a>中文大意是：做你真正熱愛的事，不要去追當下最熱門的那股熱潮。約在 38:51–39:03。上下文是他在談網路熱潮高峰時的情況。這句與<a href="https://achievement.org/achiever/jeffrey-p-bezos/">官方逐字稿</a>相符。訪問者姓名該頁未載明。</p>
+      <p><b>接到今天，仍是編輯的延伸：</b>不要只因為某個人工智慧題目是這週最熱門的就去做。選你真的在乎、願意長期投入的問題。熱潮會換標題。你願意連續做完一個小試驗的題目，比較不會。</p>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>只追「有人工智慧」這塊招牌，和替真實工作少做一步，是兩回事。可以接著看<a href="ai-has-ai-two-clicks-dropoff.html?v=has-ai-drop-2&amp;start=1">《標榜「有 AI」之後，為什麼點兩次就沒人用？》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 酸民或建造者</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">10</span>
+        <h2>七年後，他對學生說了同一件事</h2>
+      </div>
+      <p>2017 年 5 月 20 日，西雅圖 The Museum of Flight「Apollo」展覽開幕，他接受學生問答。學生問怎麼面對逆境。他舉的例子，本文用中文轉述：數學好是天賦；把數學練到下一步很辛苦，那是選擇。</p>
+      <p>接著這句依原始影片自動字幕整理：<a href="https://www.youtube.com/watch?v=7quzqqnz13s&amp;t=1225s">「be proud not of your gifts but of your hard work and your choices」</a>。中文大意是：不要以天賦為傲，要以努力和選擇為傲。約在 20:25，前後段落是 20:18–21:19。這場是 GeekWire 的現場錄影，不是主辦單位的官方逐字稿，沒有官方逐字稿可對。<a href="https://www.geekwire.com/2017/podcast-jeff-bezos-tells-kids-vision-space-gives-practical-tips-success/">GeekWire 報導</a>記錄了同一場。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">11</span>
+        <h2>同一年，跟弟弟對談時又說了一次</h2>
+      </div>
+      <p>2017 年 11 月 4 日，在洛杉磯舉行的 Summit 大會（活動名 Summit LA17），他與胞弟 Mark Bezos 對談。依原始影片自動字幕整理，他說：<a href="https://www.youtube.com/watch?v=Hq89wYzOjfs&amp;t=2667s">「we all get to choose our life stories and it's the choices that define us not our gifts」</a>。中文大意是：每個人都能選擇自己的人生故事，定義我們的是選擇，不是天賦。約在 44:27，前後是 44:25–45:15。同樣沒有官方逐字稿。活動頁見 <a href="https://summit.co/videos/amazon-ceo-jeff-bezos-and-brother-mark-give-a-rare-interview-about-growing-up-and-secrets-to-success-3nBiJY03McIIQcgcoe2aUe">Summit</a>。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">12</span>
+        <h2>八十歲的自己，會講哪個版本的故事</h2>
+      </div>
+      <p>回到 2010 年演講結尾。依普林斯頓大學官方講稿轉述：他預言，到了八十歲，安靜回想、只講給自己聽的人生故事裡，最精簡也最有意義的版本，會是你做過的一連串選擇。見<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=1024s">約 17:04–17:50</a>。第 2 頁的八十歲檢查，用的就是這段，加上他不覺得會後悔試了而失敗的說法。</p>
+      <p>轉述之後的原句是：<a href="https://www.youtube.com/watch?v=Duml1SHJqNE&amp;t=1067s">「In the end, we are our choices.」</a>中文大意是：到頭來，我們就是自己的選擇。約在 17:47。普林斯頓大學新聞稿也引用了這句。</p>
+      <p><b>接到今天，這是本站的論點：</b>在人工智慧時代，「選擇」可以很具體。選題目。選擇驗證，而不是直接相信。選擇為結果負責。選擇不拿聰明去壓別人。天賦那一格變便宜之後，這四件仍要有人做。</p>
+      <aside class="related-read">
+        <p class="related-read-label">延伸閱讀</p>
+        <p>該篇第 5 頁「稀缺資源變了」談到：當聰明的腦袋和執行能力變得隨處可得，稀缺的是眼光與決心。和本文「天賦變便宜、選擇變珍貴」是同一個問題的兩個角度。可以接著看<a href="goliath-vs-goliath.html?v=goliath-progress-5&amp;start=1">《巨人對巨人》</a>。</p>
+      </aside>
+    </section>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 不只一場演講</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagewrap" id="page-5" hidden>
+  <div class="wrap">
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">13</span>
+        <h2>限制與不確定</h2>
+      </div>
+      <p><b>1. 倖存者偏差。</b>這是一位押注成功的人回頭講的故事。很多選了比較不安全的路而失敗的人，不會被請去畢業典禮演講。成功不能反證選擇一定對。</p>
+      <p><b>2. 他有安全網。</b>依他自己的講述，當時他有一份好工作、欣賞他的上司、支持他的妻子，又有普林斯頓大學學歷。失敗的代價相對有限。選比較不安全的路，不是給每個人的建議：有債務、要照顧家人、身分或健康限制的人，失敗成本完全不同。本文的行動建議因此都是小規模、有時間上限的試驗，不是辭職。</p>
+      <p><b>3. 不同年份、不同場合。</b>引句來自 2001 年訪談、2010 年畢業週演講、2017 年學生問答與 2017 年兄弟對談，聽眾與上下文都不同。把它們放在同一條論證裡，是本站的編排。網路上流傳的剪輯版本常把這些話重新排序、剪在一起，本文一律回到原始場次。</p>
+      <p><b>4. 講稿與口語有差異；部分只有自動字幕。</b>普林斯頓大學官方講稿標示為 as delivered，但幾處措辭與影片口語不同，因此相關故事只轉述、不加引號。2017 年兩場只有平台自動字幕，沒有官方逐字稿，引句可能有辨識誤差。</p>
+      <p><b>5. 人工智慧的連結是編輯論點。</b>他在這些場合沒有談人工智慧工具。本文把天賦與選擇接到人工智慧時代，是本站的延伸。本文不評論亞馬遜的經營或他的財富，也不提供職涯或投資建議。</p>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">14</span>
+        <h2>重點整理</h2>
+      </div>
+      <p><b>1.</b> 2010 年普林斯頓大學演講的主軸：聰明是天賦，善良與其他選擇是自己的。他問畢業生要以天賦為傲，還是以選擇為傲。</p>
+      <p><b>2.</b> 1994 年他離開 D. E. Shaw 去做網路書店。他說自己不覺得會後悔試了而失敗，卻懷疑完全不試會一直糾纏他。</p>
+      <p><b>3.</b> 2001 年他提醒做真正熱愛的事，不要追當下最熱門的熱潮。2017 年他兩度重複，以選擇為傲，而不是以天賦為傲。</p>
+      <p><b>4.</b> 本站論點：人工智慧讓「聰明、快、知道很多」變便宜，值得驕傲的部分移到選擇：試什麼、做什麼、當酸民或建造者、怎麼對人。</p>
+      <p><b>5.</b> 這是成功者的回顧，他有安全網。八十歲檢查適合用在限制了最壞情況的小試驗上。</p>
+    </section>
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head">
+        <h2>給工程師的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。</p>
+      <p><b>把「我選了什麼」寫進交付。</b>人工智慧工具能寫出程式碼草稿，選哪個做法、放棄哪個仍是你的。在下一個拉取請求（pull request）描述裡加一段：考慮過的兩個做法、選了哪個、為什麼、哪裡還不確定。</p>
+      <p><b>用建造者的方式批評。</b>下次想在群組裡批評某個新工具時，先花 30 分鐘做一個最小可重現的例子，把結果（好或壞）連同步驟貼出來，讓別人能照做驗證。</p>
+      <p><b>替「一直想試」的技術題目設時間盒與失敗標準。</b>挑一個擱了很久的題目（新工具、重構、小專案），事先寫下兩小時的上限，以及怎樣算失敗，讓失敗也有答案。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>從自己的清單挑一個「一直想試但沒試」的技術題目，寫下八十歲檢查的答案與失敗標準，用兩小時做完第一個小試驗。驗收：有一份短紀錄，寫明試了什麼、結果、下一步「繼續」或「停止」與理由，並分享給至少一位同事。沒有結論的紀錄不算完成。</p>
+      </div>
+    </section>
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head">
+        <h2>給小主管的 Takeaway</h2>
+      </div>
+      <p>以下是編輯根據本文延伸的實務建議，不是講者原話，也不是已驗證的研究結論。範圍停在你帶得動的團隊，不假設你能決定公司級投資。</p>
+      <p><b>稱讚選擇，不只稱讚聰明。</b>一對一面談或回饋時，具體點出對方做的選擇：主動接下難題、先做小試驗、承認錯誤並修正。不要只說你好聰明。</p>
+      <p><b>給「試了失敗」一個安全出口。</b>小試驗事先講好時間與範圍上限，結束後開 15 分鐘複盤，把失敗結果記成學到的事，不記成責任追究。</p>
+      <p><b>把酸話轉成試驗提案。</b>會議上有人批評新工具時，接著問：如果要試，最小的試驗怎麼設計？並當場指定負責人與回報日期。</p>
+      <div class="analogy">
+        <span class="tag">本週可以做</span>
+        <p>下次團隊會議收集一個「大家一直說要試、卻沒人試」的題目，指定一位負責人、兩小時上限與回報日期。驗收：回報日真的有回報，紀錄上寫明結果與「繼續」或「停止」的決定和理由。沒有回報或沒有結論，這個試驗就還沒完成。</p>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow">一句話帶走</span>
+        <h3>人工智慧可以補齊你的出廠配備；要往哪裡開，還是你自己按的設定。</h3>
+      </div>
+    </section>
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">15</span>
+        <h2>來源</h2>
+      </div>
+      <p><b>A. 普林斯頓大學 2010 Baccalaureate 演講「We are What We Choose」。</b>2010 年 5 月 30 日，普林斯頓大學，由校長 Shirley M. Tilghman 介紹。支撐本文的故事轉述與 P-A、P-B、P-C、P-C2、P-D、P-E、P-F、P-G。官方講稿：<a href="https://www.princeton.edu/news/2010/05/30/2010-baccalaureate-remarks">2010 Baccalaureate remarks</a>。普林斯頓大學新聞稿：<a href="https://www.princeton.edu/news/2010/05/30/choices-shape-lives-bezos-tells-seniors">Choices shape lives, Bezos tells seniors</a>。普林斯頓大學官方影片：<a href="https://www.youtube.com/watch?v=Duml1SHJqNE">youtube.com/watch?v=Duml1SHJqNE</a>。本文用到的段落與時間碼：祖父的故事 06:27–10:58（轉述）；P-A 約 10:53；P-B 約 12:53；剛滿 30 歲與妻子支持 13:25–13:50（轉述）；車庫發明家 13:53–14:18（轉述）；上司與中央公園 14:19–14:55（轉述）；P-C、P-D 15:15–15:39；結尾問句 P-E、P-F 16:41、16:56；八十歲預言 17:04–17:50（轉述）；P-G 約 17:47。故事類段落依官方講稿轉述，影片口語措辭與官方講稿略有不同。時間碼依原始影片自動字幕對齊，可能有 1 到 2 秒誤差。</p>
+      <p><b>B. Academy of Achievement 訪談（2001 Achievement Summit）。</b>2001 年 5 月 4 日，American Academy of Achievement。訪問者姓名未載明。支撐 A-1。影片：<a href="https://www.youtube.com/watch?v=s7ZvBy1SROE&amp;t=2331s">38:51–39:03</a>。官方逐字稿：<a href="https://achievement.org/achiever/jeffrey-p-bezos/">achievement.org/achiever/jeffrey-p-bezos/</a>。</p>
+      <p><b>C. The Museum of Flight「Apollo」展覽開幕學生問答。</b>2017 年 5 月 20 日，西雅圖。GeekWire 現場錄影，非主辦單位官方。支撐 M-1，依原始影片自動字幕整理。影片：<a href="https://www.youtube.com/watch?v=7quzqqnz13s&amp;t=1225s">20:18–21:19</a>。GeekWire 報導：<a href="https://www.geekwire.com/2017/podcast-jeff-bezos-tells-kids-vision-space-gives-practical-tips-success/">Jeff Bezos tells kids about vision, space, and practical tips for success</a>。</p>
+      <p><b>D. Summit LA17：Jeff Bezos 與 Mark Bezos 對談。</b>2017 年 11 月 4 日，洛杉磯。支撐 S-1，依原始影片自動字幕整理。Summit 官方影片：<a href="https://www.youtube.com/watch?v=Hq89wYzOjfs&amp;t=2667s">44:25–45:15</a>。活動頁：<a href="https://summit.co/videos/amazon-ceo-jeff-bezos-and-brother-mark-give-a-rare-interview-about-growing-up-and-secrets-to-success-3nBiJY03McIIQcgcoe2aUe">Summit 活動頁</a>。</p>
+      <p><b>E. 非演講事實查核。</b>查核日期 2026 年 9 月 30 日。<a href="https://www.britannica.com/biography/Jeff-Bezos">Britannica〈Jeff Bezos〉</a>：1986 年普林斯頓大學畢業、主修電機工程與電腦科學；1990 年進 D. E. Shaw、升任資深副總裁；1994 年離職搬到西雅圖開網路書店。<a href="https://achievement.org/achiever/jeffrey-p-bezos/">Academy of Achievement 人物介紹</a>：在 D. E. Shaw 升任資深副總裁；雇主不準備做網路書店，他放棄紐約市的穩定職位自行創業。<a href="https://www.aboutamazon.com/news/workplace/first-amazon-office-jeff-bezos-garage">亞馬遜官方〈Amazon recreated the garage where Jeff Bezos started the company in 1994〉</a>：1994 年在車庫創立；1995 年 7 月以網路書店從 Bellevue 住家開張。<a href="https://www.princeton.edu/news/2010/05/30/choices-shape-lives-bezos-tells-seniors">普林斯頓大學新聞稿</a>：1986 年校友、Baccalaureate 為跨宗教禮拜與最古老傳統之一、演講日期。</p>
+      <p><b>F. 編輯判斷。</b>把天賦與選擇接到人工智慧時代、八十歲檢查的整理方式、酸民與建造者在人工智慧工具前的對照、兩則 Takeaway，都是本站編輯觀點與延伸建議，不是他本人說法。本文未使用任何財富、市值、營收或市場數字。</p>
+    </section>
+    <p class="source-note">內容整理、摘要並改寫自 Jeff Bezos 於普林斯頓大學 2010 年 Baccalaureate 演講（依官方公布講稿）與上列原始場次，非逐字紀錄；英文引句只取短句並附中文大意，標示「依原始影片自動字幕整理」者未經官方逐字稿核對。把他的話接到人工智慧時代的論點，以及文末兩則 Takeaway，為本站編輯觀點與延伸建議。查核日期 2026 年 9 月 30 日。</p>
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">05 · 限制與行動</span>
+      <button class="navbtn" type="button" data-dir="1" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+<footer>白話科技 · 全部文章</footer>
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('bezos_choice_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('bezos_choice_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
