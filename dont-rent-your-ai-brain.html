@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
-<link rel="stylesheet" href="mobile-article.css?v=rent-meme-1">
-<script defer src="mobile-article.js?v=rent-meme-1"></script>
+<link rel="stylesheet" href="mobile-article.css?v=rent-meme-1-closing-1">
+<script defer src="mobile-article.js?v=rent-meme-1-closing-1"></script>
 <style>
 :root{--bg:#eef0f3;--surface:#fff;--surface2:#f7f8fa;--ink:#171c26;--soft:#525c6a;--faint:#8a93a0;--accent:#3652cc;--accent2:#dde3fa;--aline:#b9c4f0;--warm:#db7a34;--line:#dce1e7;--shadow:0 10px 24px rgba(23,28,38,.06);--ink-soft:var(--soft);--ink-faint:var(--faint);--surface-2:var(--surface2)}
 @media(prefers-color-scheme:dark){:root{--bg:#10141c;--surface:#171d28;--surface2:#1d2431;--ink:#e7ebf2;--soft:#a2adbc;--faint:#6b7684;--accent:#8298ff;--accent2:#232b49;--aline:#3b4576;--warm:#f0975c;--line:#28303d;--shadow:0 10px 24px rgba(0,0,0,.35);--ink-soft:var(--soft);--ink-faint:var(--faint);--surface-2:var(--surface2)}}
@@ -19,6 +19,10 @@
 .concept{padding:42px 0;border-bottom:1px solid var(--line)}.head{display:flex;gap:14px;align-items:baseline;margin-bottom:14px}.num{color:var(--faint);font-size:.92rem}.head h2{font-size:1.5rem;line-height:1.4}.concept p{margin:0 0 14px;color:var(--soft);font-size:.98rem;line-height:1.9}.concept p b{color:var(--ink)}.analogy{margin:18px 0;padding:14px 16px;border-left:3px solid var(--warm);border-radius:0 10px 10px 0;background:var(--surface);box-shadow:var(--shadow)}.analogy small{display:block;margin-bottom:6px;color:var(--warm);letter-spacing:.06em}.analogy p{margin:0;color:var(--ink);font-size:.94rem}.cards{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:20px 0}.card{padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:var(--shadow)}.card b{display:block;margin-bottom:6px}.card p{margin:0;font-size:.9rem;line-height:1.75}
 .ctrl{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:22px 0 38px}.btn{padding:9px 15px;border:1px solid var(--aline);border-radius:10px;background:var(--accent2);color:var(--accent);font-weight:700;cursor:pointer}.btn:disabled{opacity:.35}.mid{font-size:.75rem;color:var(--faint);text-align:center}.closing{margin:36px 0 10px;padding:30px 27px;border-radius:16px;background:var(--ink);color:var(--bg)}.closing h3{margin:9px 0 12px;font-size:1.3rem}.closing p{margin:0;line-height:1.85;opacity:.88}.source{margin:15px 0;font-size:.78rem;line-height:1.7;color:var(--faint)}footer{text-align:center;padding:20px 20px 40px;color:var(--faint);font-size:.78rem}
 @media(max-width:600px){.system{grid-template-columns:1fr 1fr}.cards{grid-template-columns:1fr}}
+/* 收尾框內文：壓過共用 mobile-article.css 的 .closing p 顏色，維持與收尾框背景的對比 */
+section.closing>p{color:var(--bg)!important}
+/* 收尾框眉標：改用 --aline，淺色與深色主題下對比都在 4.5:1 以上 */
+section.closing>.eyebrow{color:var(--aline)}
 </style>
 </head>
 <body>
