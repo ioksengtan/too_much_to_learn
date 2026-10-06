@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>一個詞一個意思：ASD-STE100 的寫作守則</title>
+<link rel="stylesheet" href="mobile-article.css?v=ste100-clear-writing-1">
+<script defer src="mobile-article.js?v=ste100-clear-writing-1"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{--bg:#EEF0F3;--surface:#fff;--surface-2:#F7F8FA;--ink:#171C26;--ink-soft:#525C6A;--ink-faint:#656D7A;--accent:#3652CC;--accent-soft:#DDE3FA;--accent-line:#B9C4F0;--warm:#DB7A34;--warm-soft:#F7E2CD;--line:#DCE1E7;--shadow:0 1px 2px rgba(23,28,38,.04),0 10px 24px rgba(23,28,38,.06)}
+  @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141C;--surface:#171D28;--surface-2:#1D2431;--ink:#E7EBF2;--ink-soft:#A2ADBC;--ink-faint:#818C9A;--accent:#8298FF;--accent-soft:#232B49;--accent-line:#3B4576;--warm:#F0975C;--warm-soft:#3A2A1C;--line:#28303D;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 24px rgba(0,0,0,.35)}}
+  *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;-webkit-font-smoothing:antialiased}h1,h2,h3{font-family:"Noto Serif TC",serif;font-weight:900;text-wrap:balance;margin:0}a{color:var(--accent)}[hidden]{display:none!important}.mono,.eyebrow{font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}.eyebrow{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}.wrap{max-width:700px;margin:auto;padding-inline:20px}
+  .progressbar{position:fixed;inset:0 0 auto;height:3px;background:var(--line);z-index:60}.progressbar-fill{height:100%;width:16.66%;background:var(--accent);transition:width .35s}.pagenav{position:sticky;top:3px;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}.pagenav-inner{display:flex;align-items:center;gap:14px;padding-block:10px}.tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{flex:none;font:500 .8rem "Noto Sans TC";color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 13px;cursor:pointer}.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}.pagecount{font-size:.76rem;color:var(--ink-faint);flex:none}
+  .hero{border-bottom:1px solid var(--line);padding-block:52px 40px;background:var(--surface)}.back-link{display:inline-block;color:var(--ink-faint);text-decoration:none;font-size:.76rem;margin-bottom:18px}.hero .eyebrow{display:block;margin-bottom:14px}.title{font-size:clamp(2rem,5vw,2.7rem);line-height:1.3}.lede{margin:16px 0 0;font-size:1.03rem;line-height:1.85;color:var(--ink-soft)}.callout{margin-top:22px;display:flex;gap:12px;background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:12px;padding:14px 16px}.callout .mark{flex:none;color:var(--accent);font-weight:900}.callout p{margin:0;line-height:1.75;font-size:.94rem}
+  .hero-diagram,.diagram-box{margin-top:26px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:18px}.orbit{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:center;text-align:center}.orbit span{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:12px 6px;font-size:.82rem}.orbit b{color:var(--accent)}@media(max-width:560px){.orbit{grid-template-columns:1fr 1fr}}
+  .pagewrap{padding-block:8px 0}section.concept{padding-block:44px;border-bottom:1px solid var(--line)}.concept-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}.concept-num{font:600 .95rem "IBM Plex Mono";color:var(--ink-faint)}.concept-head h2{font-size:1.5rem;line-height:1.35}.concept p{font-size:.98rem;line-height:1.9;color:var(--ink-soft);margin:0 0 14px}.concept p b{color:var(--ink)}.analogy{margin:18px 0;border-left:3px solid var(--warm);background:var(--surface);border-radius:0 10px 10px 0;padding:13px 16px;box-shadow:var(--shadow)}.analogy .tag{display:block;color:var(--warm);font:.72rem "IBM Plex Mono";letter-spacing:.06em;margin-bottom:6px}.analogy p{margin:0;color:var(--ink);font-size:.95rem;line-height:1.8}.timeline{position:relative;margin:14px 0}.timeline:before{content:"";position:absolute;left:15px;top:8px;bottom:8px;border-left:2px solid var(--line)}.titem{position:relative;display:grid;grid-template-columns:32px 1fr;gap:16px;padding-block:14px}.tdot{z-index:1;width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:.72rem}.titem h4{margin:0 0 5px}.titem p{margin:0;font-size:.93rem;line-height:1.8;color:var(--ink-soft)}
+  .case-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}@media(max-width:600px){.case-grid{grid-template-columns:1fr}}.case-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 17px;box-shadow:var(--shadow)}.case-card .k{display:inline-block;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 9px;font-size:.7rem;margin-bottom:8px}.case-card h4{margin:0 0 6px}.case-card p{margin:0;font-size:.9rem;line-height:1.75;color:var(--ink-soft)}
+  .pagectrl{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:36px;padding:20px 0 38px;border-top:1px solid var(--line)}.navbtn{font:700 .88rem "Noto Sans TC";color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:10px;padding:9px 16px;cursor:pointer}.navbtn:disabled{opacity:.35}.mid{font-size:.75rem;color:var(--ink-faint);text-align:center}.closing{padding-block:36px 8px}.closing-panel{background:var(--ink);color:var(--bg);border-radius:16px;padding:32px 28px}.closing-panel h3{font-size:1.3rem;margin:10px 0 12px}.closing-panel p{line-height:1.85;opacity:.88}.source-note{margin-top:14px;font-size:.78rem;color:var(--ink-faint);line-height:1.7}footer{text-align:center;padding:20px 20px 40px;color:var(--ink-faint);font-size:.78rem}@media(prefers-reduced-motion:reduce){.progressbar-fill{transition:none}}
+  /* 強制深色、系統淺色時，收尾框是淺色底，眉標改用主色，對比才達 4.5 以上 */@media(prefers-color-scheme:light){:root[data-theme="dark"] .closing-panel .eyebrow{color:var(--accent)}}
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+<section class="hero"><div class="wrap">
+  <a class="back-link mono" href="index.html">← 白話科技 · 全部文章</a>
+  <span class="eyebrow">科普專題 · 文件與溝通</span>
+  <h1 class="title">一個詞一個意思：ASD-STE100 的寫作守則</h1>
+  <p class="lede">飛機維修手冊為什麼要限制句子長度、規定一個字只能有一種意思？ASD-STE100 把「不被誤會」當成工程問題來處理。這篇用白話整理它的核心想法，並說明工程師與小主管能借走哪幾條。</p>
+  <div class="hero-diagram"><div class="orbit"><span>句子短</span><span>一句一動作</span><span><b>只有一種讀法</b></span><span>字義固定</span></div></div>
+  <div class="callout"><span class="mark">!</span><p>本文為依公開資訊整理的入門導讀，並非規格原文或官方翻譯。需要引用條文或字表時，請查閱官方最新版。</p></div>
+</div></section>
+
+<nav class="pagenav" id="pagenav"><div class="wrap pagenav-inner"><div class="tabs">
+  <button class="tab active" data-goto="1">為什麼要簡化</button><button class="tab" data-goto="2">句子的規則</button><button class="tab" data-goto="3">詞的規則</button><button class="tab" data-goto="4">警告與帶走</button>
+</div><span class="pagecount mono" id="pagecount">1 / 4</span></div></nav>
+
+<div class="pagewrap" data-page="1"><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num">01</span><h2>說明書最怕的不是難，是有兩種讀法</h2></div>
+<p>ASD-STE100（簡化技術英文）最早是為了飛機維修手冊而生。維修員讀手冊時，常常不是英文母語者，又站在機庫裡、手上拿著工具、時間很趕。如果一句話可以讀成兩種意思，其中一種可能就是出錯。</p><p>所以它的出發點不是「讓英文變漂亮」，而是「讓句子只剩一種合理讀法」。文章難不難，不是重點；會不會被讀錯，才是重點。</p><div class="analogy"><span class="tag">生活比喻</span><p>這像在路口立路標。路標不需要文采，只要每個人、不論第一次來或看過一百次，都往同一個方向走。</p></div><p>這套規格由歐洲航太與國防工業協會（ASD）維護，內容公開可查。本文是依公開介紹整理的入門導讀；你若要把它用在正式文件，請以官方最新版規格為準。</p>
+</section>
+<section class="concept"><div class="concept-head"><span class="concept-num">02</span><h2>它有兩半：寫作規則加一本字典</h2></div>
+<p>STE 由兩個部分組成。第一部分是寫作規則，管句子怎麼寫、段落怎麼排、步驟怎麼列；第二部分是受限字典，列出核准使用的字，每個字只准用一種意思，並註明不核准的字該換成什麼。</p><p>它不是另一種語言，而是英文的一個受控子集合：仍是正常英文，只是選字、句型與長度都被收窄。規則也不要求你完全禁用專業術語；機件名稱等技術名詞，另有寫法與限制。</p><div class="timeline"><div class="titem"><span class="tdot">01</span><div><h4>規則</h4><p>句子長度、時態、主動語態、一句一動作、列表與警告的寫法。</p></div></div><div class="titem"><span class="tdot">02</span><div><h4>字典</h4><p>核准字、每個字的唯一意思、不核准字的替代建議。</p></div></div><div class="titem"><span class="tdot">03</span><div><h4>結果</h4><p>讀的人不必猜，翻譯的人與機器翻譯也比較不容易翻錯。</p></div></div></div><div class="analogy"><span class="tag">編輯提醒</span><p>規格的條文數量與細節會隨版本更新。本文只講讀者最需要記住的幾條，並不逐條翻譯，也不取代官方文件。</p></div>
+</section>
+  <div class="pagectrl"><button class="navbtn" disabled>← 上一頁</button><span class="mid mono">為什麼要簡化</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="2" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num">03</span><h2>一句話只做一件事，而且不要太長</h2></div>
+<p>STE 對長度有明確上限：步驟類（要讀的人去動手）的句子，上限為 20 個字；說明類的句子，上限為 25 個字。一段話最多六個句子。限制看起來死板，但目的很實際：句子短，才容易一眼看完、記住、也容易對照翻譯。</p><p>更重要的是「一句一個動作」。一句話塞兩個動作，讀的人可能只做完前一個，或者搞不清楚順序。</p><div class="case-grid"><div class="case-card"><span class="k mono">改前</span><h4>把閥門關掉並檢查壓力是否正常再回報</h4><p>三個動作黏在一起，順序與完成條件都模糊。</p></div><div class="case-card"><span class="k mono">改後</span><h4>1. 關閉閥門。2. 讀取壓力表。3. 把讀數寫進記錄表。</h4><p>每步一個動作，做完能打勾。</p></div></div><div class="analogy"><span class="tag">編輯示範</span><p>上面的中文例子是本文編輯為說明概念所寫，並非 STE 官方範例；STE 本身是針對英文制定的。</p></div>
+</section>
+<section class="concept"><div class="concept-head"><span class="concept-num">04</span><h2>下指令時，用主動、現在式、直接開口</h2></div>
+<p>步驟句最好用命令式：直接說「做什麼」。如果寫成「閥門應被關閉」，讀的人會問：誰來關？現在關嗎？STE 偏好主動語態與簡單時態，讓行動者與時間點都清楚。</p><p>同樣的道理也適用於說明類句子：能直接說「系統會做 X」，就不要繞成「X 被執行」。被動不是絕對禁止，但在步驟中應避免，因為它藏起了行動者。</p><div class="analogy"><span class="tag">生活比喻</span><p>這像看球賽轉播。「球被傳出去了」聽不出誰做的；「七號傳給十號」誰在做什麼，一聽就懂。</p></div><div class="case-grid"><div class="case-card"><span class="k mono">改前</span><h4>電源應在維修前被切斷</h4><p>沒人負責，也沒說何時。</p></div><div class="case-card"><span class="k mono">改後</span><h4>維修前，切斷電源。</h4><p>對象、動作與時間都在句子裡。</p></div></div>
+</section>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">句子的規則</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="3" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num">05</span><h2>一個字只能有一個意思</h2></div>
+<p>字典最核心的原則是「一詞一義」。同一個英文字，在一般英文裡可能有五種用法；在 STE 裡，核准字只能用其中被指定的那一種。其他意思，要換成別的字。</p><p>這和寫程式裡「一個變數名稱只代表一件事」很像：名稱一旦兼職，讀的人就得用上下文猜，而猜錯的代價在維修現場很高。</p><div class="analogy"><span class="tag">生活比喻</span><p>這像公司裡把「結案」同時用來代表「客戶簽收」與「工單關閉」。大家都以為自己懂，結果交接時才發現講的是兩件事。</p></div><p>字典也會替不核准的字給出替代，例如用較常見、較直接的字取代較冷僻或有多重含義的字。具體字表請查官方字典，本文不抄錄。</p>
+</section>
+<section class="concept"><div class="concept-head"><span class="concept-num">06</span><h2>名詞不要堆成一串，術語要有固定寫法</h2></div>
+<p>STE 也限制「名詞串」，也就是連續堆疊好幾個名詞，讓人分不清誰修飾誰。通常的做法是拆開，用介詞或動詞把關係說清楚。縮寫與專有技術名稱則要保持一致：同一個零件，全冊手冊只用同一個名字。</p><div class="case-grid"><div class="case-card"><span class="k mono">改前</span><h4>主機板電源模組保護殼固定螺絲</h4><p>連續五個名詞，誰是誰的一部分不清楚。</p></div><div class="case-card"><span class="k mono">改後</span><h4>固定保護殼的螺絲。保護殼在主機板的電源模組上。</h4><p>拆成兩句，關係一目了然。</p></div></div><p>技術名詞與術語表（glossary）因此成為手冊的骨架：先定義，再一致地使用。</p>
+</section>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">詞的規則</span><button class="navbtn" data-dir="1">下一頁 →</button></div>
+</div></div>
+
+<div class="pagewrap" data-page="4" hidden><div class="wrap">
+<section class="concept"><div class="concept-head"><span class="concept-num">07</span><h2>警告要放在動作之前，而且要分輕重</h2></div>
+<p>STE 把安全提醒分成不同等級：可能傷人的叫警告（warning），可能損壞設備的叫注意（caution）。無論哪一種，都放在相關步驟之前，不放在事後。因為讀的人往往一邊讀一邊做，先看到動作，才看到「剛才那步很危險」，已經來不及。</p><p>此外，補充說明或限制條件（note）也不應塞在步驟句裡，而是單獨寫成另一句。</p><div class="analogy"><span class="tag">生活比喻</span><p>這像在高溫鍋子上貼「小心燙」。貼在鍋底沒意義，應貼在你伸手之前會看到的位置。</p></div><div class="timeline"><div class="titem"><span class="tdot">01</span><div><h4>警告</h4><p>寫在步驟前：可能傷人時，先說明風險與如何避免。</p></div></div><div class="titem"><span class="tdot">02</span><div><h4>注意</h4><p>寫在步驟前：可能損壞設備或資料時使用。</p></div></div><div class="titem"><span class="tdot">03</span><div><h4>備註</h4><p>單獨一句，不混進步驟。</p></div></div></div>
+</section>
+<section class="concept"><div class="concept-head"><span class="concept-num">08</span><h2>中文工作者能借用什麼</h2></div>
+<p>STE 是專為英文設計的，它的字典與文法規則不能直接搬到中文。但它背後的想法可以借：限制句長、一句一動作、一詞一義、行動者明確、警告放前面、拿真實讀者測試。</p><p>如果你的文件需要翻譯或機器翻譯，或者使用者包含非母語讀者，這些原則的價值特別高。若你只寫給熟悉彼此的小團隊，可以只採用其中最有感的兩三條，不必全套照搬。</p><div class="case-grid"><div class="case-card"><span class="k mono">可借用</span><h4>一句一動作</h4><p>適用於任何語言的操作文件。</p></div><div class="case-card"><span class="k mono">可借用</span><h4>統一詞彙表</h4><p>能減少需求、驗收與交接的誤會。</p></div><div class="case-card"><span class="k mono">不能直接搬</span><h4>英文字表與文法限制</h4><p>必須另訂中文版本，且需要大量驗證。</p></div><div class="case-card"><span class="k mono">要小心</span><h4>過度簡化</h4><p>說明類文章仍需保留必要的因果與背景。</p></div></div>
+</section>
+<section class="concept" id="takeaways-engineer"><div class="concept-head"><h2>給工程師的 Takeaway</h2></div><p>以下是編輯根據本文延伸的實務建議，並非 ASD-STE100 規格的內容，也不保證效果。</p><p><b>把操作手冊改成一步一動作：</b>挑一份部署或故障排除文件，把每個步驟改成「一句一個動作」，並在每步後寫上看得到的完成條件。</p><p><b>讓錯誤訊息與日誌用同一個詞：</b>同一個狀態只用一個名稱，不要一處叫 timeout、另一處叫 expired；統一後更容易搜尋與告警。</p><p><b>讓一位沒看過系統的人照著做：</b>找一位同事照文件操作，你只在旁觀察，記下他停頓、問問題或做錯的地方，再回頭改文件。</p><div class="analogy"><span class="tag">本週可以做</span><p>選一份 10 步以內的 runbook，重寫成一步一動作。請一位沒操作過的同事照著做。驗收方式：他不問任何問題就完成；若有問題，把每一個問題對應改成一處文字修正。</p></div></section><section class="concept" id="takeaways-manager"><div class="concept-head"><h2>給小主管的 Takeaway</h2></div><p>以下是編輯根據本文延伸的實務建議，並非 ASD-STE100 規格的內容，也不保證效果。</p><p><b>建立團隊的小型詞彙表：</b>只挑最常引起誤會的五到十個詞（例如「完成」「上線」「負責」），寫下唯一定義，放在團隊文件最上方。</p><p><b>把文件品質放進交付定義：</b>在完成條件中加入「有人照文件做過一次」，讓寫文件的人與使用者各自承擔一部分責任。</p><p><b>用文件審查培養新人：</b>請新人用「一句一個動作」的標準審閱老手寫的文件；他們沒背景知識，反而最容易找到誤解點。</p><div class="analogy"><span class="tag">本週可以做</span><p>在下次週會挑一個常被誤會的詞，請全員各寫一句定義，比對差異後訂出唯一版本。驗收方式：一週內，團隊文件與會議紀錄中該詞的用法一致；若仍有人誤解，記錄下來，再修正定義。</p></div></section>
+<section class="closing"><div class="closing-panel"><span class="eyebrow">這套守則留下的共同方法</span><h3>寫清楚不是寫簡單，是讓讀的人只有一種讀法</h3><p>ASD-STE100 的價值不在於字少，而在於逐句消除誤讀：句子短、動作單一、字義固定、風險先講。你不需要照搬規格，也能把其中最有用的幾條，帶進自己的文件與團隊。</p></div></section>
+  <div class="source-note">內容整理、摘要並改寫自對 ASD-STE100 簡化技術英文（ASD 維護）的公開介紹，非逐字紀錄。本文為依公開資訊所寫的入門導讀，未附官方草案全文；數字、字表與條文請以官方最新版規格核對。文中中文範例為編輯自擬。</div>
+  <div class="pagectrl"><button class="navbtn" data-dir="-1">← 上一頁</button><span class="mid mono">警告與帶走</span><button class="navbtn" disabled>已是最後一頁</button></div>
+</div></div>
+
+<footer>看得懂也做得到的 AI、工程與創業觀念 · 科普圖文</footer>
+<script>
+(function(){var pages=[].slice.call(document.querySelectorAll('.pagewrap')),tabs=[].slice.call(document.querySelectorAll('.tab')),total=pages.length,current=1,fill=document.getElementById('progressFill'),count=document.getElementById('pagecount'),nav=document.getElementById('pagenav'),reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;function saved(){try{var v=parseInt(localStorage.getItem('ste100_writing_page')||'1',10);return v>=1&&v<=total?v:1}catch(e){return 1}}function render(){pages.forEach(function(p,i){p.hidden=i+1!==current});tabs.forEach(function(t){t.classList.toggle('active',+t.dataset.goto===current)});fill.style.width=current/total*100+'%';count.textContent=current+' / '+total;document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){b.disabled=current===1});document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){b.disabled=current===total})}function go(n,scroll){n=Math.min(Math.max(n,1),total);if(n===current)return;current=n;render();try{localStorage.setItem('ste100_writing_page',String(n))}catch(e){}if(scroll!==false)nav.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}tabs.forEach(function(t){t.onclick=function(){go(+t.dataset.goto)}});document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){b.onclick=function(){go(current+(+b.dataset.dir))}});document.addEventListener('keydown',function(e){if(e.target&&/input|textarea/i.test(e.target.tagName))return;if(e.key==='ArrowRight')go(current+1);if(e.key==='ArrowLeft')go(current-1)});current=saved();render()})();
+</script>
