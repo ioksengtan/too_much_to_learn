@@ -1,0 +1,836 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>用光開關神經：2026 諾貝爾醫學獎與光遺傳學</title>
+<link rel="stylesheet" href="mobile-article.css?v=progress-4">
+<script defer src="mobile-article.js?v=progress-4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#EEF0F3;
+    --surface:#FFFFFF;
+    --surface-2:#F7F8FA;
+    --ink:#171C26;
+    --ink-soft:#525C6A;
+    --ink-faint:#8A93A0;
+    --accent:#3652CC;
+    --accent-soft:#DDE3FA;
+    --accent-line:#B9C4F0;
+    --warm:#DB7A34;
+    --warm-soft:#F7E2CD;
+    --line:#DCE1E7;
+    --shadow: 0 1px 2px rgba(23,28,38,0.04), 0 10px 24px rgba(23,28,38,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#10141C;
+      --surface:#171D28;
+      --surface-2:#1D2431;
+      --ink:#E7EBF2;
+      --ink-soft:#A2ADBC;
+      --ink-faint:#6B7684;
+      --accent:#8298FF;
+      --accent-soft:#232B49;
+      --accent-line:#3B4576;
+      --warm:#F0975C;
+      --warm-soft:#3A2A1C;
+      --line:#28303D;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#10141C;
+    --surface:#171D28;
+    --surface-2:#1D2431;
+    --ink:#E7EBF2;
+    --ink-soft:#A2ADBC;
+    --ink-faint:#6B7684;
+    --accent:#8298FF;
+    --accent-soft:#232B49;
+    --accent-line:#3B4576;
+    --warm:#F0975C;
+    --warm-soft:#3A2A1C;
+    --line:#28303D;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px rgba(0,0,0,0.35);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:"Noto Serif TC",serif;
+    font-weight:900;
+    text-wrap:balance;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{ font-family:"IBM Plex Mono",monospace; letter-spacing:0.06em; }
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-weight:600;
+    letter-spacing:0.10em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--accent);
+  }
+  a{ color:var(--accent); }
+  img{max-width:100%;}
+  [hidden]{ display:none !important; }
+
+  .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:"IBM Plex Mono",monospace;
+    font-size:0.76rem;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    text-decoration:none;
+    margin-bottom:18px;
+  }
+  .back-link:hover{ color:var(--accent); }
+
+  .wrap{ max-width:700px; margin:0 auto; padding-inline:20px; }
+  .wrap-wide{ max-width:820px; margin:0 auto; padding-inline:20px; }
+
+  /* ---------- PROGRESS + NAV ---------- */
+  .progressbar{ position:fixed; top:0; left:0; right:0; height:3px; background:var(--line); z-index:60; }
+  .progressbar-fill{ height:100%; width:14.28%; background:var(--accent); transition:width .35s ease; }
+  @media (prefers-reduced-motion: reduce){ .progressbar-fill{ transition:none; } }
+
+  .pagenav{ position:sticky; top:3px; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); }
+  .pagenav-inner{ display:flex; align-items:center; gap:14px; padding-block:10px; }
+  .tabs{ display:flex; gap:6px; overflow-x:auto; flex:1; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .tabs::-webkit-scrollbar{ display:none; }
+  .tab{
+    flex:none;
+    font-family:"Noto Sans TC",sans-serif;
+    font-size:0.8rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:6px 13px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700; }
+  :root[data-theme="dark"] .tab.active{ color:#0B1220; }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .tab.active{ color:#0B1220; } }
+  .tab:focus-visible, .navbtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .pagecount{ flex:none; font-size:0.76rem; color:var(--ink-faint); }
+
+  .pagectrl{
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+    margin-top:36px; padding-top:20px; border-top:1px solid var(--line);
+  }
+  .navbtn{
+    font-family:"Noto Sans TC",sans-serif; font-size:0.88rem; font-weight:700;
+    color:var(--accent); background:var(--accent-soft); border:1px solid var(--accent-line);
+    border-radius:10px; padding:9px 16px; cursor:pointer;
+  }
+  .navbtn:disabled{ opacity:0.35; cursor:not-allowed; }
+  .pagectrl .mid{ font-family:"IBM Plex Mono",monospace; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- HERO ---------- */
+  .hero{ border-bottom:1px solid var(--line); padding-block:52px 40px; background:var(--surface); }
+  .hero .eyebrow{ display:block; margin-bottom:14px; }
+  h1.title{ font-size:clamp(1.9rem, 5vw, 2.7rem); line-height:1.3; }
+  .lede{ margin:16px 0 0; font-size:1.03rem; line-height:1.85; color:var(--ink-soft); max-width:58ch; }
+
+  .hero-diagram{
+    margin-top:34px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 18px 12px;
+  }
+  .hero-diagram svg{ width:100%; height:auto; display:block; }
+  .hero-diagram .cap{ margin-top:6px; text-align:center; font-size:0.8rem; color:var(--ink-faint); }
+
+  .callout{
+    margin-top:22px; display:flex; gap:12px; align-items:flex-start;
+    background:var(--accent-soft); border:1px solid var(--accent-line); border-radius:12px; padding:14px 16px;
+  }
+  .callout .mark{
+    flex:none; font-family:"Noto Serif TC",serif; font-weight:900; font-size:1rem; color:var(--accent);
+    background:var(--surface); border:1px solid var(--accent-line); border-radius:50%;
+    width:26px;height:26px; display:flex;align-items:center;justify-content:center;
+  }
+  .callout p{ margin:0; font-size:0.94rem; line-height:1.75; color:var(--ink); }
+  .callout b{ color:var(--accent); }
+
+  /* ---------- SECTIONS ---------- */
+  .pagewrap{ padding-block:8px 0; }
+  section.concept{ padding-block:44px; border-bottom:1px solid var(--line); }
+  section.concept:last-of-type{ border-bottom:none; }
+  .concept-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:14px; }
+  .concept-num{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:0.95rem; color:var(--ink-faint); flex:none; }
+  .concept-head h2{ font-size:1.5rem; line-height:1.35; }
+  .concept p{ font-size:0.98rem; line-height:1.9; color:var(--ink-soft); margin:0 0 14px; }
+  .concept p:last-of-type{ margin-bottom:0; }
+  .concept p b{ color:var(--ink); font-weight:700; }
+
+  .analogy{
+    margin:18px 0; border-left:3px solid var(--warm); background:var(--surface);
+    border-radius:0 10px 10px 0; padding:13px 16px; box-shadow:var(--shadow);
+  }
+  .analogy .tag{
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; letter-spacing:0.06em;
+    color:var(--warm); text-transform:uppercase; display:block; margin-bottom:6px;
+  }
+  .analogy p{ margin:0; color:var(--ink); font-size:0.95rem; line-height:1.8; }
+
+  .diagram-box{
+    margin:22px 0 6px; background:var(--surface-2); border:1px solid var(--line);
+    border-radius:12px; padding:18px 16px 10px;
+  }
+  .diagram-box svg{ width:100%; height:auto; display:block; }
+  .diagram-box .cap{ margin-top:4px; text-align:center; font-size:0.78rem; color:var(--ink-faint); }
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{ position:relative; margin:8px 0 40px; display:flex; flex-direction:column; }
+  .timeline::before{ content:""; position:absolute; left:15px; top:6px; bottom:6px; border-left:2px solid var(--line); }
+  .titem{ position:relative; display:grid; grid-template-columns:32px 1fr; gap:16px; padding-block:15px; }
+  .tdot{
+    position:relative; z-index:1; width:32px; height:32px; border-radius:50%;
+    background:var(--surface); border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;
+    font-family:"IBM Plex Mono",monospace; font-size:0.72rem; font-weight:600; color:var(--accent);
+  }
+  .titem .meta{
+    display:block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.05em;
+    color:var(--warm); text-transform:uppercase; margin-bottom:4px;
+  }
+  .titem h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .titem p{ margin:0; font-size:0.93rem; line-height:1.85; color:var(--ink-soft); }
+  .titem .figures{ display:inline-flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+  .titem .figures span{
+    font-family:"IBM Plex Mono",monospace; font-size:0.76rem; background:var(--surface-2);
+    border:1px solid var(--line); border-radius:6px; padding:2px 8px; color:var(--ink-soft);
+  }
+
+  /* ---------- GRID RECAP ---------- */
+  .case-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  @media (max-width:600px){ .case-grid{ grid-template-columns:1fr; } }
+  .case-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 17px; box-shadow:var(--shadow); }
+  .case-card .k{
+    display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:0.7rem; letter-spacing:0.06em;
+    color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:2px 10px; margin-bottom:8px;
+  }
+  .case-card h4{ margin:0 0 6px; font-size:1.02rem; font-family:"Noto Sans TC",sans-serif; font-weight:700; color:var(--ink); }
+  .case-card p{ margin:0; font-size:0.9rem; line-height:1.75; color:var(--ink-soft); }
+
+  .case-block{ padding-block:36px 8px; }
+  .case-subhead{
+    margin:0 0 18px; font-size:1.1rem; color:var(--ink-faint);
+    font-family:"Noto Sans TC",sans-serif; font-weight:700;
+  }
+
+  /* ---------- CLOSING ---------- */
+  .closing{ padding-block:36px 8px; }
+  .closing-panel{ background:var(--ink); color:var(--bg); border-radius:16px; padding:32px 28px; }
+  :root[data-theme="dark"] .closing-panel{ background:var(--surface-2); border:1px solid var(--line); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .closing-panel{ background:var(--surface-2); border:1px solid var(--line); } }
+  .closing-panel .eyebrow{ color:var(--warm); }
+  .closing-panel h3{ color:inherit; font-size:1.3rem; margin:10px 0 12px; }
+  .closing-panel p{ margin:0 0 10px; line-height:1.85; font-size:0.96rem; opacity:0.88; }
+  .closing-panel p:last-child{ margin-bottom:0; }
+
+  .source-note{ margin-top:14px; font-size:0.78rem; color:var(--ink-faint); line-height:1.7; }
+  .source-note ul{ margin:8px 0 0; padding-left:18px; }
+  .source-note a{ word-break:break-all; }
+
+  footer{ text-align:center; padding-block:20px 40px; color:var(--ink-faint); font-size:0.78rem; }
+</style>
+
+<div class="progressbar" aria-hidden="true"><div class="progressbar-fill" id="progressFill"></div></div>
+
+<section class="hero">
+  <div class="wrap">
+    <a class="back-link" href="index.html">← 白話科技 · 全部文章</a>
+    <span class="eyebrow">科普專題 · 神經科學與生醫</span>
+    <h1 class="title">用光開關神經：2026 諾貝爾醫學獎與光遺傳學</h1>
+    <p class="lede">2026 年諾貝爾生理學或醫學獎，頒給了三位把「光」變成大腦遙控器的科學家。他們的故事從一種會游向光的綠藻開始，最後走進了活著的小鼠大腦，甚至走到了早期的人類視力研究。這篇文章用生活化的比喻拆解這項技術，也把每一則資訊標上可信度，讓你分得出「已經證實的」「報導這樣說的」和「還在研究中的」。內容比較長，可以用下方分頁跳著讀。</p>
+
+    <div class="hero-diagram" aria-hidden="true">
+      <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
+        <rect x="10" y="45" width="118" height="50" rx="8" fill="var(--warm-soft)" stroke="var(--warm)" stroke-width="1.5"/>
+        <text x="69" y="75" text-anchor="middle" font-family="Noto Sans TC" font-size="14" font-weight="700" fill="var(--warm)">藍光照射</text>
+
+        <line x1="128" y1="70" x2="168" y2="70" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <polygon points="174,70 165,65 165,75" fill="var(--ink-faint)"/>
+
+        <rect x="176" y="45" width="118" height="50" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <text x="235" y="75" text-anchor="middle" font-family="Noto Sans TC" font-size="14" font-weight="700" fill="var(--accent)">通道打開</text>
+
+        <line x1="294" y1="70" x2="334" y2="70" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <polygon points="340,70 331,65 331,75" fill="var(--ink-faint)"/>
+
+        <rect x="342" y="45" width="118" height="50" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="401" y="75" text-anchor="middle" font-family="Noto Sans TC" font-size="14" fill="var(--ink-soft)">離子流入</text>
+
+        <line x1="460" y1="70" x2="500" y2="70" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <polygon points="506,70 497,65 497,75" fill="var(--ink-faint)"/>
+
+        <rect x="508" y="45" width="122" height="50" rx="8" fill="var(--surface)" stroke="var(--ink-faint)" stroke-width="1.5"/>
+        <text x="569" y="75" text-anchor="middle" font-family="Noto Sans TC" font-size="14" fill="var(--ink)">神經訊號</text>
+
+        <text x="320" y="130" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="var(--ink-faint)">毫秒等級 · 單一細胞等級</text>
+      </svg>
+      <div class="cap">光 → 通道打開 → 離子流入 → 神經細胞發出訊號：光遺傳學的一句話原理</div>
+    </div>
+
+    <div class="callout">
+      <span class="mark">!</span>
+      <p><b>核心概念：</b>光遺傳學的威力，在於把「光」變成一個超精準的開關——先讓特定神經細胞長出對光有反應的蛋白質，再用光在活體大腦裡把它們打開或關掉，研究者才能直接問大腦：「這群細胞到底負責什麼？」</p>
+    </div>
+  </div>
+</section>
+
+<nav class="pagenav" id="pagenav">
+  <div class="pagenav-inner wrap-wide">
+    <div class="tabs" id="tabs">
+      <button class="tab" type="button" data-goto="1">獎項與技術</button>
+      <button class="tab" type="button" data-goto="2">光敏通道怎麼運作</button>
+      <button class="tab" type="button" data-goto="3">從綠藻到諾貝爾</button>
+      <button class="tab" type="button" data-goto="4">用來研究什麼</button>
+      <button class="tab" type="button" data-goto="5">記憶與虛假記憶</button>
+      <button class="tab" type="button" data-goto="6">臨床與限制</button>
+      <button class="tab" type="button" data-goto="7">接力賽與行動建議</button>
+    </div>
+    <span class="pagecount mono" id="pagecount">1 / 7</span>
+  </div>
+</nav>
+
+<!-- PAGE 1 -->
+<div class="pagewrap" id="page-1">
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">01</span>
+        <h2>誰得獎、為什麼得獎</h2>
+      </div>
+      <p><b>【已證實】</b>根據諾貝爾獎官方網站，2026 年諾貝爾生理學或醫學獎由三位科學家共同獲得：</p>
+      <p><b>卡爾·戴瑟羅斯（Karl Deisseroth）</b>，任職史丹佛大學，既是精神科醫師，也是生物工程學者，約 55 歲；<b>彼得·赫吉曼（Peter Hegemann）</b>，任職柏林洪堡大學，約 72 歲；<b>格奧爾格·內格爾（Georg Nagel）</b>，任職符茲堡大學，約 73 歲。得獎理由是他們對「光控離子通道與光遺傳學」的發現（英文原文：light-gated ion channels and optogenetics）。</p>
+      <p>獎金為 1,200 萬瑞典克朗（約 120 萬美元），三人均分，12 月 10 日在斯德哥爾摩頒獎。順帶一提，自 1901 年起，醫學獎一共有 235 位得主，其中有 41 次是由三個人一起分享。</p>
+
+      <div class="analogy">
+        <span class="tag">怎麼讀這篇文章</span>
+        <p>這篇文章的每一則重點，都會用三種標示告訴你「這件事有多可靠」，就像看新聞時分清楚「公告」「聽說」「還在試」：<br>
+        <b>【已證實】</b>官方公告或學術論文可以查到。<br>
+        <b>【報導引述】</b>媒體轉述某人的說法，本文未能對照官方文件確認原話。<br>
+        <b>【研究中】</b>動物實驗或早期臨床嘗試，還不是成熟療法。</p>
+      </div>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">02</span>
+        <h2>光遺傳學是什麼：給神經細胞裝上「光控開關」</h2>
+      </div>
+      <p><b>【已證實】</b>光遺傳學（optogenetics）能在活著的大腦裡，用光把個別的神經細胞「打開」或「關掉」，精準到毫秒、細胞等級。「光」指的是控制方式，「遺傳學」指的是靠基因讓細胞長出對光有反應的蛋白質。</p>
+      <p>大腦裡的神經細胞數量龐大，彼此交織得像一座燈火通明的大城市。要弄清楚某一類細胞做什麼，如果手邊的工具只能影響一整片區域，就像把整條街的電閘一起拉掉，很難只動你想動的那一盞燈。</p>
+
+      <div class="analogy">
+        <span class="tag">電燈開關</span>
+        <p>想像一棟大樓裡有幾萬盞燈，牆上沒有任何標示。傳統方法像是直接把某一層樓的總電源切掉，你只知道「這層暗了」，卻不知道是哪一盞燈、哪一個房間出了事。光遺傳學則像是給你想研究的那幾盞燈，各自裝上一個只對手電筒有反應的專屬開關，你想開哪幾盞，就用光照哪幾盞，其他燈完全不受影響。</p>
+      </div>
+
+      <p>這就是為什麼它被視為研究大腦的突破：它讓「因果關係」變得看得見。過去我們常常只能觀察到「某群細胞活動的時候，動物在做某件事」，現在可以自己把這群細胞打開，看看動物會不會真的做出那件事。</p>
+    </section>
+
+    <div class="pagectrl">
+      <span></span>
+      <span class="mid mono">01–02 · 獎項 / 光遺傳學是什麼</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="pagewrap" id="page-2" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">03</span>
+        <h2>通道視紫質：一個蛋白質，同時是眼睛也是大門</h2>
+      </div>
+      <p><b>【已證實】</b>光遺傳學的核心工具叫做 <b>channelrhodopsin（通道視紫質）</b>。它是一種來自單細胞綠藻「衣藻」（Chlamydomonas）的蛋白質，鑲在細胞膜上。照到藍光，它就會把通道打開，離子（帶電的小粒子）湧進細胞，細胞就產生電訊號。</p>
+      <p>關鍵在於：<b>同一個蛋白質同時扮演了「感光器」和「離子通道」兩個角色</b>。它不需要別的零件幫忙傳話，光一照，門直接打開。也正因為這樣簡單，把它放進其他種類的細胞，它依然能運作。</p>
+
+      <div class="diagram-box" aria-hidden="true">
+        <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg">
+          <text x="150" y="20" text-anchor="middle" font-family="Noto Sans TC" font-size="13" fill="var(--ink-faint)">沒有光：門關著</text>
+          <rect x="20" y="100" width="260" height="30" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <rect x="125" y="94" width="50" height="42" rx="6" fill="var(--surface-2)" stroke="var(--ink-faint)" stroke-width="1.5"/>
+          <text x="150" y="120" text-anchor="middle" font-family="Noto Sans TC" font-size="11" fill="var(--ink-faint)">通道關</text>
+          <text x="40" y="70" font-family="Noto Sans TC" font-size="11" fill="var(--ink-faint)">細胞外：離子在門外</text>
+          <circle cx="60" cy="50" r="5" fill="var(--ink-faint)"/>
+          <circle cx="110" cy="45" r="5" fill="var(--ink-faint)"/>
+          <circle cx="200" cy="52" r="5" fill="var(--ink-faint)"/>
+          <circle cx="245" cy="45" r="5" fill="var(--ink-faint)"/>
+          <text x="40" y="170" font-family="Noto Sans TC" font-size="11" fill="var(--ink-faint)">細胞內：安靜</text>
+
+          <text x="490" y="20" text-anchor="middle" font-family="Noto Sans TC" font-size="13" font-weight="700" fill="var(--accent)">照藍光：門打開</text>
+          <rect x="360" y="100" width="260" height="30" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <rect x="465" y="94" width="50" height="42" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="490" y="120" text-anchor="middle" font-family="Noto Sans TC" font-size="11" fill="var(--accent)">通道開</text>
+          <line x1="468" y1="68" x2="488" y2="88" stroke="var(--warm)" stroke-width="2"/>
+          <line x1="478" y1="60" x2="498" y2="80" stroke="var(--warm)" stroke-width="2"/>
+          <line x1="488" y1="52" x2="508" y2="72" stroke="var(--warm)" stroke-width="2"/>
+          <text x="560" y="62" font-family="Noto Sans TC" font-size="11" fill="var(--warm)">藍光</text>
+          <circle cx="395" cy="50" r="5" fill="var(--ink-faint)"/>
+          <circle cx="440" cy="45" r="5" fill="var(--ink-faint)"/>
+          <circle cx="545" cy="48" r="5" fill="var(--ink-faint)"/>
+          <path d="M520 60 C525 80, 500 100, 492 150" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <circle cx="492" cy="158" r="5" fill="var(--accent)"/>
+          <circle cx="470" cy="170" r="5" fill="var(--accent)"/>
+          <circle cx="512" cy="175" r="5" fill="var(--accent)"/>
+          <text x="560" y="190" text-anchor="middle" font-family="Noto Sans TC" font-size="11" fill="var(--accent)">離子流入 → 訊號</text>
+          <text x="320" y="220" text-anchor="middle" font-family="IBM Plex Mono" font-size="11.5" fill="var(--ink-faint)">示意圖，非真實比例</text>
+        </svg>
+        <div class="cap">同一個蛋白質：看到藍光就開門，離子進來，細胞就「亮」起來</div>
+      </div>
+
+      <div class="analogy">
+        <span class="tag">鑰匙孔配鑰匙</span>
+        <p>一般的離子通道像是需要鑰匙才能開的門，鑰匙可能是某種化學物質或電壓變化。通道視紫質則像一扇「聲控門」換成「光控門」：門板本身就長了眼睛，藍光一照就自己打開，不必另外找鑰匙、也不必接線。更妙的是，這扇門可以被搬到別的房子（其他細胞）去裝，照樣好用。</p>
+      </div>
+
+      <p>你可能會問：一種綠藻身上的東西，為什麼能拿來控制哺乳動物的神經？因為神經細胞靠離子進出來產生訊號，而這個蛋白質恰好就是一個離子通道。只要把它的基因放進神經細胞，細胞就會自己把它做出來、裝在膜上。<b>【已證實】</b>研究團隊後來確認，ChR2 這個版本是由藍光激活、對多種陽離子都開放（不挑對象）的通道，效果比最早發現的版本更好。</p>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">03 · 通道視紫質</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="pagewrap" id="page-3" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">04</span>
+        <h2>從綠藻到諾貝爾：一條二十多年的接力路線</h2>
+      </div>
+      <p>故事一開始並不是為了治療大腦，而是出於一個很單純的好奇：<b>一隻小小的綠藻，怎麼知道往光的方向游？</b></p>
+
+      <div class="analogy">
+        <span class="tag">衣藻游向光</span>
+        <p>衣藻像是一台只有一顆細胞的小船，靠著感光，能朝向陽光的方向游去。要弄懂小船怎麼「看到」光並轉舵，科學家必須找出它身上的感光零件，結果找到的零件，竟然兼具了「感光」和「開門」兩種功能，後來意外成了研究大腦的萬用工具。</p>
+      </div>
+
+      <div class="callout" style="margin-bottom:26px;">
+        <span class="mark">註</span>
+        <p><b>年份寫法說明：</b>不同媒體對年份的寫法不太一致。本文採用的整理是：研究從 1990 年代的藻類趨光研究開始，基因鑑定與關鍵論文發表在 2000 年代初（2002–2003 年）。以下時間軸除標明者外，皆屬【已證實】。</p>
+      </div>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">1</div>
+          <div>
+            <span class="meta">更早 · 思想鋪墊</span>
+            <h4>Francis Crick 的設想：能不能用光選擇性地控制特定神經元？</h4>
+            <p>在技術出現之前，已有科學家想過這個點子：能不能只用光，就挑出特定的神經元來控制。當時這被認為不太現實，但這個想法，為後來的研究指出了方向。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">2</div>
+          <div>
+            <span class="meta">1990 年代 · 起點</span>
+            <h4>Hegemann 想知道衣藻怎麼游向光</h4>
+            <p>Peter Hegemann 在德國 Max Planck 研究所，研究的是衣藻如何朝光的方向移動，研究起點可以追溯到 1990 年代。那時沒有人想到，這項研究會和大腦研究扯上關係。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">3</div>
+          <div>
+            <span class="meta">2001 · 找到新序列</span>
+            <h4>在衣藻的基因資料庫裡，發現新的視紫質序列</h4>
+            <p>Hegemann 團隊成員 Suneel Kateriya，在衣藻的 cDNA 資料庫（可以想成「基因說明書的備份檔」）裡，找到了新的微生物型視紫質序列。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">4</div>
+          <div>
+            <span class="meta">2002 · ChR1</span>
+            <h4>Nagel、Hegemann 與 Ernst Bamberg 合作，在《Science》發表 ChR1</h4>
+            <p>第一個通道視紫質（ChR1）的成果，由 Georg Nagel、Peter Hegemann 與 Ernst Bamberg 合作，刊登在《Science》期刊上。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">5</div>
+          <div>
+            <span class="meta">2003 · ChR2</span>
+            <h4>Nagel 等人在《PNAS》發表更好用的 ChR2</h4>
+            <p>2003 年 11 月 13 日，ChR2 發表於《PNAS》。它受藍光激活，是一種廣譜、不挑選離子種類的陽離子通道，效果比 ChR1 更好。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">6</div>
+          <div>
+            <span class="meta">2005 · 進入神經細胞</span>
+            <h4>Deisseroth 實驗室：藍光觸發大鼠神經細胞的訊號</h4>
+            <p>Deisseroth 實驗室（第一作者為 Ed Boyden）在《Nature Neuroscience》發表：把 ChR2 的基因放進大鼠的神經細胞，只要用藍光照射，就能觸發神經訊號。這證明藻類的光敏通道，可以在神經細胞裡使用。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">7</div>
+          <div>
+            <span class="meta">2007 · 活體大腦</span>
+            <h4>光開關在活的小鼠大腦裡運作</h4>
+            <p>Deisseroth 實驗室讓這個「光開關」在活著的小鼠大腦裡也能運作。從大鼠的神經細胞，走到活著的動物大腦裡，這項技術就能拿來研究動物的行為與腦內迴路。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">8</div>
+          <div>
+            <span class="meta">2012–2013 · 小鼠記憶實驗</span>
+            <h4>Tonegawa 實驗室用光重啟小鼠的恐懼記憶</h4>
+            <p>MIT 的 Tonegawa 實驗室，借用光遺傳工具做出小鼠記憶實驗。詳見「記憶與虛假記憶」那一頁。這些成果由 Tonegawa 實驗室主導，不是三位得主的獲獎理由。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">9</div>
+          <div>
+            <span class="meta">2021 · 早期臨床 · 研究中</span>
+            <h4>首例以光遺傳學使人類盲人病患部分恢復視覺的報告</h4>
+            <p>《Nature Medicine》上的報告，屬於早期嘗試，詳見「臨床與限制」那一頁。</p>
+          </div>
+        </div>
+
+        <div class="titem">
+          <div class="tdot">10</div>
+          <div>
+            <span class="meta">2026 · 諾貝爾獎</span>
+            <h4>Deisseroth、Hegemann、Nagel 共同獲得諾貝爾生理學或醫學獎</h4>
+            <p>從綠藻怎麼趨光的基礎研究，到能在活體大腦裡開關神經的技術，走了二十多年，終於獲得最高榮譽的肯定。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">04 · 從綠藻到諾貝爾</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 -->
+<div class="pagewrap" id="page-4" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">05</span>
+        <h2>光遺傳學拿來做什麼：弄清楚「誰負責什麼」</h2>
+      </div>
+      <p><b>【已證實】</b>目前光遺傳學最主要的用途，是在研究層面：找出<b>哪一種細胞負責什麼功能</b>，以及<b>細胞和細胞之間是怎麼連線的</b>。已經被拿來釐清的主題包括：睡眠與清醒的切換（與 orexin/hypocretin 這類神經元有關）、學習、恐懼、成癮、動作、記憶痕跡（engram，也就是「儲存某段記憶的那群細胞」），以及視網膜裡的多巴胺細胞等等。</p>
+
+      <div class="analogy">
+        <span class="tag">配電盤測試</span>
+        <p>就像維修師傅要弄清楚一棟老房子的配電盤：他會一個一個把開關打開、關掉，看看哪個房間的燈會亮、哪台機器會停。光遺傳學讓研究者對大腦也能這樣操作，「打開這群細胞，動物就醒了」，這就告訴我們這群細胞和清醒有關；「關掉那群細胞，動物就不再害怕」，這就代表那群細胞與恐懼有關。</p>
+      </div>
+
+      <p><b>【報導引述】</b>諾貝爾委員會的說法，經由 Gulf News 的報導轉述：光遺傳學讓研究者得以揭示與特定記憶、情緒、行為有關的神經迴路，而這些迴路對神經與精神疾病很重要。報導也引述委員會主席 Per Svenningsson，他形容光遺傳學提供了一種過去「只能夢想」的描繪大腦的方式。（以上為媒體轉述，本文未對照委員會原始講稿。）</p>
+
+      <p>換句話說，這項技術的價值，主要不是「馬上治好什麼病」，而是替大腦畫出一張更清楚的地圖：有了地圖，之後才有可能知道要把藥或療法對準哪裡。</p>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">05 · 研究用途</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="pagewrap" id="page-5" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">06</span>
+        <h2>記憶與「虛假記憶」：先分清楚誰說了什麼</h2>
+      </div>
+      <p>這是新聞裡最吸睛、也最容易被誇大的一段，所以我們把它拆成三層來看。</p>
+
+      <div class="callout" style="margin-bottom:22px;">
+        <span class="mark">1</span>
+        <p><b>【報導引述，未查證】</b>有報導引述諾貝爾委員會秘書長 Thomas Perlmann，提到這項技術可以用來製造虛假記憶。<b>本文未能從官方文件或查到的媒體報導中，找到這句話的原始出處</b>，因此只能當作「有人這樣轉述」，不能當作委員會的正式說法。</p>
+      </div>
+
+      <p><b>【已證實，但屬小鼠研究】</b>學界能查證的相關研究，是 2012 到 2013 年的兩項小鼠實驗，都由 MIT 的 Tonegawa 實驗室主導（Deisseroth 是共同作者之一，提供光遺傳學工具）：</p>
+
+      <div class="timeline">
+        <div class="titem">
+          <div class="tdot">A</div>
+          <div>
+            <span class="meta">2012 · 《Nature》</span>
+            <h4>用光重新啟動與某次恐懼經驗有關的細胞</h4>
+            <p>研究者用光重新啟動小鼠海馬迴（大腦裡和記憶有關的區域）中，與某一次恐懼經驗相關的那群細胞。結果小鼠在沒有任何危險的環境裡，也出現了恐懼反應。</p>
+          </div>
+        </div>
+        <div class="titem">
+          <div class="tdot">B</div>
+          <div>
+            <span class="meta">2013 · 《Science》（Ramirez 等人）</span>
+            <h4>把「安全環境的記憶」與「人工啟動的恐懼」連在一起</h4>
+            <p>同一個實驗室進一步讓小鼠把某個安全環境的記憶，和被人工啟動的恐懼記憶連結起來，結果小鼠對一個從未發生過電擊的環境，也表現出恐懼。這就是所謂「植入虛假記憶」的由來。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="analogy">
+        <span class="tag">錄影帶剪接</span>
+        <p>想像大腦把一段經歷錄成影片，存在某一群細胞上。研究者用光找到「這部影片的播放鍵」，在動物其實身處安全地方的時候按下去，小鼠就會像在重看那次可怕經驗一樣害怕。再進一步，他們把「安全房間的畫面」和「可怕影片」黏在一起，小鼠便對那個從沒出過事的房間也感到害怕。這是「剪接記憶」的實驗室示範，而不是對一個人腦做任何事。</p>
+      </div>
+
+      <div class="callout">
+        <span class="mark">!</span>
+        <p><b>請特別注意：</b>這些是<b>小鼠</b>、在<b>實驗室條件</b>下的結果，<b>不等於能對人類植入記憶</b>。也不是三位得主本人的獲獎理由。看到「可以製造虛假記憶」這類標題時，請記得它背後的研究範圍有多小。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">06 · 記憶與虛假記憶</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="pagewrap" id="page-6" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">07</span>
+        <h2>臨床進展：研究與早期嘗試，不是成熟療法</h2>
+      </div>
+      <p><b>【研究中】</b>2021 年 5 月，《Nature Medicine》刊登了一份報告，由 José-Alain Sahel 與 Botond Roska 的團隊提出：首例用光遺傳學讓人類盲人病患<b>部分恢復視覺</b>。做法是用基因治療（以腺相關病毒當「快遞員」），把視紫質蛋白送進視網膜的神經節細胞，讓原本不再感光的視網膜，重新對光有反應。</p>
+      <p>這項嘗試瞄準的是「視網膜色素病變」（retinitis pigmentosa）。全球有逾 200 萬人受這類疾病影響，涉及的基因多達 71 種以上，除了針對單一基因的療法外，幾乎沒有核准的療法。因此，一種「不管是哪個基因壞了，都能讓細胞重新感光」的做法，才特別受到關注。</p>
+
+      <div class="analogy">
+        <span class="tag">換掉壞掉的感光器</span>
+        <p>視網膜色素病變像是相機裡的感光元件逐漸壞掉，原因有七十多種。與其每一種原因都各別修，不如在還保有線路的下一層細胞上，直接裝上一個新的「光感應器」。這個想法就像不去追究感光元件為何壞掉，而是在鏡頭後面加裝一個備用感光裝置。</p>
+      </div>
+
+      <p><b>【研究中／探索中】</b>媒體也提到，光遺傳學被拿來研究，並探索可能用在帕金森氏症、癲癇、憂鬱、成癮和失智等疾病上。請注意：這些目前都是<b>機制研究與治療探索的方向</b>，並不是已經成熟、可以去醫院取得的療法。</p>
+    </section>
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">08</span>
+        <h2>限制：為什麼從小鼠到人沒那麼簡單</h2>
+      </div>
+      <p>以下是依一般科學常識整理的限制，不是這次獲獎公告裡的數據：</p>
+      <p><b>第一，要先把基因送進去。</b>細胞本來不會對光有反應，必須先讓它長出光敏蛋白，通常需要借助病毒載體把基因送進目標細胞。在小鼠身上，研究者可以精心設計實驗；在人身上，這件事要複雜得多，因為牽涉到安全、劑量和長期影響。</p>
+      <p><b>第二，光要照得進去。</b>大腦位在頭骨深處，光很難自己穿過去，要想辦法把光送到想控制的位置，本身就是一個工程挑戰。相較之下，視網膜本來就是接收光的器官，光不必穿過頭骨；不過這是編輯的一般性推想，不是報告裡的結論。</p>
+
+      <div class="analogy">
+        <span class="tag">在地下室裝電燈開關</span>
+        <p>要在一棟大樓深處的某個房間裝一個光控開關，你得先把新開關和電線（基因）運進去，裝好之後，還要想辦法把手電筒的光照到那個房間。在實驗用的小房子裡可以慢慢調，到了真正的大樓裡，每一步都更複雜、風險也更高。</p>
+      </div>
+    </section>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">07–08 · 臨床進展 / 限制</span>
+      <button class="navbtn" type="button" data-dir="1">下一頁 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7 -->
+<div class="pagewrap" id="page-7" hidden>
+  <div class="wrap">
+
+    <section class="concept">
+      <div class="concept-head">
+        <span class="concept-num mono">09</span>
+        <h2>科學是接力賽：還有哪些名字值得被看見</h2>
+      </div>
+      <p><b>【已證實】</b>諾貝爾獎每個獎項最多只能頒給三個人。但科學發現很少是三個人憑空完成的，而是一棒接一棒。<b>【報導引述】</b>根據 STAT 的報導，一般認為同樣值得被提及的貢獻者包括：</p>
+      <p><b>Ed Boyden</b>（MIT）：2005 年那篇關鍵論文的第一作者，當時是 Deisseroth 實驗室的博士生。<b>Gero Miesenböck</b>：2002 年首次以基因方式，讓原本不感光的神經元對光敏感。<b>Zhuo-Hua Pan</b>（Wayne State University）：2004 年成功把 channelrhodopsin 用在視網膜神經節細胞，但論文拖到 2006 年才發表。另外，<b>Ernst Bamberg</b> 是 ChR1 與 ChR2 論文的合作者之一。</p>
+
+      <div class="analogy">
+        <span class="tag">接力賽</span>
+        <p>接力賽的領獎台只有三個位置，但整場比賽可能有更多人跑過一棒：有人負責起跑（綠藻怎麼趨光）、有人負責傳遞（找到並描述通道）、有人負責衝進神經細胞、有人負責把棒子送進活體動物，還有人幾乎同時跑在旁邊的跑道上。看一場接力賽，除了看誰衝線，也值得看看每一棒是怎麼接起來的。</p>
+      </div>
+
+      <p>這段只是把資訊攤開來，不替誰抱不平，也不是定論；每個人的貢獻怎麼評價，學界本來就有不同看法。比較穩妥的理解是：獎項標示了一組重要的里程碑，但整個領域是許多人共同推進的結果。</p>
+    </section>
+
+    <div class="case-block">
+      <p class="case-subhead">本文的重點回顧</p>
+      <div class="case-grid">
+        <div class="case-card">
+          <span class="k mono">01 獎項</span>
+          <h4>三人共同獲獎，理由是光控離子通道與光遺傳學</h4>
+          <p>Deisseroth、Hegemann、Nagel 三人均分 1,200 萬瑞典克朗，12 月 10 日頒獎。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">02 原理</span>
+          <h4>一個蛋白質，既是感光器也是通道</h4>
+          <p>藍光照到通道視紫質，通道打開、離子流入、神經細胞產生訊號。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">03 時間軸</span>
+          <h4>從綠藻趨光，到活體小鼠大腦</h4>
+          <p>1990 年代的趨光研究，2002–2003 年的 ChR1、ChR2，2005 年進入神經細胞，2007 年在活體小鼠運作。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">04 用途</span>
+          <h4>先弄清楚「哪群細胞負責什麼」</h4>
+          <p>睡眠、學習、恐懼、成癮、動作、記憶痕跡等，都被用光遺傳學來研究。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">05 虛假記憶</span>
+          <h4>小鼠實驗，不等於能對人類植入記憶</h4>
+          <p>秘書長相關說法為報導引述、未能查證；可查證的是 2012–2013 年 Tonegawa 實驗室的小鼠研究。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">06 臨床</span>
+          <h4>2021 年的人類視覺案例仍屬早期嘗試</h4>
+          <p>其他疾病方向都在探索中，並非現成療法。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">07 限制</span>
+          <h4>基因要送得進去，光也要照得進去</h4>
+          <p>在人身上比在小鼠複雜得多，大腦又深，是兩大挑戰。</p>
+        </div>
+        <div class="case-card">
+          <span class="k mono">08 接力</span>
+          <h4>發現是許多人接力完成的</h4>
+          <p>Boyden、Miesenböck、Pan、Bamberg 等人的貢獻，常被一併提及。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Role takeaways: editorial applications -->
+    <section class="concept" id="takeaways-engineer">
+      <div class="concept-head"><h2>給工程師的 Takeaway</h2></div>
+      <p>以下是編輯根據本文延伸的實務建議，不是得獎者、委員會的原話，也不是已驗證的研究結論。</p>
+      <p><b>像「光開關」一樣，一次只動一個元件：</b>光遺傳學厲害的地方，是能單獨打開或關掉一群細胞，確認它真的導致某個結果。除錯時也一樣，用 feature flag 或設定開關，把懷疑的模組單獨開關，比起同時改五個地方、只看結果有沒有變好，更能確認因果。</p>
+      <p><b>讓觀察的精度配得上問題：</b>這項技術能做到毫秒、單一細胞，才看得見快速的細節。如果你懷疑問題發生在某個特定請求或某個元件，就替那一條路徑加上對應的 trace、指標或日誌，不要只看整體的平均值，否則真正的問題會被淹沒。</p>
+      <p><b>在「小鼠」身上有效，不代表在「人」身上有效：</b>本文一再提醒，小鼠實驗不等於人類結果。同理，測試環境、少量流量、模擬資料上的成功，不等於正式環境成功。為每個驗證結果標明它是在哪種環境下得到的，再決定要不要往前走。</p>
+      <div class="analogy"><span class="tag">本週可以做</span><p>挑一個你最近懷疑「是它造成的」的功能或模組（例如某個快取、某段重試邏輯），在測試環境替它加上開關。分別以開、關各跑三次同一組測試或操作，記下結果（例如耗時、錯誤數）。驗收方式：你能提出一張對照表，說明「這個元件在、不在」是否真的造成差別；若沒有差別，就把嫌疑劃掉。</p></div>
+    </section>
+
+    <section class="concept" id="takeaways-manager">
+      <div class="concept-head"><h2>給小主管的 Takeaway</h2></div>
+      <p>以下是編輯根據本文延伸的實務建議，不是得獎者、委員會的原話，也不是已驗證的研究結論。</p>
+      <p><b>先畫出「誰負責哪一段」的地圖：</b>光遺傳學的價值，是弄清楚哪群細胞負責哪個功能。團隊流程也一樣，卡關時先把流程拆成幾個環節（例如需求確認、開發、審查、測試、上線），標出每個環節的負責人和平均等待時間，才知道該調整哪裡，而不是整體催促「大家快一點」。</p>
+      <p><b>小範圍介入，再觀察：</b>研究者不會一次把整個大腦的燈都打開，而是只動一小群細胞。管理上也建議一次只改一個環節（例如把程式碼審查的處理時限縮短），其他條件盡量維持不變，過了一個週期再看結果，這樣你才分得出是哪個改變有效。</p>
+      <p><b>讓接力賽的每一棒都被看見：</b>本文提到被諾貝爾名額擋在外面的貢獻者，提醒我們：成果常常是多人接力完成。在回顧會或成果報告時，具體點名誰在哪一棒做了什麼（例如寫測試、補文件、處理線上緊急狀況），有助於留住人才，也讓團隊知道哪些工作被珍惜。</p>
+      <div class="analogy"><span class="tag">本週可以做</span><p>挑一個你團隊常見的延遲點（例如等待審查的時間），本週只調整這一個環節的做法（例如每天固定兩個時段集中處理審查）。記下調整前後各一週的平均等待時間，並在週五的回顧會上，把成果與協助的每個人逐一點名。驗收方式：你手上有調整前後的數字，以及一句帶有可信度標示的結論，例如「有改善（已驗證）」或「變化不明顯（需再觀察）」。</p></div>
+    </section>
+
+    <section class="closing">
+      <div class="closing-panel">
+        <span class="eyebrow mono">重點回顧</span>
+        <h3>一隻綠藻的趨光本能，變成了讀懂大腦的鑰匙</h3>
+        <p>光遺傳學的故事，從「綠藻怎麼知道往光游」這個基礎問題開始，經過一群人的接力，成為能在活體大腦裡精準開關神經細胞的工具，也讓科學家得以追問「哪群細胞負責什麼」。它目前最扎實的成果，在於研究：理解睡眠、恐懼、記憶與其他大腦功能。在臨床上，只有早期的視力恢復嘗試，其他疾病方向仍在探索。</p>
+        <p>而面對這類新聞，最值得帶走的習慣是：分清楚哪些是官方證實的、哪些是報導引述但查不到出處的、哪些還在研究中，並且記得，小鼠實驗的結果，不等於人類的現實。</p>
+      </div>
+    </section>
+
+    <div class="source-note">
+      內容整理、摘要並改寫自〈NobelPrize.org 新聞稿與科普資料、STAT、Gulf News、GEN 及相關學術文獻〉，非逐字紀錄。部分內容（如限制一節）為依一般科學常識所作之說明。
+      <ul>
+        <li><a href="https://www.nobelprize.org/prizes/medicine/2026/press-release/">https://www.nobelprize.org/prizes/medicine/2026/press-release/</a></li>
+        <li><a href="https://www.nobelprize.org/prizes/medicine/2026/popular-information/">https://www.nobelprize.org/prizes/medicine/2026/popular-information/</a></li>
+        <li><a href="https://www.statnews.com/2026/10/05/nobel-prize-medicine-2026-winner-deisseroth-hegemann-nagel/">https://www.statnews.com/2026/10/05/nobel-prize-medicine-2026-winner-deisseroth-hegemann-nagel/</a></li>
+        <li><a href="https://gulfnews.com/world/europe/trio-wins-nobel-medicine-prize-for-optogenetics-work-1.500698801">https://gulfnews.com/world/europe/trio-wins-nobel-medicine-prize-for-optogenetics-work-1.500698801</a></li>
+        <li><a href="https://www.genengnews.com/topics/translational-medicine/2026-nobel-prize-for-physiology-and-medicine-goes-to-optogenetics-light-gated-ion-channels/">https://www.genengnews.com/topics/translational-medicine/2026-nobel-prize-for-physiology-and-medicine-goes-to-optogenetics-light-gated-ion-channels/</a></li>
+        <li><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3569634/">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3569634/</a></li>
+      </ul>
+    </div>
+
+    <div class="pagectrl">
+      <button class="navbtn" type="button" data-dir="-1">← 上一頁</button>
+      <span class="mid mono">09 · 接力賽 / 行動建議 / 總結</span>
+      <button class="navbtn" type="button" disabled>已是最後一頁</button>
+    </div>
+  </div>
+</div>
+
+<footer>看得懂也做得到的科技觀念 · 科普圖文</footer>
+
+<script>
+(function(){
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.pagewrap'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var total = pages.length;
+  var current = 1;
+  var fill = document.getElementById('progressFill');
+  var count = document.getElementById('pagecount');
+  var nav = document.getElementById('pagenav');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function getSaved(){
+    try{
+      var v = parseInt(localStorage.getItem('opto_page') || '1', 10);
+      return (v >= 1 && v <= total) ? v : 1;
+    }catch(e){ return 1; }
+  }
+  function save(n){ try{ localStorage.setItem('opto_page', String(n)); }catch(e){} }
+
+  function render(){
+    pages.forEach(function(p, i){ p.hidden = (i + 1) !== current; });
+    tabs.forEach(function(t){ t.classList.toggle('active', Number(t.dataset.goto) === current); });
+    fill.style.width = (current / total * 100) + '%';
+    count.textContent = current + ' / ' + total;
+    document.querySelectorAll('.navbtn[data-dir="-1"]').forEach(function(b){ b.disabled = current === 1; });
+    document.querySelectorAll('.navbtn[data-dir="1"]').forEach(function(b){ b.disabled = current === total; });
+  }
+
+  function goTo(n, opts){
+    opts = opts || {};
+    n = Math.min(Math.max(n, 1), total);
+    if(n === current && opts.force !== true){ return; }
+    current = n;
+    render();
+    save(current);
+    if(opts.scroll !== false && nav){
+      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
+  document.querySelectorAll('.navbtn[data-dir]').forEach(function(b){
+    b.addEventListener('click', function(){ goTo(current + Number(b.dataset.dir)); });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.target && /input|textarea/i.test(e.target.tagName)) return;
+    if(e.key === 'ArrowRight') goTo(current + 1);
+    if(e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  current = getSaved();
+  render();
+})();
+</script>
