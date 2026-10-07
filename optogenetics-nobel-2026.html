@@ -790,8 +790,6 @@
   var current = 1;
   var fill = document.getElementById('progressFill');
   var count = document.getElementById('pagecount');
-  var nav = document.getElementById('pagenav');
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function getSaved(){
     try{
@@ -817,9 +815,15 @@
     current = n;
     render();
     save(current);
-    if(opts.scroll !== false && nav){
-      nav.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    if(opts.scroll !== false){
+      scrollToArticleTop();
+      requestAnimationFrame(scrollToArticleTop);
     }
+  }
+
+  function scrollToArticleTop(){
+    var hero = document.querySelector('.hero');
+    if(hero){ window.scrollTo(0, hero.offsetTop + hero.offsetHeight); }
   }
 
   tabs.forEach(function(t){ t.addEventListener('click', function(){ goTo(Number(t.dataset.goto)); }); });
